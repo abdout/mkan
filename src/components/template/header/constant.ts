@@ -1,0 +1,27 @@
+// Alternative: Single array approach
+export const ALL_NAVIGATION_ITEMS = [
+  { type: "display", href: "/become-host", label: "Become a host" },
+  { type: "display", href: "/create-experience", label: "Create your experience" },
+  { type: "display", href: "/help", label: "Help" },
+  { type: "display", label: "EUR €" },
+  { type: "display", label: "English" },
+  { type: "display", href: "/login", label: "Sign in" },
+  { type: "display", href: "/register", label: "Sign up" },
+];
+
+// Current approach: Separate arrays
+export const NAVIGATION_LINKS = [
+  { href: "/become-host", label: "Become a host" },
+  { href: "/create-experience", label: "Create your experience" },
+  { href: "/help", label: "Help" },
+];
+
+export const DISPLAY_ITEMS = [
+  { label: "EUR €" },
+  { label: "English" },
+];
+
+export const AUTH_LINKS = [
+  { href: "/login", label: "Sign in" },
+  { href: "/register", label: "Sign up" },
+];
