@@ -3,7 +3,6 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -30,16 +29,17 @@ import { FormError } from "../error/form-error";
 import { FormSuccess } from "../form-success";
 import { Social } from "../social";
 
+interface LoginFormProps extends React.ComponentPropsWithoutRef<"div"> {
+  callbackUrl?: string;
+  error?: string;
+}
+
 export const LoginForm = ({
   className,
+  callbackUrl,
+  error: urlError,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
-  const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
-    ? "Email already in use with different provider!"
-    : "";
-
+}: LoginFormProps) => {
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -86,7 +86,7 @@ export const LoginForm = ({
           </CardDescription> */}
         </CardHeader>
         <CardContent>
-          <Social />
+          <Social callbackUrl={callbackUrl} />
         </CardContent>
         <CardContent>
           <Form {...form}>

@@ -1,8 +1,18 @@
 import { LoginForm } from "@/components/auth/login/form";
 
-const LoginPage = () => {
+interface LoginPageProps {
+  searchParams?: {
+    callbackUrl?: string;
+    error?: string;
+  };
+}
+
+const LoginPage = ({ searchParams }: LoginPageProps) => {
   return ( 
-    <LoginForm />
+    <LoginForm 
+      callbackUrl={searchParams?.callbackUrl}
+      error={searchParams?.error}
+    />
   );
 }
  
