@@ -17,7 +17,7 @@ export default function BookingForm() {
         <div className="space-y-3">
           {/* Location field */}
           <div>
-            <Label htmlFor="location" className="text-xs font-bold text-[#6b6b6b] mb-1 block">
+            <Label htmlFor="location" className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
               WHERE
             </Label>
             <Input
@@ -30,7 +30,7 @@ export default function BookingForm() {
           {/* Date fields */}
           <div className="grid grid-cols-2">
             <div>
-              <Label htmlFor="arrival" className="text-xs font-bold text-[#6b6b6b] mb-1 block">
+              <Label htmlFor="arrival" className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
                 CHECK-IN
               </Label>
               <Input
@@ -40,7 +40,7 @@ export default function BookingForm() {
               />
             </div>
             <div>
-              <Label htmlFor="departure" className="text-xs font-bold text-[#6b6b6b] mb-1 block">
+              <Label htmlFor="departure" className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
                 CHECK-OUT
               </Label>
               <Input
@@ -53,7 +53,7 @@ export default function BookingForm() {
 
           {/* Travelers field */}
           <div>
-            <Label htmlFor="travelers" className="text-xs font-bold text-[#6b6b6b] mb-1 block">
+            <Label htmlFor="travelers" className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
               GUESTS
             </Label>
             <Input

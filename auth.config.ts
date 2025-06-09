@@ -1,5 +1,5 @@
-import { getUserByEmail } from "@/components/auth/user";
-import { LoginSchema } from "@/components/auth/validation";
+import { getUserByEmail } from "./src/components/auth/user";
+import { LoginSchema } from "./src/components/auth/validation";
 import bcrypt from "bcryptjs";
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";

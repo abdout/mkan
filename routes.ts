@@ -10,6 +10,7 @@ export const publicRoutes = [
   "/client",
   "/server",
   "/setting",
+  "/dashboard/properties/new"
 ];
 
 /**

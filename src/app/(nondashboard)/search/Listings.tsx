@@ -1,101 +1,100 @@
-import {
-  useAddFavoritePropertyMutation,
-  useGetAuthUserQuery,
-  useGetPropertiesQuery,
-  useGetTenantQuery,
-  useRemoveFavoritePropertyMutation,
-} from "@/state/api";
-import { useAppSelector } from "@/state/redux";
-import { Property } from "@/types/prismaTypes";
-import Card from "@/components/Card";
-import React from "react";
-import CardCompact from "@/components/CardCompact";
+"use client"
 
-const Listings = () => {
-  const { data: authUser } = useGetAuthUserQuery();
-  const { data: tenant } = useGetTenantQuery(
-    authUser?.id || "",
-    {
-      skip: !authUser?.id,
-    }
-  );
-  const [addFavorite] = useAddFavoritePropertyMutation();
-  const [removeFavorite] = useRemoveFavoritePropertyMutation();
-  const viewMode = useAppSelector((state) => state.global.viewMode);
-  const filters = useAppSelector((state) => state.global.filters);
+import React from 'react'
+import { useAppSelector } from '@/state/redux'
+import { PropertyCard } from '@/components/site/property/card'
 
-  const {
-    data: properties,
-    isLoading,
-    isError,
-  } = useGetPropertiesQuery(filters);
+interface ListingsProps {
+  properties: any[]
+}
 
-  const handleFavoriteToggle = async (propertyId: number) => {
-    if (!authUser) return;
+const Listings = ({ properties }: ListingsProps) => {
+  const viewMode = useAppSelector((state) => state.global.viewMode)
+  const filters = useAppSelector((state) => state.global.filters)
 
-    const isFavorite = tenant?.favorites?.some(
-      (fav: Property) => fav.id === propertyId
-    );
+  const handleFavoriteToggle = async (propertyId: string, isFavorite: boolean) => {
+    // TODO: Implement favorites functionality with server actions
+    console.log('Toggle favorite:', propertyId, isFavorite)
+  }
 
-    if (isFavorite) {
-      await removeFavorite({
-        userId: authUser.id,
-        propertyId,
-      });
-    } else {
-      await addFavorite({
-        userId: authUser.id,
-        propertyId,
-      });
-    }
-  };
+  const handleCardClick = (propertyId: string) => {
+    window.location.href = `/search/${propertyId}`
+  }
 
-  if (isLoading) return <>Loading...</>;
-  if (isError || !properties) return <div>Failed to fetch properties</div>;
+  if (!properties || properties.length === 0) {
+    return (
+      <div className="w-full p-4">
+        <h3 className="text-sm px-4 font-bold">
+          0 <span className="text-gray-700 font-normal">Places in {filters.location}</span>
+        </h3>
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No properties found</h3>
+            <p className="text-gray-600">Try adjusting your search filters to see more results.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Transform properties to match PropertyCard interface
+  const transformedProperties = properties.map(property => ({
+    id: property.id.toString(),
+    images: property.photoUrls || [],
+    title: property.name,
+    location: `${property.location.city}, ${property.location.state}`,
+    dates: undefined, // You can add availability dates logic here
+    price: property.pricePerMonth,
+    rating: property.averageRating || 4.5, // Default rating
+    isSuperhostBadge: false, // You can add logic for this
+    isFavorite: false, // TODO: Implement user favorites
+    onFavoriteToggle: handleFavoriteToggle,
+    onCardClick: handleCardClick,
+  }))
 
   return (
     <div className="w-full">
-      <h3 className="text-sm px-4 font-bold">
-        {properties.length}{" "}
+      <h3 className="text-sm px-4 font-bold mb-4">
+        {properties.length}{' '}
         <span className="text-gray-700 font-normal">
           Places in {filters.location}
         </span>
       </h3>
-      <div className="flex">
-        <div className="p-4 w-full">
-          {properties?.map((property) =>
-            viewMode === "grid" ? (
-              <Card
-                key={property.id}
-                property={property}
-                isFavorite={
-                  tenant?.favorites?.some(
-                    (fav: Property) => fav.id === property.id
-                  ) || false
-                }
-                onFavoriteToggle={() => handleFavoriteToggle(property.id)}
-                showFavoriteButton={!!authUser}
-                propertyLink={`/search/${property.id}`}
-              />
-            ) : (
-              <CardCompact
-                key={property.id}
-                property={property}
-                isFavorite={
-                  tenant?.favorites?.some(
-                    (fav: Property) => fav.id === property.id
-                  ) || false
-                }
-                onFavoriteToggle={() => handleFavoriteToggle(property.id)}
-                showFavoriteButton={!!authUser}
-                propertyLink={`/search/${property.id}`}
-              />
-            )
-          )}
+      
+      {viewMode === 'grid' ? (
+        <div className="p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {transformedProperties.map((property) => (
+              <PropertyCard key={property.id} {...property} />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="p-4 space-y-4">
+          {transformedProperties.map((property) => (
+            <div key={property.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div className="flex gap-4">
+                <div className="w-48 h-32 bg-gray-200 rounded-lg overflow-hidden">
+                  {property.images.length > 0 && (
+                    <img
+                      src={property.images[0]}
+                      alt={property.title}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-2">{property.title}</h3>
+                  <p className="text-gray-600 mb-2">{property.location}</p>
+                  <p className="font-semibold text-lg">${property.price}/month</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default Listings;
+export default Listings

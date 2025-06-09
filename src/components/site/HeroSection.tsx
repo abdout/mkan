@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
-import Navbar from "@/components/template/header/header";
+import Navbar from "@/components/template/header-airbnb/header";
 import BookingForm from "@/components/site/booking-form";
 
 

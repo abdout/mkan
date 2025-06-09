@@ -16,6 +16,26 @@ export const cleanParams = (params: Record<string, any>) => {
   return cleaned;
 };
 
+export const formatEnumString = (enumValue: string): string => {
+  return enumValue
+    .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+    .replace(/^./, (str) => str.toUpperCase()) // Capitalize first letter
+    .trim(); // Remove any leading/trailing spaces
+};
+
+export const formatPriceValue = (price: number | undefined, isMin: boolean): string => {
+  if (!price || price === 0) {
+    return isMin ? "Any Min Price" : "Any Max Price";
+  }
+  
+  if (price >= 1000) {
+    const kValue = price / 1000;
+    return isMin ? `$${kValue}k+` : `<$${kValue}k`;
+  }
+  
+  return isMin ? `$${price}+` : `<$${price}`;
+};
+
 export const withToast = async (
   promise: Promise<any>,
   messages: { success?: string; error?: string }

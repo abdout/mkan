@@ -1,68 +1,60 @@
-"use client";
-
-import { NAVBAR_HEIGHT } from "@/lib/constants";
-import { useAppDispatch, useAppSelector } from "@/state/redux";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
 import FiltersBar from "./FiltersBar";
 import FiltersFull from "./FiltersFull";
-import { cleanParams } from "@/lib/utils";
-import { setFilters } from "@/state";
-import Map from "./Map";
 import Listings from "./Listings";
+import { getProperties } from "@/lib/actions/property-actions";
 
-const SearchPage = () => {
-  const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
-  const isFiltersFullOpen = useAppSelector(
-    (state) => state.global.isFiltersFullOpen
-  );
+interface SearchPageProps {
+  searchParams: Promise<{
+    location?: string;
+    priceMin?: string;
+    priceMax?: string;
+    beds?: string;
+    baths?: string;
+    propertyType?: string;
+    amenities?: string;
+  }>;
+}
 
-  useEffect(() => {
-    const initialFilters = Array.from(searchParams.entries()).reduce(
-      (acc: any, [key, value]) => {
-        if (key === "priceRange" || key === "squareFeet") {
-          acc[key] = value.split(",").map((v) => (v === "" ? null : Number(v)));
-        } else if (key === "coordinates") {
-          acc[key] = value.split(",").map(Number);
-        } else {
-          acc[key] = value === "any" ? null : value;
-        }
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  // Await searchParams for Next.js 15 compatibility
+  const params = await searchParams;
+  
+  // Parse search params for filters - show all properties by default if no location specified
+  const filters = {
+    location: params.location || undefined, // Changed from 'Los Angeles' to undefined to show all
+    priceMin: params.priceMin ? parseInt(params.priceMin) : undefined,
+    priceMax: params.priceMax ? parseInt(params.priceMax) : undefined,
+    beds: params.beds,
+    baths: params.baths,
+    propertyType: params.propertyType,
+    amenities: params.amenities ? params.amenities.split(',') : undefined,
+  };
 
-        return acc;
-      },
-      {}
-    );
-
-    const cleanedFilters = cleanParams(initialFilters);
-    dispatch(setFilters(cleanedFilters));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // Fetch properties using server action with error handling
+  let properties: Awaited<ReturnType<typeof getProperties>> = [];
+  try {
+    console.log('Fetching properties with filters:', filters);
+    properties = await getProperties(filters);
+    console.log('Properties fetched:', properties.length);
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    // Return empty array on error to prevent page crash
+    properties = [];
+  }
 
   return (
-    <div
-      className="w-full mx-auto px-5 flex flex-col"
-      style={{
-        height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
-      }}
-    >
-      <FiltersBar />
-      <div className="flex justify-between flex-1 overflow-hidden gap-3 mb-5">
-        <div
-          className={`h-full overflow-auto transition-all duration-300 ease-in-out ${
-            isFiltersFullOpen
-              ? "w-3/12 opacity-100 visible"
-              : "w-0 opacity-0 invisible"
-          }`}
-        >
-          <FiltersFull />
+    <div className="w-full">
+      <div className="border-b border-gray-200">
+        <FiltersBar />
+      </div>
+      
+      <div className="flex relative">
+        <div className="flex-1">
+          <Listings properties={properties} />
         </div>
-        <Map />
-        <div className="basis-4/12 overflow-y-auto">
-          <Listings />
-        </div>
+        
+        <FiltersFull />
       </div>
     </div>
   );
-};
-
-export default SearchPage;
+}

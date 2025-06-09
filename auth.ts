@@ -2,12 +2,12 @@ import NextAuth from "next-auth"
 import { UserRole } from "@prisma/client"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import type { DefaultSession } from "next-auth"
-import { db } from "@/lib/db"
-import { getUserById } from "@/components/auth/user"
-import { getTwoFactorConfirmationByUserId } from "@/components/auth/verification/2f-confirmation"
-import { getAccountByUserId } from "@/components/auth/account"
+import { db } from "./src/lib/db"
+import { getUserById } from "./src/components/auth/user"
+import { getTwoFactorConfirmationByUserId } from "./src/components/auth/verification/2f-confirmation"
+import { getAccountByUserId } from "./src/components/auth/account"
 import authConfig from "./auth.config"
-import { validateEnv } from "@/lib/env-check"
+import { validateEnv } from "./src/lib/env-check"
 
 // Validate environment variables
 validateEnv();
@@ -25,7 +25,7 @@ declare module "next-auth" {
 }
 
 export const {
-  handlers,
+  handlers: { GET, POST },
   auth,
   signIn,
   signOut,

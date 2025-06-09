@@ -5,8 +5,8 @@ export const ALL_NAVIGATION_ITEMS = [
   { type: "display", href: "/help", label: "Help" },
   { type: "display", label: "EUR €" },
   { type: "display", label: "English" },
-  { type: "display", href: "/login", label: "Sign in" },
-  { type: "display", href: "/register", label: "Sign up" },
+  { type: "display", href: "/login", label: "Login" },
+  { type: "display", href: "/join", label: "Join" },
 ];
 
 // Current approach: Separate arrays
