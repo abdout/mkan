@@ -1,8 +1,14 @@
 import { RegisterForm } from "@/components/auth/join/form";
 
-const RegisterPage = () => {
+interface RegisterPageProps {
+  searchParams?: {
+    callbackUrl?: string;
+  };
+}
+
+const RegisterPage = ({ searchParams }: RegisterPageProps) => {
   return ( 
-    <RegisterForm />
+    <RegisterForm callbackUrl={searchParams?.callbackUrl} />
   );
 }
  

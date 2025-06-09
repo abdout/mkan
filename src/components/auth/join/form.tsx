@@ -26,10 +26,16 @@ import { register } from "./action";
 import { FormError } from "../error/form-error";
 import { FormSuccess } from "../form-success";
 import { Social } from "../social";
+
+interface RegisterFormProps extends React.ComponentPropsWithoutRef<"div"> {
+  callbackUrl?: string;
+}
+
 export const RegisterForm = ({
   className,
+  callbackUrl,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) => {
+}: RegisterFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -61,7 +67,7 @@ export const RegisterForm = ({
       <Card className="border-none shadow-none">
         <CardHeader className="text-center" />
         <CardContent>
-          <Social />
+          <Social callbackUrl={callbackUrl} />
         </CardContent>
         <CardContent>
           <Form {...form}>
