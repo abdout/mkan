@@ -1,13 +1,12 @@
-'use client';
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { useSearchParams } from "next/navigation";
 
 import { CardWrapper } from "@/components/auth/card-wrapper";
 
-export const ErrorCard = () => {
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
-  
+interface ErrorCardProps {
+  error?: string;
+}
+
+export const ErrorCard = ({ error }: ErrorCardProps) => {
   const errorMessages: Record<string, string> = {
     Configuration: "There is a problem with the server configuration.",
     AccessDenied: "You do not have permission to sign in.",

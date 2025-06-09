@@ -1,11 +1,14 @@
 import { ErrorCard } from "@/components/auth/error-card";
-import { Suspense } from "react";
 
-const AuthErrorPage = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ErrorCard />
-    </Suspense>
+interface AuthErrorPageProps {
+  searchParams?: {
+    error?: string;
+  };
+}
+
+const AuthErrorPage = ({ searchParams }: AuthErrorPageProps) => {
+  return ( 
+    <ErrorCard error={searchParams?.error} />
   );
 };
 
