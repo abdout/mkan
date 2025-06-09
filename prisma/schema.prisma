@@ -172,6 +172,7 @@ model Property {
   beds              Int
   baths             Float
   squareFeet        Int
+  maxGuests         Int          @default(2)
   propertyType      PropertyType
   postedDate        DateTime     @default(now())
   averageRating     Float?       @default(0)
@@ -186,8 +187,6 @@ model Property {
   favoritedBy  Tenant[]      @relation("TenantFavorites")
   tenants      Tenant[]      @relation("TenantProperties")
 }
-
-
 
 model Tenant {
   id       Int    @id @default(autoincrement())
