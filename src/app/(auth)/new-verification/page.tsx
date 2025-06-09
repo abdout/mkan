@@ -1,8 +1,14 @@
 import { NewVerificationForm } from "@/components/auth/verification/form";
 
-const NewVerificationPage = () => {
+interface NewVerificationPageProps {
+  searchParams?: {
+    token?: string;
+  };
+}
+
+const NewVerificationPage = ({ searchParams }: NewVerificationPageProps) => {
   return ( 
-    <NewVerificationForm />
+    <NewVerificationForm token={searchParams?.token} />
    );
 }
  

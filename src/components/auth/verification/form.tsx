@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
@@ -14,15 +13,17 @@ import { FormSuccess } from "../form-success";
 import { FormError } from "../error/form-error";
 import { newVerification } from "./action";
 
+interface NewVerificationFormProps extends React.ComponentPropsWithoutRef<"div"> {
+  token?: string;
+}
+
 export const NewVerificationForm = ({
   className,
+  token,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) => {
+}: NewVerificationFormProps) => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
-
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
 
   const onSubmit = useCallback(() => {
     if (success || error) return;
