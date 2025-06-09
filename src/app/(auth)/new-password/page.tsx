@@ -1,8 +1,14 @@
 import { NewPasswordForm } from "@/components/auth/password/form";
 
-const NewPasswordPage = () => {
+interface NewPasswordPageProps {
+  searchParams?: {
+    token?: string;
+  };
+}
+
+const NewPasswordPage = ({ searchParams }: NewPasswordPageProps) => {
   return ( 
-    <NewPasswordForm />
+    <NewPasswordForm token={searchParams?.token} />
    );
 }
  

@@ -3,7 +3,6 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 
@@ -27,13 +26,15 @@ import { newPassword } from "./action";
 import { FormError } from "../error/form-error";
 import { FormSuccess } from "../form-success";
 
+interface NewPasswordFormProps extends React.ComponentPropsWithoutRef<"div"> {
+  token?: string;
+}
+
 export const NewPasswordForm = ({
   className,
+  token,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) => {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-
+}: NewPasswordFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
