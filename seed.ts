@@ -5,52 +5,27 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Starting seed process...')
 
-  // Clear existing data (optional - be careful in production!)
+  // Clear existing data in correct order to avoid foreign key constraints
+  await prisma.application.deleteMany()
+  await prisma.lease.deleteMany()
+  await prisma.tenant.deleteMany()
   await prisma.property.deleteMany()
   await prisma.location.deleteMany()
   console.log('🧹 Cleared existing data')
 
-  // Create test managers
-  const managers = await Promise.all([
-    prisma.user.upsert({
-      where: { email: 'test@example.com' },
-      update: {},
-      create: {
-        email: 'test@example.com',
-        username: 'Test Manager',
-        role: 'MANAGER'
-      }
-    }),
-    prisma.user.upsert({
-      where: { email: 'sarah.johnson@realty.com' },
-      update: {},
-      create: {
-        email: 'sarah.johnson@realty.com',
-        username: 'Sarah Johnson',
-        role: 'MANAGER'
-      }
-    }),
-    prisma.user.upsert({
-      where: { email: 'mike.chen@properties.com' },
-      update: {},
-      create: {
-        email: 'mike.chen@properties.com',
-        username: 'Mike Chen',
-        role: 'MANAGER'
-      }
-    }),
-    prisma.user.upsert({
-      where: { email: 'lisa.martinez@luxury.com' },
-      update: {},
-      create: {
-        email: 'lisa.martinez@luxury.com',
-        username: 'Lisa Martinez',
-        role: 'MANAGER'
-      }
-    })
-  ])
+  // Find or create the real manager (you) from Facebook OAuth
+  const manager = await prisma.user.upsert({
+    where: { email: 'osmanabdout@hotmail.com' },
+    update: { role: 'MANAGER' }, // Ensure you have manager role
+    create: {
+      email: 'osmanabdout@hotmail.com',
+      username: 'Osman Abdout',
+      role: 'MANAGER',
+      emailVerified: new Date() // OAuth accounts are pre-verified
+    }
+  })
 
-  console.log(`✅ Created ${managers.length} managers`)
+  console.log(`✅ Manager set up: ${manager.email} (${manager.username})`)
 
   // Define diverse property data
   const propertyData = [
@@ -81,7 +56,7 @@ async function main() {
         latitude: 40.7128,
         longitude: -74.0060
       },
-      managerId: managers[0].id
+      managerId: manager.id
     },
     {
       name: 'Cozy Beach House',
@@ -110,7 +85,7 @@ async function main() {
         latitude: 34.0195,
         longitude: -118.4912
       },
-      managerId: managers[1].id
+      managerId: manager.id
     },
     {
       name: 'Modern Family Villa',
@@ -139,7 +114,7 @@ async function main() {
         latitude: 30.2672,
         longitude: -97.7431
       },
-      managerId: managers[2].id
+      managerId: manager.id
     },
     {
       name: 'Urban Loft Studio',
@@ -167,7 +142,7 @@ async function main() {
         latitude: 45.5152,
         longitude: -122.6784
       },
-      managerId: managers[0].id
+      managerId: manager.id
     },
     {
       name: 'Executive Townhouse',
@@ -196,7 +171,7 @@ async function main() {
         latitude: 47.6062,
         longitude: -122.3321
       },
-      managerId: managers[3].id
+      managerId: manager.id
     },
     {
       name: 'Eco-Friendly Tiny House',
@@ -224,7 +199,7 @@ async function main() {
         latitude: 35.5951,
         longitude: -82.5515
       },
-      managerId: managers[1].id
+      managerId: manager.id
     },
     {
       name: 'Student Housing - Shared Rooms',
@@ -252,7 +227,7 @@ async function main() {
         latitude: 42.3601,
         longitude: -71.0589
       },
-      managerId: managers[2].id
+      managerId: manager.id
     },
     {
       name: 'Luxury High-Rise Apartment',
@@ -281,7 +256,7 @@ async function main() {
         latitude: 41.8781,
         longitude: -87.6298
       },
-      managerId: managers[3].id
+      managerId: manager.id
     }
   ]
 
@@ -323,7 +298,7 @@ async function main() {
     }
   }
 
-  // Create some sample tenants
+  // Create some sample tenants (OAuth users don't need passwords)
   const tenants = await Promise.all([
     prisma.user.upsert({
       where: { email: 'john.doe@email.com' },
@@ -331,7 +306,8 @@ async function main() {
       create: {
         email: 'john.doe@email.com',
         username: 'John Doe',
-        role: 'TENANT'
+        role: 'TENANT',
+        emailVerified: new Date()
       }
     }),
     prisma.user.upsert({
@@ -340,7 +316,8 @@ async function main() {
       create: {
         email: 'jane.smith@email.com',
         username: 'Jane Smith',
-        role: 'TENANT'
+        role: 'TENANT',
+        emailVerified: new Date()
       }
     }),
     prisma.user.upsert({
@@ -349,20 +326,112 @@ async function main() {
       create: {
         email: 'alex.wilson@email.com',
         username: 'Alex Wilson',
-        role: 'TENANT'
+        role: 'TENANT',
+        emailVerified: new Date()
       }
     })
   ])
 
   console.log(`✅ Created ${tenants.length} tenants`)
 
+  // Create tenant profiles in the tenant table
+  await Promise.all(tenants.map(async (tenant) => {
+    await prisma.tenant.upsert({
+      where: { userId: tenant.id },
+      update: {},
+      create: {
+        userId: tenant.id,
+        name: tenant.username || tenant.email,
+        email: tenant.email,
+        phoneNumber: `+1-555-${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`
+      }
+    })
+  }))
+
+  // Get all created properties
+  const properties = await prisma.property.findMany({
+    include: { manager: true }
+  })
+
+  // Create sample applications
+  const applicationData = [
+    {
+      name: tenants[0].username || tenants[0].email,
+      email: tenants[0].email,
+      phoneNumber: '+1-555-123-4567',
+      message: 'I am very interested in this property. I have stable income and excellent references. Looking to move in next month.',
+      propertyId: properties[0]?.id,
+      tenantId: tenants[0].id,
+      status: 'Pending' as const,
+      applicationDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) // 2 days ago
+    },
+    {
+      name: tenants[1].username || tenants[1].email,
+      email: tenants[1].email,
+      phoneNumber: '+1-555-234-5678',
+      message: 'This apartment looks perfect for my family. We are looking for a long-term rental and can provide excellent references.',
+      propertyId: properties[1]?.id,
+      tenantId: tenants[1].id,
+      status: 'Approved' as const,
+      applicationDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) // 5 days ago
+    },
+    {
+      name: tenants[2].username || tenants[2].email,
+      email: tenants[2].email,
+      phoneNumber: '+1-555-345-6789',
+      message: 'I would like to apply for this rental. I am a graduate student with a steady income from my assistantship.',
+      propertyId: properties[2]?.id,
+      tenantId: tenants[2].id,
+      status: 'Denied' as const,
+      applicationDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // 7 days ago
+    },
+    {
+      name: tenants[0].username || tenants[0].email,
+      email: tenants[0].email,
+      phoneNumber: '+1-555-123-4567',
+      message: 'Another property I am interested in. This location is perfect for my commute to work.',
+      propertyId: properties[3]?.id,
+      tenantId: tenants[0].id,
+      status: 'Pending' as const,
+      applicationDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) // 1 day ago
+    },
+    {
+      name: tenants[1].username || tenants[1].email,
+      email: tenants[1].email,
+      phoneNumber: '+1-555-234-5678',
+      message: 'Looking for a backup option. This property has great amenities.',
+      propertyId: properties[4]?.id,
+      tenantId: tenants[1].id,
+      status: 'Pending' as const,
+      applicationDate: new Date() // Today
+    }
+  ]
+
+  console.log('📝 Creating sample applications...')
+  
+  let applicationsCreated = 0
+  for (const appData of applicationData) {
+    if (appData.propertyId) {
+      try {
+        await prisma.application.create({
+          data: appData
+        })
+        applicationsCreated++
+        console.log(`✅ Created application for ${appData.name} on ${appData.propertyId}`)
+      } catch (error) {
+        console.error(`❌ Error creating application:`, error)
+      }
+    }
+  }
+
   console.log('🎉 Seed completed successfully!')
   console.log(`📊 Summary:`)
-  console.log(`   - ${managers.length} managers created`)
+  console.log(`   - 1 manager configured: ${manager.email}`)
   console.log(`   - ${propertyData.length} properties created`)
   console.log(`   - ${tenants.length} tenants created`)
-  console.log(`\n🌐 Visit http://localhost:3002/dashboard/properties to see your properties!`)
-  console.log(`🔍 Visit http://localhost:3002/search to see the public search page!`)
+  console.log(`   - ${applicationsCreated} applications created`)
+  console.log(`\n🌐 Visit http://localhost:3000/managers/applications to see applications!`)
+  console.log(`🔍 Visit http://localhost:3000/search to see the public search page!`)
 }
 
 main()

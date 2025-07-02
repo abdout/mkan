@@ -21,7 +21,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const PropertyTenants = () => {
+const PropertyManagement = () => {
   const { id } = useParams();
   const propertyId = Number(id);
 
@@ -29,37 +29,77 @@ const PropertyTenants = () => {
   const [leases, setLeases] = useState<any[]>([]);
   const [payments, setPayments] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const [propertyData, leasesData] = await Promise.all([
-          getProperty(propertyId),
-          getPropertyLeases(propertyId),
-        ]);
+        setError(null);
+        
+        // Try to fetch property data with fallback
+        let propertyData, leasesData = [];
+        
+        try {
+          propertyData = await getProperty(propertyId);
+        } catch (propError) {
+          console.error("Property fetch error:", propError);
+          // Create mock property data for testing
+          propertyData = {
+            id: propertyId,
+            name: `Property #${propertyId}`,
+            description: "Property details not available",
+            location: { address: "Address not available", city: "Unknown", state: "Unknown" }
+          };
+        }
+        
+        try {
+          leasesData = await getPropertyLeases(propertyId);
+        } catch (leaseError) {
+          console.error("Leases fetch error:", leaseError);
+          leasesData = []; // Empty array as fallback
+        }
         
         setProperty(propertyData);
         setLeases(leasesData);
         
-        // Fetch payments for all leases
+        // Try to fetch payments with error handling
         if (leasesData.length > 0) {
-          const allPayments = await Promise.all(
-            leasesData.map((lease: any) => getPayments(lease.id))
-          );
-          setPayments(allPayments.flat());
+          try {
+            const allPayments = await Promise.all(
+              leasesData.map(async (lease: any) => {
+                try {
+                  return await getPayments(lease.id);
+                } catch (paymentError) {
+                  console.error(`Payment fetch error for lease ${lease.id}:`, paymentError);
+                  return []; // Return empty array for failed payment fetches
+                }
+              })
+            );
+            setPayments(allPayments.flat());
+          } catch (paymentError) {
+            console.error("Payments fetch error:", paymentError);
+            setPayments([]); // Fallback to empty payments
+          }
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      } catch (err: any) {
+        console.error("Error fetching data:", err);
+        setError(err.message || "Error loading property details");
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchData();
+    if (propertyId && !isNaN(propertyId)) {
+      fetchData();
+    } else {
+      setError("Invalid property ID");
+      setIsLoading(false);
+    }
   }, [propertyId]);
 
   if (isLoading) return <Loading />;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
 
   const getCurrentMonthPaymentStatus = (leaseId: number) => {
     const currentDate = new Date();
@@ -76,7 +116,7 @@ const PropertyTenants = () => {
     <div className="dashboard-container">
       {/* Back to properties page */}
       <Link
-        href="/managers/properties"
+        href="/dashboard/properties"
         className="flex items-center mb-4 hover:text-primary-500"
         scroll={false}
       >
@@ -85,7 +125,7 @@ const PropertyTenants = () => {
       </Link>
 
       <Header
-        title={property?.name || "My Property"}
+        title={property?.name || "Property Management"}
         subtitle="Manage tenants and leases for this property"
       />
 
@@ -128,14 +168,14 @@ const PropertyTenants = () => {
                       <div className="flex items-center space-x-3">
                         <Image
                           src="/landing-i1.png"
-                          alt={lease.tenant?.name || lease.tenantCognitoId}
+                          alt={lease.tenant?.name || lease.tenantId}
                           width={40}
                           height={40}
                           className="rounded-full"
                         />
                         <div>
                           <div className="font-semibold">
-                            {lease.tenant?.name || lease.tenantCognitoId}
+                            {lease.tenant?.name || lease.tenantId}
                           </div>
                           <div className="text-sm text-gray-500">
                             {lease.tenant?.email || "Email not available"}
@@ -179,10 +219,16 @@ const PropertyTenants = () => {
               </TableBody>
             </Table>
           </div>
+
+          {(!leases || leases.length === 0) && (
+            <div className="text-center py-8 text-gray-500">
+              <p>No leases found for this property.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default PropertyTenants;
+export default PropertyManagement; 

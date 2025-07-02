@@ -3,21 +3,45 @@
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
-import { useGetAuthUserQuery, useGetManagerPropertiesQuery } from "@/state/api";
-import React from "react";
+import { getAuthUser } from "@/lib/actions/user-actions";
+import { getManagerProperties } from "@/lib/actions/property-actions";
+import type { Property } from "@prisma/client";
+import React, { useEffect, useState } from "react";
 
 const Properties = () => {
-  const { data: authUser } = useGetAuthUserQuery();
-  const {
-    data: managerProperties,
-    isLoading,
-    error,
-  } = useGetManagerPropertiesQuery(authUser?.id || "", {
-    skip: !authUser?.id,
-  });
+  const [authUser, setAuthUser] = useState<any>(null);
+  const [managerProperties, setManagerProperties] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        // Get authenticated user first
+        const user = await getAuthUser();
+        setAuthUser(user);
+        
+        // Then get their properties
+        if (user?.id) {
+          const properties = await getManagerProperties(user.id);
+          setManagerProperties(properties);
+        }
+      } catch (err: any) {
+        console.error("Error fetching data:", err);
+        setError(err.message || "Error loading manager properties");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   if (isLoading) return <Loading />;
-  if (error) return <div>Error loading manager properties</div>;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
     <div className="dashboard-container">

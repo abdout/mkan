@@ -269,7 +269,7 @@ export const api = createApi({
       }),
       invalidatesTags: (result) => [
         { type: "Properties", id: "LIST" },
-        { type: "Managers", id: result?.manager?.id },
+        { type: "Managers", id: result?.managerCognitoId },
       ],
       async onQueryStarted(_, { queryFulfilled }) {
         await withToast(queryFulfilled, {

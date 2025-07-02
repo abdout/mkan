@@ -1,10 +1,12 @@
 "use server"
 
-import { prisma } from '@/lib/prisma'
+// Removed unused import
 import { auth } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { Amenity, Highlight, PropertyType } from '@prisma/client'
+import { db } from "@/lib/db"
+import { Prisma } from "@prisma/client"
 
 export type PropertyFormData = {
   name: string
@@ -29,6 +31,20 @@ export type PropertyFormData = {
   postalCode: string
   latitude: number
   longitude: number
+}
+
+// Types for filtering
+interface PropertyFilters {
+  location?: string
+  priceRange?: [number, number]
+  beds?: number
+  baths?: number
+  propertyType?: PropertyType
+  squareFeet?: [number, number]
+  amenities?: Amenity[]
+  availableFrom?: string
+  coordinates?: [number, number] // [longitude, latitude]
+  favoriteIds?: number[]
 }
 
 export async function createProperty(data: PropertyFormData) {
@@ -65,13 +81,13 @@ export async function createProperty(data: PropertyFormData) {
     console.log('✅ Basic validation passed')
     // For testing: Create or get a test user
     console.log('👤 Finding or creating test user...')
-    let testUser = await prisma.user.findUnique({
+    let testUser = await db.user.findUnique({
       where: { email: 'test@example.com' }
     })
     
     if (!testUser) {
       console.log('👤 Creating new test user...')
-      testUser = await prisma.user.create({
+      testUser = await db.user.create({
         data: {
           email: 'test@example.com',
           username: 'Test User',
@@ -96,7 +112,7 @@ export async function createProperty(data: PropertyFormData) {
     }
     console.log('📍 Location data:', locationData)
     
-    const location = await prisma.location.create({
+    const location = await db.location.create({
       data: locationData
     })
     console.log('✅ Location created:', location.id)
@@ -123,7 +139,7 @@ export async function createProperty(data: PropertyFormData) {
     }
     console.log('🏠 Property data:', propertyData)
     
-    const property = await prisma.property.create({
+    const property = await db.property.create({
       data: propertyData,
       include: {
         location: true,
@@ -146,72 +162,85 @@ export async function createProperty(data: PropertyFormData) {
   }
 }
 
-export async function getProperties(filters?: {
-  location?: string
-  priceMin?: number
-  priceMax?: number
-  beds?: string
-  baths?: string
-  propertyType?: string
-  amenities?: string[]
-}) {
+// Get properties with optional filtering
+export async function getProperties(filters?: PropertyFilters) {
   try {
-    console.log('Starting getProperties with filters:', filters);
-    
-    // Test database connection
-    const testConnection = await prisma.$queryRaw`SELECT 1 as test`;
-    console.log('Database connection test:', testConnection);
-    
-    const whereClause: any = {}
+    const where: Prisma.PropertyWhereInput = {}
 
-    if (filters?.location) {
-      whereClause.location = {
-        OR: [
-          { city: { contains: filters.location, mode: 'insensitive' } },
-          { state: { contains: filters.location, mode: 'insensitive' } },
-          { address: { contains: filters.location, mode: 'insensitive' } },
-        ]
+    if (filters) {
+      // Location filtering
+      if (filters.location) {
+        where.location = {
+          OR: [
+            { city: { contains: filters.location, mode: 'insensitive' } },
+            { state: { contains: filters.location, mode: 'insensitive' } },
+            { address: { contains: filters.location, mode: 'insensitive' } },
+          ]
+        }
+      }
+
+      // Price range
+      if (filters.priceRange) {
+        where.pricePerMonth = {
+          gte: filters.priceRange[0],
+          lte: filters.priceRange[1],
+        }
+      }
+
+      // Beds and baths
+      if (filters.beds) where.beds = { gte: filters.beds }
+      if (filters.baths) where.baths = { gte: filters.baths }
+
+      // Property type
+      if (filters.propertyType) where.propertyType = filters.propertyType
+
+      // Square feet
+      if (filters.squareFeet) {
+        where.squareFeet = {
+          gte: filters.squareFeet[0],
+          lte: filters.squareFeet[1],
+        }
+      }
+
+      // Amenities
+      if (filters.amenities && filters.amenities.length > 0) {
+        where.amenities = {
+          hasEvery: filters.amenities
+        }
+      }
+
+      // Coordinate-based filtering (within radius)
+      if (filters.coordinates) {
+        const [longitude, latitude] = filters.coordinates
+        const radius = 0.1 // Adjust radius as needed
+        where.location = {
+          ...where.location,
+          latitude: {
+            gte: latitude - radius,
+            lte: latitude + radius,
+          },
+          longitude: {
+            gte: longitude - radius,
+            lte: longitude + radius,
+          },
+        }
+      }
+
+      // Filter by favorites
+      if (filters.favoriteIds && filters.favoriteIds.length > 0) {
+        where.id = { in: filters.favoriteIds }
       }
     }
 
-    if (filters?.priceMin) {
-      whereClause.pricePerMonth = { ...whereClause.pricePerMonth, gte: filters.priceMin }
-    }
-
-    if (filters?.priceMax) {
-      whereClause.pricePerMonth = { ...whereClause.pricePerMonth, lte: filters.priceMax }
-    }
-
-    if (filters?.beds && filters.beds !== 'any') {
-      whereClause.beds = { gte: parseInt(filters.beds) }
-    }
-
-    if (filters?.baths && filters.baths !== 'any') {
-      whereClause.baths = { gte: parseInt(filters.baths) }
-    }
-
-    if (filters?.propertyType && filters.propertyType !== 'any') {
-      whereClause.propertyType = filters.propertyType
-    }
-
-    if (filters?.amenities && filters.amenities.length > 0) {
-      whereClause.amenities = {
-        hasEvery: filters.amenities
-      }
-    }
-
-    console.log('Query where clause:', JSON.stringify(whereClause, null, 2));
-
-    const properties = await prisma.property.findMany({
-      where: whereClause,
+    const properties = await db.property.findMany({
+      where,
       include: {
         location: true,
         manager: {
           select: {
             id: true,
-            username: true,
             email: true,
-            image: true
+            username: true,
           }
         }
       },
@@ -220,27 +249,24 @@ export async function getProperties(filters?: {
       }
     })
 
-    console.log('Found properties:', properties.length);
     return properties
   } catch (error) {
     console.error('Error fetching properties:', error)
-    // Return empty array instead of throwing to prevent page crash
-    return []
+    throw new Error('Failed to fetch properties')
   }
 }
 
 export async function getProperty(id: number) {
   try {
-    const property = await prisma.property.findUnique({
+    const property = await db.property.findUnique({
       where: { id },
       include: {
         location: true,
         manager: {
           select: {
             id: true,
-            username: true,
             email: true,
-            image: true
+            username: true,
           }
         }
       }
@@ -266,7 +292,7 @@ export async function updateProperty(id: number, data: Partial<PropertyFormData>
 
   try {
     // Check if user owns this property
-    const existingProperty = await prisma.property.findUnique({
+    const existingProperty = await db.property.findUnique({
       where: { id },
       select: { managerId: true }
     })
@@ -275,7 +301,7 @@ export async function updateProperty(id: number, data: Partial<PropertyFormData>
       throw new Error('You can only update your own properties')
     }
 
-    const property = await prisma.property.update({
+    const property = await db.property.update({
       where: { id },
       data,
       include: {
@@ -304,7 +330,7 @@ export async function deleteProperty(id: number) {
 
   try {
     // Check if user owns this property
-    const existingProperty = await prisma.property.findUnique({
+    const existingProperty = await db.property.findUnique({
       where: { id },
       select: { managerId: true, locationId: true }
     })
@@ -314,17 +340,17 @@ export async function deleteProperty(id: number) {
     }
 
     // Delete property (this will cascade delete related records)
-    await prisma.property.delete({
+    await db.property.delete({
       where: { id }
     })
 
     // Optionally delete the location if no other properties use it
-    const otherPropertiesUsingLocation = await prisma.property.findFirst({
+    const otherPropertiesUsingLocation = await db.property.findFirst({
       where: { locationId: existingProperty.locationId }
     })
 
     if (!otherPropertiesUsingLocation) {
-      await prisma.location.delete({
+      await db.location.delete({
         where: { id: existingProperty.locationId }
       })
     }
@@ -336,5 +362,88 @@ export async function deleteProperty(id: number) {
   } catch (error) {
     console.error('Error deleting property:', error)
     throw new Error('Failed to delete property')
+  }
+}
+
+// Get properties managed by a specific user
+export async function getManagerProperties(userId: string) {
+  try {
+    const properties = await db.property.findMany({
+      where: {
+        managerId: userId,
+      },
+      include: {
+        location: true,
+        applications: {
+          include: {
+            tenant: true,
+          },
+        },
+        leases: {
+          include: {
+            tenant: true,
+          },
+        },
+      },
+      orderBy: {
+        postedDate: 'desc',
+      },
+    })
+
+    return properties
+  } catch (error) {
+    console.error('Error fetching manager properties:', error)
+    throw new Error('Failed to fetch manager properties')
+  }
+}
+
+// Get property leases
+export async function getPropertyLeases(propertyId: number) {
+  try {
+    const leases = await db.lease.findMany({
+      where: {
+        propertyId,
+      },
+      include: {
+        tenant: true,
+        payments: true,
+        application: true,
+      },
+      orderBy: {
+        startDate: 'desc',
+      },
+    })
+
+    return leases
+  } catch (error) {
+    console.error('Error fetching property leases:', error)
+    throw new Error('Failed to fetch property leases')
+  }
+}
+
+// Get payments for a lease
+export async function getPayments(leaseId: number) {
+  try {
+    const payments = await db.payment.findMany({
+      where: {
+        leaseId,
+      },
+      include: {
+        lease: {
+          include: {
+            tenant: true,
+            property: true,
+          },
+        },
+      },
+      orderBy: {
+        dueDate: 'desc',
+      },
+    })
+
+    return payments
+  } catch (error) {
+    console.error('Error fetching payments:', error)
+    throw new Error('Failed to fetch payments')
   }
 } 

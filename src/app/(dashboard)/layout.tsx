@@ -16,41 +16,33 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: Uncomment auth checks when ready for production
-    // if (status !== "loading") {
-    //   if (session?.user) {
-    //     const userRole = session.user.role?.toLowerCase();
+    if (status !== "loading") {
+      if (session?.user) {
+        const userRole = session.user.role?.toLowerCase();
         
-    //     // Redirect users to appropriate dashboard sections
-    //     if (
-    //       (userRole === "manager" && pathname.startsWith("/dashboard/tenants")) ||
-    //       (userRole === "tenant" && pathname.startsWith("/dashboard/managers"))
-    //     ) {
-    //       router.push(
-    //         userRole === "manager"
-    //           ? "/dashboard/properties"
-    //           : "/dashboard/favorites",
-    //         { scroll: false }
-    //       );
-    //     } else {
-    //       setIsLoading(false);
-    //     }
-    //   } else {
-    //     // No session, redirect to login
-    //     router.push("/login");
-    //   }
-    // }
-    
-    // For testing: Skip auth and just set loading to false
-    setIsLoading(false);
+        // Redirect users to appropriate dashboard sections based on role
+        if (
+          (userRole === "manager" && pathname.startsWith("/tenants")) ||
+          (userRole === "tenant" && pathname.startsWith("/managers"))
+        ) {
+          router.push(
+            userRole === "manager"
+              ? "/managers/properties"
+              : "/tenants/favorites",
+            { scroll: false }
+          );
+        } else {
+          setIsLoading(false);
+        }
+      } else {
+        // No session, redirect to login
+        router.push("/login");
+      }
+    }
   }, [session, status, router, pathname]);
 
-  // TODO: Uncomment auth checks when ready for production
-  // if (status === "loading" || isLoading) return <>Loading...</>;
-  // if (!session?.user) return null;
-  
-  // For testing: Skip auth loading states
-  if (isLoading) return <>Loading...</>;
+  if (status === "loading" || isLoading) return <>Loading...</>;
+  if (!session?.user) return null;
 
   return (
     <SidebarProvider>

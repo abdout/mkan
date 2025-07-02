@@ -20,10 +20,14 @@ export default auth((req) => {
   const isPublicRoute = publicRoutes.includes(pathname)
   const isAuthRoute = authRoutes.includes(pathname)
   
-  // Check if the route is in the platform directory
-  const isPlatformRoute = 
+  // Check if the route requires authentication
+  const isProtectedRoute = 
     pathname === "/dashboard" || 
     pathname.startsWith("/dashboard/") ||
+    pathname === "/managers" ||
+    pathname.startsWith("/managers/") ||
+    pathname === "/tenants" ||
+    pathname.startsWith("/tenants/") ||
     pathname === "/project" || 
     pathname.startsWith("/project/") ||
     pathname === "/task" || 
@@ -46,8 +50,8 @@ export default auth((req) => {
     return
   }
 
-  // Explicitly protect platform routes
-  if (isPlatformRoute && !isLoggedIn) {
+  // Explicitly protect authenticated routes
+  if (isProtectedRoute && !isLoggedIn) {
     const callbackUrl = pathname + nextUrl.search
     const encodedCallbackUrl = encodeURIComponent(callbackUrl)
 

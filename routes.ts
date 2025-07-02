@@ -20,10 +20,12 @@ export const publicRoutes = [
  */
 export const authRoutes = [
   "/login",
-  "/register",
+  "/join",
+  "/register", 
   "/error",
   "/reset",
-  "/new-password"
+  "/new-password",
+  "/new-verification"
 ];
 
 /**
@@ -37,4 +39,4 @@ export const apiAuthPrefix = "/api/auth";
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
+export const DEFAULT_LOGIN_REDIRECT = "/managers/properties";

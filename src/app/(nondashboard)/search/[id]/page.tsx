@@ -25,7 +25,39 @@ export default async function PropertyPage({
     notFound()
   }
 
-  const property = await getProperty(propertyId)
+  let property;
+  try {
+    property = await getProperty(propertyId)
+  } catch (error) {
+    console.error('❌ Error fetching property for ID:', propertyId, error)
+    // Create fallback property data
+    property = {
+      id: propertyId,
+      name: `Property #${propertyId}`,
+      description: "This property is currently unavailable or you may need to log in to view details.",
+      location: {
+        address: "Address not available",
+        city: "Unknown",
+        state: "Unknown"
+      },
+      manager: {
+        username: "Property Manager"
+      },
+      pricePerMonth: 0,
+      beds: 0,
+      baths: 0,
+      squareFeet: 0,
+      maxGuests: 1,
+      propertyType: "Unknown",
+      photoUrls: [],
+      amenities: [],
+      highlights: [],
+      isPetsAllowed: false,
+      isParkingIncluded: false,
+      averageRating: 0,
+      numberOfReviews: 0
+    }
+  }
 
   if (!property) {
     console.error('❌ Property not found for ID:', propertyId)
