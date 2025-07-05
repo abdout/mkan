@@ -18,9 +18,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { SidebarTrigger } from "../../ui/sidebar";
 import { NAVIGATION_LINKS, DISPLAY_ITEMS, AUTH_LINKS, ALL_NAVIGATION_ITEMS } from "./constant";
+import { useCurrentUser } from "../../auth/use-current-user";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
+  const currentUser = useCurrentUser();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -29,8 +31,17 @@ const Navbar = () => {
   const isLandingPage = pathname === "/";
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/" });
+    await signOut({ 
+      callbackUrl: "/",
+      redirect: true 
+    });
   };
+
+  // Filter out login/join items if user is logged in
+  const filteredNavItems = ALL_NAVIGATION_ITEMS.filter(item => {
+    if (!currentUser) return true;
+    return item.href !== "/login" && item.href !== "/join";
+  });
 
   return (
     <div
@@ -99,10 +110,19 @@ const Navbar = () => {
             </Button>
           )}
         </div>
+
         {/* Navigation Links - Single Array Approach */}
         <nav className="flex items-center gap-6">
-          {ALL_NAVIGATION_ITEMS.map((item, index) => {
-            const commonClasses = `text-sm ${isLandingPage ? "text-white" : "text-gray-700"}`;
+          {filteredNavItems.map((item, index) => {
+            const commonClasses = `text-sm font-light ${isLandingPage ? "text-white" : "text-gray-700"} hover:opacity-80`;
+            
+            if (item.type === "display" && (item.href === "/login" || item.href === "/join")) {
+              return (
+                <Link key={index} href={item.href} className={commonClasses}>
+                  {item.label}
+                </Link>
+              );
+            }
             
             if (item.type === "display") {
               return (
@@ -122,39 +142,16 @@ const Navbar = () => {
               </Link>
             );
           })}
+          
+          {currentUser && (
+            <button 
+              onClick={handleSignOut}
+              className={`text-sm font-light ${isLandingPage ? "text-white" : "text-gray-700"} hover:opacity-80`}
+            >
+              Logout
+            </button>
+          )}
         </nav>
-
-        {/* Original approach - commented out */}
-        {/* <nav className="flex items-center gap-6">
-          {NAVIGATION_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm ${isLandingPage ? "text-white" : "text-gray-700"}`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          
-          {DISPLAY_ITEMS.map((item, index) => (
-            <span
-              key={index}
-              className={`text-sm ${isLandingPage ? "text-white" : "text-gray-700"}`}
-            >
-              {item.label}
-            </span>
-          ))}
-          
-          {AUTH_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm ${isLandingPage ? "text-white" : "text-gray-700"}`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav> */}
       </div>
     </div>
   );

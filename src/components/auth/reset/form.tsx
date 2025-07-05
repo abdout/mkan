@@ -5,22 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,  
-} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card";
 import { ResetSchema } from "../validation";
 import { reset } from "./action";
 import { FormError } from "../error/form-error";
@@ -55,52 +40,46 @@ export const ResetForm = ({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6 min-w-[200px] md:min-w-[350px]", className)} {...props}>
-      <Card className="border-none shadow-none">
-        <CardHeader className="text-center" />
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
-              <div className="grid gap-6">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem className="grid gap-2">
-                      <FormControl>
-                        <Input
-                          {...field}
-                          disabled={isPending}
-                          placeholder="Email"
-                          type="email"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+    <div className="w-full max-w-[420px] mx-auto px-6 py-8 space-y-4">
+      {/* Welcome Text */}
+      <h3 className="text-[22px] font-medium leading-tight tracking-wide">
+        Reset your password
+      </h3>
 
-                <FormError message={error} />
-                <FormSuccess message={success} />
+      {/* Form Section */}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="border border-gray-300 rounded-lg overflow-hidden">
+          {/* Email Input */}
+          <div className="relative w-full">
+            <input
+              {...form.register("email")}
+              type="email"
+              disabled={isPending}
+              className="w-full px-3 py-2.5 text-base bg-transparent outline-none border-b border-gray-300 focus:border focus:border-black focus:rounded-lg focus:z-10 relative"
+              placeholder="Email"
+            />
+          </div>
+        </div>
 
-                <Button 
-                  disabled={isPending} 
-                  type="submit" 
-                  className="w-full h-11 text-base"
-                >
-                  Reset password
-                </Button>
-              </div>
+        <FormError message={error} />
+        <FormSuccess message={success} />
 
-              <div className="text-center text-sm">
-                <Link href="/auth/login" className="hover:underline underline-offset-4">
-                  Back to login
-                </Link>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+        {/* Continue Button */}
+        <Button 
+          disabled={isPending}
+          type="submit"
+          className="w-full h-12 bg-[#FF385C] hover:bg-[#E31C5F] text-white font-medium text-base rounded-lg"
+        >
+          Reset password
+        </Button>
+
+        {/* Back to Login Link */}
+        <div className="text-center">
+          <Link href="/login" className="text-xs text-gray-500 hover:text-gray-900 underline cursor-pointer transition-colors">
+            Back to login
+          </Link>
+        </div>
+      </form>
     </div>
   );
 };
