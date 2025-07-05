@@ -54,32 +54,32 @@ export const ResetForm = ({
             <input
               {...form.register("email")}
               type="email"
-              disabled={isPending}
+                          disabled={isPending}
               className="w-full px-3 py-2.5 text-base bg-transparent outline-none border-b border-gray-300 focus:border focus:border-black focus:rounded-lg focus:z-10 relative"
-              placeholder="Email"
-            />
+                          placeholder="Email"
+                        />
           </div>
         </div>
 
-        <FormError message={error} />
-        <FormSuccess message={success} />
+                <FormError message={error} />
+                <FormSuccess message={success} />
 
         {/* Continue Button */}
-        <Button 
-          disabled={isPending}
-          type="submit"
+                <Button 
+                  disabled={isPending} 
+                  type="submit" 
           className="w-full h-12 bg-[#FF385C] hover:bg-[#E31C5F] text-white font-medium text-base rounded-lg"
-        >
-          Reset password
-        </Button>
+                >
+                  Reset password
+                </Button>
 
         {/* Back to Login Link */}
         <div className="text-center">
           <Link href="/login" className="text-xs text-gray-500 hover:text-gray-900 underline cursor-pointer transition-colors">
-            Back to login
-          </Link>
-        </div>
-      </form>
+                  Back to login
+                </Link>
+              </div>
+            </form>
     </div>
   );
 };

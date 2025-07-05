@@ -16,8 +16,8 @@ const StepHeader: React.FC<StepHeaderProps> = ({
   illustration
 }) => {
   return (
-    <div className="w-full max-w-6xl mx-auto p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div className="w-full ">
+      <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
         {/* Left Side - Content */}
         <div className="space-y-6">
           {stepNumber && (

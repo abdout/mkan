@@ -117,7 +117,7 @@ const HostingListingsPage = () => {
               <MoreHorizontal size={20} className="text-gray-600" />
             </button>
             <button 
-              onClick={() => router.push('/become-a-host/overview')}
+              onClick={() => router.push('/host/overview')}
               className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
             >
               <Plus size={20} className="text-gray-600" />

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Home, Copy, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 interface NewListingOptionsProps {
   onCreateNew?: () => void;
@@ -21,42 +22,34 @@ const NewListingOptions: React.FC<NewListingOptionsProps> = ({
       
       <div className="space-y-3">
         {/* Create a new listing */}
-        <Button
-          variant="ghost"
-          className="w-full justify-start h-auto p-4 border border-gray-200 hover:shadow-md transition-shadow"
-          onClick={onCreateNew}
-        >
-          <div className="flex items-center space-x-4 flex-1">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-              <Home className="w-6 h-6 text-gray-600" />
+        <Link href="/host/overview" className="w-full flex items-center justify-between h-auto py-4 border-b  transition-all group">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+              <Home className="w-5 h-5 text-gray-600" />
             </div>
             <div className="text-left">
-              <p className="text-base text-gray-900 font-medium">
+              <p className="text-sm text-gray-900 font-medium">
                 Create a new listing
               </p>
             </div>
           </div>
-          <ChevronRight className="w-5 h-5 text-gray-400" />
-        </Button>
+          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+        </Link>
 
         {/* Create from existing listing */}
-        <Button
-          variant="ghost"
-          className="w-full justify-start h-auto p-4 border border-gray-200 hover:shadow-md transition-shadow"
-          onClick={onCreateFromExisting}
-        >
-          <div className="flex items-center space-x-4 flex-1">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-              <Copy className="w-6 h-6 text-gray-600" />
+        <Link href="/host/overview" className="w-full flex items-center justify-between h-auto py-4 border-b  transition-all group">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+              <Copy className="w-5 h-5 text-gray-600" />
             </div>
             <div className="text-left">
-              <p className="text-base text-gray-900 font-medium">
+              <p className="text-sm text-gray-900 font-medium">
                 Create from an existing listing
               </p>
             </div>
           </div>
-          <ChevronRight className="w-5 h-5 text-gray-400" />
-        </Button>
+          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+        </Link>
       </div>
     </div>
   );

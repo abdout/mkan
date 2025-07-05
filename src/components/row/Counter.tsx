@@ -1,27 +1,32 @@
 "use client";
 
 import React, { useCallback } from "react";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { Button } from "@/components/ui/button";
+import { Minus, Plus } from "lucide-react";
 
-type Props = {
+interface CounterProps {
   title: string;
   subtitle: string;
   value: number;
   onChange: (value: number) => void;
-};
+}
 
-function Counter({ title, subtitle, value, onChange }: Props) {
-  const onAdd = useCallback(() => {
-    onChange(value + 1);
-  }, [onChange, value]);
-
+const Counter: React.FC<CounterProps> = ({
+  title,
+  subtitle,
+  value,
+  onChange,
+}) => {
   const onReduce = useCallback(() => {
     if (value === 1) {
       return;
     }
-
     onChange(value - 1);
   }, [value, onChange]);
+
+  const onAdd = useCallback(() => {
+    onChange(value + 1);
+  }, [onChange]);
 
   return (
     <div className="flex flex-row items-center justify-between">
@@ -29,23 +34,30 @@ function Counter({ title, subtitle, value, onChange }: Props) {
         <div className="font-medium">{title}</div>
         <div className="font-light text-gray-600">{subtitle}</div>
       </div>
-      <div className="flex flex-row items-center gap-4">
-        <div
+      <div className="flex items-center gap-4">
+        <Button
           onClick={onReduce}
-          className=" w-10 h-10 rounded-full border-[1px] border-neutral-400 flex items-center justify-center text-neutral-600 cursor-pointer hover:opacity-80 transition"
+          variant="outline"
+          size="icon"
+          className="h-8 w-8 rounded-full"
+          disabled={value === 1}
         >
-          <AiOutlineMinus />
+          <Minus className="h-4 w-4" />
+        </Button>
+        <div className="font-medium text-lg min-w-[20px] text-center">
+          {value}
         </div>
-        <div className="font-light text-xl text-neutral-600">{value}</div>
-        <div
+        <Button
           onClick={onAdd}
-          className="w-10 h-10 rounded-full border-[1px] border-neutral-400 flex items-center justify-center text-neutral-600 cursor-pointer hover:opacity-80 transition"
+          variant="outline"
+          size="icon"
+          className="h-8 w-8 rounded-full"
         >
-          <AiOutlinePlus />
-        </div>
+          <Plus className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
-}
+};
 
 export default Counter;

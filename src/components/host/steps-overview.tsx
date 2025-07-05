@@ -21,55 +21,63 @@ const StepsOverview: React.FC<StepsOverviewProps> = ({ onGetStarted }) => {
       number: 1,
       title: "Tell us about your place",
       description: "Share some basic info, like where it is and how many guests can stay.",
-      illustration: "/become-host-step1.png"
+      illustration: "/airbnb/place.webp"
     },
     {
       number: 2,
       title: "Make it stand out",
       description: "Add 5 or more photos plus a title and description—we'll help you out.",
-      illustration: "/become-host-step2.png"
+      illustration: "/airbnb/stand-out.webp"
     },
     {
       number: 3,
       title: "Finish up and publish",
       description: "Choose a starting price, verify a few details, then publish your listing.",
-      illustration: "/become-host-step3.png"
+      illustration: "/airbnb/publish.png"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left Side - Content */}
-          <div className="space-y-12">
+    <div className="h-full flex flex-col px-10">
+      <div className="flex-1 px-6">
+        <div className="h-full max-w-7xl mx-auto flex flex-col">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start py-12">
+            {/* Left Side - Title */}
             <div>
-              <h1 className="text-5xl font-medium text-gray-900 mb-8 leading-tight">
-                It's easy to get started on Airbnb
+              <h1 className="text-4xl md:text-5xl font-medium text-gray-900 leading-tight">
+                It's easy to get
+                <br />
+                started on Mkan
               </h1>
             </div>
 
-            {/* Steps */}
-            <div className="space-y-8">
+            {/* Right Side - Steps */}
+            <div className="space-y-6">
               {steps.map((step) => (
-                <div key={step.number} className="flex gap-6">
-                  <div className="flex-shrink-0">
-                    <span className="inline-flex items-center justify-center w-8 h-8 text-lg font-medium text-gray-900">
-                      {step.number}
-                    </span>
+                <div key={step.number} className="flex gap-6 items-start">
+                  <div className="flex gap-3 flex-1">
+                    <div className="flex-shrink-0">
+                      <span className="text-lg font-medium text-gray-900">
+                        {step.number}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-medium text-gray-900 mb-1">
+                        {step.title}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed text-sm">
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-medium text-gray-900 mb-2">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 hidden lg:block">
-                    <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
-                      {/* Placeholder for illustration */}
-                      <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-orange-500 rounded-lg"></div>
+                  <div className="flex-shrink-0 hidden md:block">
+                    <div className="relative w-24 h-24 overflow-hidden ">
+                      <Image
+                        src={step.illustration}
+                        alt={step.title}
+                        fill
+                        className="object-contain"
+                      />
                     </div>
                   </div>
                 </div>
@@ -77,28 +85,18 @@ const StepsOverview: React.FC<StepsOverviewProps> = ({ onGetStarted }) => {
             </div>
           </div>
 
-          {/* Right Side - Illustration */}
-          <div className="hidden lg:block">
-            <div className="relative">
-              {/* Main illustration placeholder */}
-              <div className="w-full h-96 bg-gradient-to-br from-pink-50 to-orange-50 rounded-2xl flex items-center justify-center">
-                <div className="text-center text-gray-400">
-                  <div className="w-32 h-32 bg-gradient-to-br from-pink-500 to-orange-500 rounded-2xl mx-auto mb-4"></div>
-                  <p>3D House Illustration</p>
-                </div>
-              </div>
+          {/* Bottom Section with HR and Button */}
+          <div className="">
+            <hr className="w-full border-t border-gray-200" />
+            <div className="flex justify-end py-4">
+              <Button
+                onClick={onGetStarted}
+                className="bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600"
+              >
+                Get started
+              </Button>
             </div>
           </div>
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="mt-16 text-center lg:text-left">
-          <Button
-            onClick={onGetStarted}
-            className="bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white px-8 py-3 text-lg font-medium rounded-lg"
-          >
-            Get started
-          </Button>
         </div>
       </div>
     </div>

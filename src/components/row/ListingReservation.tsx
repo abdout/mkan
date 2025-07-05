@@ -2,8 +2,8 @@
 
 import React from "react";
 import { Range } from "react-date-range";
-import Calendar from "../inputs/Calendar";
-import Button from "../Button";
+import Calendar from "./Calendar";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   price: number;
@@ -39,7 +39,13 @@ function ListingReservation({
       />
       <hr />
       <div className="p-4">
-        <Button disabled={disabled} label="Reserve" onClick={onSubmit} />
+        <Button 
+          disabled={disabled} 
+          onClick={onSubmit}
+          className="w-full"
+        >
+          Reserve
+        </Button>
       </div>
       <hr />
       <div className="p-4 flex flex-row items-center justify-between font-semibold text-lg">

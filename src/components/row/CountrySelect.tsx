@@ -1,6 +1,6 @@
 "use client";
 
-import useCountries from "@/hook/useCountries";
+import useCountries from "@/hooks/useCountries";
 import Select from "react-select";
 import Flag from "react-world-flags";
 
@@ -17,7 +17,7 @@ type Props = {
   onChange: (value: CountrySelectValue) => void;
 };
 
-function CountrySelect({ value, onChange }: Props) {
+const CountrySelect: React.FC<Props> = ({ value, onChange }) => {
   const { getAll } = useCountries();
 
   return (
@@ -54,6 +54,6 @@ function CountrySelect({ value, onChange }: Props) {
       />
     </div>
   );
-}
+};
 
 export default CountrySelect;
