@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { PropertyTypeSelector, StepNavigation } from '@/components/host';
+import PropertySelector from '@/components/host/property-selector';
+import { useHostValidation } from '@/context/host-validation-context';
 
 interface StructurePageProps {
   params: Promise<{ id: string }>;
@@ -12,6 +13,7 @@ const StructurePage = ({ params }: StructurePageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
+  const { enableNext, disableNext } = useHostValidation();
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
@@ -19,35 +21,46 @@ const StructurePage = ({ params }: StructurePageProps) => {
     });
   }, [params]);
 
-  const handleBack = () => {
-    router.push(`/host/${id}/about-your-place`);
-  };
+  // Initialize with disabled state since no property type is selected
+  React.useEffect(() => {
+    disableNext();
+  }, [disableNext]);
 
-  const handleNext = () => {
-    // Navigate to next step (would be privacy type selection or location)
-    router.push(`/host/${id}/privacy-type`);
-  };
+  // Enable/disable next button based on property selection
+  React.useEffect(() => {
+    if (selectedType) {
+      enableNext();
+    } else {
+      disableNext();
+    }
+  }, [selectedType, enableNext, disableNext]);
 
-  const handlePropertyTypeSelect = (typeId: string) => {
+  const handlePropertySelect = (typeId: string) => {
     setSelectedType(typeId);
   };
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <div className="pt-16">
-        <PropertyTypeSelector
-          selectedType={selectedType}
-          onSelect={handlePropertyTypeSelect}
-        />
-      </div>
+    <div className="">
+      <div className="items-center justify-center">
+        <div className="flex flex-row gap-12">
+          {/* Left div - Title */}
+          <div className="flex-1 flex flex-col ">
+            <h1 className="text-4xl font-medium text-gray-900 leading-tight text-start">
+              <div>Which of these best</div>
+              <div>describes your place?</div>
+            </h1>
+          </div>
 
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-        nextDisabled={!selectedType}
-      />
+          {/* Right div - Compact PropertyTypeSelector */}
+          <div className="flex-1">
+            <PropertySelector
+              selectedType={selectedType}
+              onSelect={handlePropertySelect}
+              compact={true}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

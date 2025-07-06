@@ -38,13 +38,13 @@ const StepsOverview: React.FC<StepsOverviewProps> = ({ onGetStarted }) => {
   ];
 
   return (
-    <div className="h-full flex flex-col px-10">
-      <div className="flex-1 px-6">
+    <div className="h-full flex flex-col px-20">
+      <div className="flex-1 ">
         <div className="h-full max-w-7xl mx-auto flex flex-col">
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start py-12">
             {/* Left Side - Title */}
             <div>
-              <h1 className="text-4xl md:text-5xl font-medium text-gray-900 leading-tight">
+              <h1 className="text-4xl md:text-5xl font-medium leading-tight">
                 It's easy to get
                 <br />
                 started on Mkan
@@ -57,15 +57,15 @@ const StepsOverview: React.FC<StepsOverviewProps> = ({ onGetStarted }) => {
                 <div key={step.number} className="flex gap-6 items-start">
                   <div className="flex gap-3 flex-1">
                     <div className="flex-shrink-0">
-                      <span className="text-lg font-medium text-gray-900">
+                      <span className="text-lg font-medium">
                         {step.number}
                       </span>
                     </div>
                     <div>
-                      <h3 className="text-xl font-medium text-gray-900 mb-1">
+                      <h3 className="text-xl font-medium mb-1">
                         {step.title}
                       </h3>
-                      <p className="text-gray-600 leading-relaxed text-sm">
+                      <p className=" leading-relaxed text-sm">
                         {step.description}
                       </p>
                     </div>

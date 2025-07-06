@@ -10,7 +10,7 @@ const OverviewPage = () => {
   const handleGetStarted = () => {
     // Generate a mock session ID for the listing flow
     const id = Date.now().toString();
-    router.push(`/host/${id}/about-your-place`);
+    router.push(`/host/${id}/about-place`);
   };
 
   return (

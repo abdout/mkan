@@ -1,8 +1,12 @@
+"use client";
+
 import React from 'react';
 import Image from 'next/image';
+import { useRouter, useParams, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { HelpCircle, Bookmark } from 'lucide-react';
+import { useHostValidation } from '@/context/host-validation-context';
 
 interface HostFooterProps {
   onBack?: () => void;
@@ -14,31 +18,131 @@ interface HostFooterProps {
   nextLabel?: string;
   canGoBack?: boolean;
   canGoNext?: boolean;
+  nextDisabled?: boolean;
 }
+
+// Define the step order for the hosting flow
+const HOSTING_STEPS = [
+  'about-place',
+  'structure', 
+  'privacy-type',
+  'location',
+  'floor-plan',
+  'amenities',
+  'photos',
+  'title',
+  'description',
+  'stand-out',
+  'instant-book',
+  'price',
+  'discount',
+  'legal-and-create',
+  'visibility',
+  'finish-setup'
+];
+
+// Group steps into 3 main categories
+const STEP_GROUPS = {
+  1: ['about-place', 'structure', 'privacy-type', 'location', 'floor-plan'],
+  2: ['amenities', 'photos', 'title', 'description', 'stand-out', 'instant-book'],
+  3: ['price', 'discount', 'legal-and-create', 'visibility', 'finish-setup']
+};
 
 const HostFooter: React.FC<HostFooterProps> = ({
   onBack,
   onNext,
   onHelp,
   onSave,
-  currentStep = 1,
+  currentStep: propCurrentStep,
   backLabel = "Back",
   nextLabel = "Next",
   canGoBack = true,
-  canGoNext = true
+  canGoNext = true,
+  nextDisabled = false
 }) => {
+  const router = useRouter();
+  const params = useParams();
+  const pathname = usePathname();
+  
+  // Use validation context if available
+  let contextNextDisabled = false;
+  try {
+    const validationContext = useHostValidation();
+    contextNextDisabled = validationContext.isNextDisabled;
+  } catch (error) {
+    // Context not available, use default value
+    contextNextDisabled = false;
+  }
+  
+  // Extract current step from pathname
+  const getCurrentStepFromPath = () => {
+    const pathSegments = pathname.split('/');
+    const currentStepSlug = pathSegments[pathSegments.length - 1];
+    const stepIndex = HOSTING_STEPS.findIndex(step => step === currentStepSlug);
+    return stepIndex === -1 ? 0 : stepIndex; // Default to first step if not found
+  };
+  
+  const currentStepIndex = getCurrentStepFromPath();
+  const currentStepSlug = HOSTING_STEPS[currentStepIndex] || HOSTING_STEPS[0];
+  
+  // Determine which step group we're in
+  const getCurrentStepGroup = () => {
+    for (const [group, steps] of Object.entries(STEP_GROUPS)) {
+      if (steps.includes(currentStepSlug)) {
+        return parseInt(group);
+      }
+    }
+    return 1;
+  };
+  
+  const currentStepGroup = getCurrentStepGroup();
+  
+  // Navigation functions
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+      return;
+    }
+    
+    if (currentStepIndex > 0) {
+      const prevStep = HOSTING_STEPS[currentStepIndex - 1];
+      router.push(`/host/${params.id}/${prevStep}`);
+    }
+  };
+  
+  const handleNext = () => {
+    if (onNext) {
+      onNext();
+      return;
+    }
+    
+    if (currentStepIndex < HOSTING_STEPS.length - 1) {
+      const nextStep = HOSTING_STEPS[currentStepIndex + 1];
+      router.push(`/host/${params.id}/${nextStep}`);
+    }
+  };
+  
   // Calculate progress for each step group
   const getStepProgress = (stepNumber: number) => {
-    if (currentStep > stepNumber) return 100; // Completed
-    if (currentStep === stepNumber) return 50; // In progress
+    if (currentStepGroup > stepNumber) return 100; // Completed
+    if (currentStepGroup === stepNumber) {
+      // Calculate progress within current group
+      const groupSteps = STEP_GROUPS[stepNumber as keyof typeof STEP_GROUPS];
+      const currentStepInGroup = groupSteps.findIndex(step => step === currentStepSlug);
+      return Math.max(10, (currentStepInGroup / groupSteps.length) * 100);
+    }
     return 0; // Not started
   };
-
+  
   const stepLabels = [
     "Tell us about your place",
     "Make it stand out", 
     "Finish up and publish"
   ];
+  
+  // Check if back/next are available
+  const canGoBackActual = canGoBack && (currentStepIndex > 0);
+  const canGoNextActual = canGoNext && (currentStepIndex < HOSTING_STEPS.length - 1) && !nextDisabled && !contextNextDisabled;
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 bg-white">
@@ -89,8 +193,8 @@ const HostFooter: React.FC<HostFooterProps> = ({
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
-            onClick={onBack}
-            disabled={!canGoBack}
+            onClick={handleBack}
+            disabled={!canGoBackActual}
             size='sm'
             className=""
           >
@@ -98,8 +202,8 @@ const HostFooter: React.FC<HostFooterProps> = ({
           </Button>
 
           <Button
-            onClick={onNext}
-            disabled={!canGoNext}
+            onClick={handleNext}
+            disabled={!canGoNextActual}
             size='sm'
             className=""
           >

@@ -16,7 +16,7 @@ const StepHeader: React.FC<StepHeaderProps> = ({
   illustration
 }) => {
   return (
-    <div className="w-full ">
+    <div className="w-full -mt-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
         {/* Left Side - Content */}
         <div className="space-y-6">

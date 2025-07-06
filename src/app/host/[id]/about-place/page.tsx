@@ -1,23 +1,28 @@
 "use client";
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
-import { StepHeader, StepNavigation } from '@/components/host';
+import { StepHeader } from '@/components/host';
+import { useHostValidation } from '@/context/host-validation-context';
 
 interface AboutPlaceProps {
   params: Promise<{ id: string }>;
 }
 
 const AboutPlace = ({ params }: AboutPlaceProps) => {
-  const router = useRouter();
   const [id, setId] = React.useState<string>('');
   const videoRef = React.useRef<HTMLVideoElement>(null);
+  const { enableNext } = useHostValidation();
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
       setId(resolvedParams.id);
     });
   }, [params]);
+
+  // Enable next button for this informational page
+  React.useEffect(() => {
+    enableNext();
+  }, [enableNext]);
 
   // Auto-play video when component mounts
   React.useEffect(() => {
@@ -28,19 +33,11 @@ const AboutPlace = ({ params }: AboutPlaceProps) => {
     }
   }, []);
 
-  const handleBack = () => {
-    router.push('/host/overview');
-  };
-
-  const handleNext = () => {
-    router.push(`/host/${id}/structure`);
-  };
-
   const illustration = (
-    <div className="w-full bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl flex items-center justify-center overflow-hidden">
+    <div className="w-3/4 max-w-xl mx-auto bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl flex items-center justify-center overflow-hidden">
       <video
         ref={videoRef}
-        className="w-full h-full object-cover rounded-2xl"
+        className="w-full h-full object-cover "
         autoPlay
         muted
         playsInline
@@ -59,7 +56,7 @@ const AboutPlace = ({ params }: AboutPlaceProps) => {
           type="video/mp4"
         />
         {/* Fallback for browsers that don't support video */}
-        <div className="w-full h-full bg-gradient-to-br from-orange-500 to-pink-500 rounded-2xl flex items-center justify-center">
+        {/* <div className="w-full h-full bg-gradient-to-br from-orange-500 to-pink-500 rounded-2xl flex items-center justify-center">
           <div className="text-center text-white">
             <div className="w-48 h-48 bg-white/20 rounded-2xl mx-auto mb-4 relative">
               <div className="absolute inset-4 bg-white/20 rounded-xl"></div>
@@ -67,14 +64,14 @@ const AboutPlace = ({ params }: AboutPlaceProps) => {
             </div>
             <p className="text-sm">3D House Cross-Section</p>
           </div>
-        </div>
+        </div> */}
       </video>
     </div>
   );
 
   return (
     <div className="">
-      <div className="">
+      <div className="w-full">
         <StepHeader
           stepNumber={1}
           title="Tell us about your place"
@@ -82,13 +79,6 @@ const AboutPlace = ({ params }: AboutPlaceProps) => {
           illustration={illustration}
         />
       </div>
-
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-      />
     </div>
   );
 };
