@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { StepNavigation } from '@/components/host';
+import { useHostValidation } from '@/context/host-validation-context';
 import { 
   Wifi, 
   Tv, 
@@ -27,6 +27,7 @@ interface AmenitiesPageProps {
 const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
+  const { enableNext } = useHostValidation();
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
 
   React.useEffect(() => {
@@ -35,13 +36,10 @@ const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
     });
   }, [params]);
 
-  const handleBack = () => {
-    router.push(`/host/${id}/stand-out`);
-  };
-
-  const handleNext = () => {
-    router.push(`/host/${id}/photos`);
-  };
+  // Enable next button since amenities are optional
+  React.useEffect(() => {
+    enableNext();
+  }, [enableNext]);
 
   const toggleAmenity = (amenityId: string) => {
     setSelectedAmenities(prev => 
@@ -56,10 +54,10 @@ const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
     { id: 'tv', label: 'TV', icon: Tv },
     { id: 'kitchen', label: 'Kitchen', icon: ChefHat },
     { id: 'washer', label: 'Washer', icon: WashingMachine },
-    { id: 'free-parking', label: 'Free parking on premises', icon: Car },
-    { id: 'paid-parking', label: 'Paid parking on premises', icon: DollarSign },
-    { id: 'air-conditioning', label: 'Air conditioning', icon: Snowflake },
-    { id: 'dedicated-workspace', label: 'Dedicated workspace', icon: Briefcase },
+    { id: 'free-parking', label: 'Free parking', icon: Car },
+    { id: 'paid-parking', label: 'Paid parking', icon: DollarSign },
+    { id: 'air-conditioning', label: 'AC', icon: Snowflake },
+    { id: 'dedicated-workspace', label: 'Workspace', icon: Briefcase },
   ];
 
   const standoutAmenities = [
@@ -67,8 +65,8 @@ const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
     { id: 'hot-tub', label: 'Hot tub', icon: Coffee },
     { id: 'patio', label: 'Patio', icon: Building },
     { id: 'bbq-grill', label: 'BBQ grill', icon: UtensilsCrossed },
-    { id: 'outdoor-dining', label: 'Outdoor dining area', icon: TreePine },
-    { id: 'fire-pit', label: 'Fire pit', icon: Flame },
+    // { id: 'outdoor-dining', label: 'Dining area', icon: TreePine },
+    // { id: 'fire-pit', label: 'Fire pit', icon: Flame },
   ];
 
   const AmenityCard = ({ 
@@ -82,75 +80,74 @@ const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
   }) => (
     <button
       onClick={onToggle}
-      className={`p-6 rounded-xl border-2 transition-all duration-200 text-left flex flex-col items-start space-y-3 min-h-[120px] ${
+      className={`px-3 py-2 rounded-lg border transition-all duration-200 text-left flex flex-col items-start space-y-1.5 ${
         isSelected
           ? 'border-gray-900 bg-gray-50'
-          : 'border-gray-200 hover:border-gray-300'
+          : 'border-gray-200 hover:border-foreground hover:bg-gray-50'
       }`}
     >
-      <amenity.icon size={24} className="text-gray-600" />
-      <span className="text-base font-medium text-gray-900">
+      <amenity.icon size={18} className={`${isSelected ? 'text-gray-900' : 'text-gray-500'}`} />
+      <span className={`text-xs font-medium truncate w-full ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>
         {amenity.label}
       </span>
     </button>
   );
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <div className="max-w-4xl mx-auto px-6 pt-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-medium text-gray-900 mb-4">
-            Tell guests what your place has to offer
-          </h1>
-          <p className="text-gray-600 text-lg">
-            You can add more amenities after you publish your listing.
-          </p>
-        </div>
-
-        <div className="space-y-12">
-          {/* Guest Favorites */}
-          <div>
-            <h2 className="text-xl font-medium text-gray-900 mb-6">
-              What about these guest favorites?
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {guestFavorites.map((amenity) => (
-                <AmenityCard
-                  key={amenity.id}
-                  amenity={amenity}
-                  isSelected={selectedAmenities.includes(amenity.id)}
-                  onToggle={() => toggleAmenity(amenity.id)}
-                />
-              ))}
-            </div>
+    <div className="">
+      <div className="items-center justify-center">
+        <div className="flex flex-row gap-12">
+          {/* Left div - Title */}
+          <div className="flex-1 flex flex-col">
+            <h1 className="text-4xl font-medium text-gray-900 leading-tight text-start">
+              <div>Tell guests what</div>
+              <div>your place has to offer</div>
+            </h1>
+            <p className="text-lg mt-4">
+              You can add more amenities after you <br/> publish your listing.
+            </p>
           </div>
 
-          {/* Standout Amenities */}
-          <div>
-            <h2 className="text-xl font-medium text-gray-900 mb-6">
-              Do you have any standout amenities?
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {standoutAmenities.map((amenity) => (
-                <AmenityCard
-                  key={amenity.id}
-                  amenity={amenity}
-                  isSelected={selectedAmenities.includes(amenity.id)}
-                  onToggle={() => toggleAmenity(amenity.id)}
-                />
-              ))}
+          {/* Right div - Amenities */}
+          <div className="flex-1">
+            <div className="space-y-8">
+              {/* Guest Favorites */}
+              <div>
+                <h2 className="text-lg font-medium text-gray-900 mb-4">
+                  What about these guest favorites?
+                </h2>
+                <div className="grid grid-cols-4 gap-2">
+                  {guestFavorites.map((amenity) => (
+                    <AmenityCard
+                      key={amenity.id}
+                      amenity={amenity}
+                      isSelected={selectedAmenities.includes(amenity.id)}
+                      onToggle={() => toggleAmenity(amenity.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Standout Amenities */}
+              <div>
+                <h2 className="text-lg font-medium text-gray-900 mb-4">
+                  Do you have any standout amenities?
+                </h2>
+                <div className="grid grid-cols-4 gap-2">
+                  {standoutAmenities.map((amenity) => (
+                    <AmenityCard
+                      key={amenity.id}
+                      amenity={amenity}
+                      isSelected={selectedAmenities.includes(amenity.id)}
+                      onToggle={() => toggleAmenity(amenity.id)}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-        nextDisabled={false}
-      />
     </div>
   );
 };

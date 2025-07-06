@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { StepNavigation } from '@/components/host';
+import { useHostValidation } from '@/context/host-validation-context';
 
 interface StandOutPageProps {
   params: Promise<{ id: string }>;
@@ -11,6 +11,7 @@ interface StandOutPageProps {
 const StandOutPage = ({ params }: StandOutPageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
+  const { enableNext } = useHostValidation();
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
@@ -18,13 +19,10 @@ const StandOutPage = ({ params }: StandOutPageProps) => {
     });
   }, [params]);
 
-  const handleBack = () => {
-    router.push(`/host/${id}/floor-plan`);
-  };
-
-  const handleNext = () => {
-    router.push(`/host/${id}/amenities`);
-  };
+  // Enable next button for this informational page
+  React.useEffect(() => {
+    enableNext();
+  }, [enableNext]);
 
   return (
     <div className="min-h-screen bg-white pb-24">
@@ -77,13 +75,7 @@ const StandOutPage = ({ params }: StandOutPageProps) => {
         </div>
       </div>
 
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-        nextDisabled={false}
-      />
+
     </div>
   );
 };

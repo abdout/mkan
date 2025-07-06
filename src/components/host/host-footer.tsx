@@ -28,11 +28,11 @@ const HOSTING_STEPS = [
   'privacy-type',
   'location',
   'floor-plan',
+  'stand-out',
   'amenities',
   'photos',
   'title',
   'description',
-  'stand-out',
   'instant-book',
   'price',
   'discount',
@@ -43,8 +43,8 @@ const HOSTING_STEPS = [
 
 // Group steps into 3 main categories
 const STEP_GROUPS = {
-  1: ['about-place', 'structure', 'privacy-type', 'location', 'floor-plan'],
-  2: ['amenities', 'photos', 'title', 'description', 'stand-out', 'instant-book'],
+  1: ['about-place', 'structure', 'privacy-type', 'location', 'floor-plan', 'stand-out'],
+  2: ['amenities', 'photos', 'title', 'description', 'instant-book'],
   3: ['price', 'discount', 'legal-and-create', 'visibility', 'finish-setup']
 };
 
@@ -129,7 +129,8 @@ const HostFooter: React.FC<HostFooterProps> = ({
       // Calculate progress within current group
       const groupSteps = STEP_GROUPS[stepNumber as keyof typeof STEP_GROUPS];
       const currentStepInGroup = groupSteps.findIndex(step => step === currentStepSlug);
-      return Math.max(10, (currentStepInGroup / groupSteps.length) * 100);
+      // Add 1 to currentStepInGroup to make it 1-indexed, so the last step shows 100%
+      return Math.max(10, ((currentStepInGroup + 1) / groupSteps.length) * 100);
     }
     return 0; // Not started
   };

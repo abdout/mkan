@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { StepNavigation } from '@/components/host';
 import { Home, DoorOpen, Building } from 'lucide-react';
+import { useHostValidation } from '@/context/host-validation-context';
 
 interface PrivacyTypePageProps {
   params: Promise<{ id: string }>;
@@ -12,7 +12,8 @@ interface PrivacyTypePageProps {
 const PrivacyTypePage = ({ params }: PrivacyTypePageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
-  const [selectedType, setSelectedType] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string>('entire-place');
+  const { enableNext } = useHostValidation();
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
@@ -20,13 +21,10 @@ const PrivacyTypePage = ({ params }: PrivacyTypePageProps) => {
     });
   }, [params]);
 
-  const handleBack = () => {
-    router.push(`/host/${id}/structure`);
-  };
-
-  const handleNext = () => {
-    router.push(`/host/${id}/location`);
-  };
+  // Enable next button since we have a default selection
+  React.useEffect(() => {
+    enableNext();
+  }, [enableNext]);
 
   const privacyTypes = [
     {
@@ -50,46 +48,51 @@ const PrivacyTypePage = ({ params }: PrivacyTypePageProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <div className="max-w-2xl mx-auto px-6 pt-16">
-        <h1 className="text-4xl font-medium text-gray-900 mb-16 text-center">
-          What type of place will guests have?
-        </h1>
+    <div className="">
+      <div className="items-center justify-center">
+        <div className="flex flex-row gap-12">
+          {/* Left div - Title */}
+          <div className="flex-1 flex flex-col">
+            <h1 className="text-4xl font-medium text-gray-900 leading-tight text-start">
+              <div>What type of</div>
+              <div>place will guests have?</div>
+            </h1>
+          </div>
 
-        <div className="space-y-4">
-          {privacyTypes.map((type) => (
-            <button
-              key={type.id}
-              onClick={() => setSelectedType(type.id)}
-              className={`w-full p-6 rounded-xl border-2 transition-all duration-200 text-left flex items-center justify-between ${
-                selectedType === type.id
-                  ? 'border-gray-900 bg-gray-50'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
-            >
-              <div className="flex-1">
-                <h3 className="text-xl font-medium text-gray-900 mb-2">
-                  {type.title}
-                </h3>
-                <p className="text-gray-600">
-                  {type.description}
-                </p>
-              </div>
-              <div className="ml-6 text-gray-400">
-                <type.icon size={32} />
-              </div>
-            </button>
-          ))}
+          {/* Right div - Privacy Types */}
+          <div className="flex-1">
+            <div className="space-y-3">
+              {privacyTypes.map((type) => (
+                <button
+                  key={type.id}
+                  onClick={() => setSelectedType(type.id)}
+                  className={`w-full py-3 px-4 rounded-xl border transition-all duration-200 text-left flex items-center justify-between ${
+                    selectedType === type.id
+                      ? 'border-gray-900 bg-gray-50'
+                      : 'border-gray-200 hover:border-foreground hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex-1">
+                    <h3 className={`text-base font-medium mb-1 ${
+                      selectedType === type.id ? 'text-gray-900' : 'text-gray-700'
+                    }`}>
+                      {type.title}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {type.description}
+                    </p>
+                  </div>
+                  <div className={`ml-4 ${
+                    selectedType === type.id ? 'text-gray-900' : 'text-gray-400'
+                  }`}>
+                    <type.icon size={24} />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-        nextDisabled={!selectedType}
-      />
     </div>
   );
 };
