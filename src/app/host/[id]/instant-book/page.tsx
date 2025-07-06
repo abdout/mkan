@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { StepNavigation } from '@/components/host';
-import { Calendar, Zap } from 'lucide-react';
+import { CalendarCheckmark, LightningBoltIcon } from '@/components/atom/airbnb-icons';
 
 interface InstantBookPageProps {
   params: Promise<{ id: string }>;
@@ -34,21 +34,21 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
       title: 'Approve your first 5 bookings',
       subtitle: 'Recommended',
       description: 'Start by reviewing reservation requests, then switch to Instant Book, so guests can book automatically.',
-      icon: Calendar,
+      icon: CalendarCheckmark,
       recommended: true,
     },
     {
       id: 'instant-book',
       title: 'Use Instant Book',
       description: 'Let guests book automatically.',
-      icon: Zap,
+      icon: LightningBoltIcon,
       recommended: false,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <div className="max-w-6xl mx-auto px-6 pt-16">
+    <div className="">
+      <div className="">
         <div className="grid grid-cols-3 gap-16 items-start">
           {/* Left column - Title and description */}
           <div>
@@ -70,7 +70,7 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
               <button
                 key={option.id}
                 onClick={() => setSelectedOption(option.id)}
-                className={`w-full p-6 rounded-xl border-2 transition-all duration-200 text-left ${
+                className={`w-full p-5 rounded-xl border transition-all duration-200 text-left ${
                   selectedOption === option.id
                     ? 'border-gray-900 bg-gray-50'
                     : 'border-gray-200 hover:border-gray-300'
@@ -78,22 +78,23 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="text-xl font-medium text-gray-900">
+                    <div className="flex items-center space-x-3 ">
+                      <h3 className="text-lg font-medium">
                         {option.title}
                       </h3>
-                      {option.recommended && (
-                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">
+                      
+                    </div>
+                    {option.recommended && (
+                        <span className=" text-green-600 text-xs font-medium ">
                           {option.subtitle}
                         </span>
                       )}
-                    </div>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-sm leading-relaxed">
                       {option.description}
                     </p>
                   </div>
-                  <div className="ml-6 text-gray-400">
-                    <option.icon size={32} />
+                  <div className=" ">
+                    <option.icon size={24} />
                   </div>
                 </div>
               </button>

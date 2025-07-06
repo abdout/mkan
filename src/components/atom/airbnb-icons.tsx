@@ -406,3 +406,39 @@ export const DocumentIcon: React.FC<IconProps> = ({
     <path d="M25 5a4 4 0 0 1 4 4v17a5 5 0 0 1-5 5H12a5 5 0 0 1-5-5V10a5 5 0 0 1 5-5h13zm0 2H12a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V9a2 2 0 0 0-2-2zm-3-6v2H11a6 6 0 0 0-6 5.78V22H3V9a8 8 0 0 1 7.75-8H22z" />
   </svg>
 );
+
+export const CalendarCheckmark: React.FC<IconProps> = ({
+  size = 32,
+  className = '',
+  fill = 'currentColor'
+}) => (
+  <svg
+    viewBox="0 0 32 32"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    role="presentation"
+    focusable="false"
+    style={{ display: 'block', height: `${size}px`, width: `${size}px`, fill }}
+    className={className}
+  >
+    <path d="m12 0v2h8v-2h2v2h6c1.1045695 0 2 .8954305 2 2v21c0 2.7614237-2.2385763 5-5 5h-18c-2.76142375 0-5-2.2385763-5-5v-21c0-1.1045695.8954305-2 2-2h6v-2zm16 11.5h-24v13.5c0 1.6568542 1.34314575 3 3 3h18c1.6568542 0 3-1.3431458 3-3zm-5.5 2.5857864 1.4142136 1.4142136-9.2826347 9.2826346-5.04579246-5.0457925 1.41421356-1.4142136 3.631 3.6313715zm-12.5-10.0857864h-6v5.5h24v-5.5h-6v2h-2v-2h-8v2h-2z" />
+  </svg>
+);
+
+export const LightningBoltIcon: React.FC<IconProps> = ({
+  size = 32,
+  className = '',
+  fill = 'currentColor'
+}) => (
+  <svg
+    viewBox="0 0 32 32"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    role="presentation"
+    focusable="false"
+    style={{ display: 'block', height: `${size}px`, width: `${size}px`, fill }}
+    className={className}
+  >
+    <path d="M17.16 1.46 6.19 17.42l-.1.17c-.05.12-.06.18-.08.4l.04.13c.19.65.23.67.97.88H13v10.97l.04.22c.05.28.1.33.4.61l.27.09c.51.16.59.1 1.13-.35l10.97-15.96.1-.18c.05-.11.06-.17.08-.39l-.04-.13c-.19-.66-.23-.67-.97-.88H19V2.03l-.04-.22c-.05-.28-.1-.33-.4-.61l-.27-.09c-.51-.16-.59-.1-1.13.35zM17 5.22V15h6.1L15 26.78V17H8.9L17 5.22z" />
+  </svg>
+);

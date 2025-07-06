@@ -3,15 +3,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useHostValidation } from '@/context/host-validation-context';
+import Image from 'next/image';
 import { 
-  Wifi, 
-  Tv, 
-  ChefHat, 
-  WashingMachine, 
-  Car, 
   DollarSign, 
-  Snowflake, 
-  Briefcase,
   Waves,
   Coffee,
   Building,
@@ -49,24 +43,35 @@ const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
     );
   };
 
+  // Custom component for SVG amenity icons
+  const SvgIcon = ({ src, alt, size = 18 }: { src: string; alt: string; size?: number }) => (
+    <Image
+      src={src}
+      alt={alt}
+      width={size}
+      height={size}
+      className="object-contain"
+    />
+  );
+
   const guestFavorites = [
-    { id: 'wifi', label: 'Wifi', icon: Wifi },
-    { id: 'tv', label: 'TV', icon: Tv },
-    { id: 'kitchen', label: 'Kitchen', icon: ChefHat },
-    { id: 'washer', label: 'Washer', icon: WashingMachine },
-    { id: 'free-parking', label: 'Free parking', icon: Car },
-    { id: 'paid-parking', label: 'Paid parking', icon: DollarSign },
-    { id: 'air-conditioning', label: 'AC', icon: Snowflake },
-    { id: 'dedicated-workspace', label: 'Workspace', icon: Briefcase },
+    { id: 'wifi', label: 'Wifi', icon: () => <SvgIcon src="/amenities/Wifi.svg" alt="Wifi" /> },
+    { id: 'tv', label: 'TV', icon: () => <SvgIcon src="/amenities/TV.svg" alt="TV" /> },
+    { id: 'kitchen', label: 'Kitchen', icon: () => <SvgIcon src="/amenities/Kitchen.svg" alt="Kitchen" /> },
+    { id: 'washer', label: 'Washer', icon: () => <SvgIcon src="/amenities/Washing machine.svg" alt="Washing machine" /> },
+    { id: 'free-parking', label: 'Free parking', icon: () => <SvgIcon src="/amenities/Parking.svg" alt="Free parking" /> },
+    { id: 'paid-parking', label: 'Paid parking', icon: () => <SvgIcon src="/amenities/Paid parking.svg" alt="Paid parking" /> },
+    { id: 'air-conditioning', label: 'AC', icon: () => <SvgIcon src="/amenities/Air conditioning.svg" alt="Air conditioning" /> },
+    { id: 'dedicated-workspace', label: 'Workspace', icon: () => <SvgIcon src="/amenities/Workspace.svg" alt="Workspace" /> },
   ];
 
   const standoutAmenities = [
-    { id: 'pool', label: 'Pool', icon: Waves },
-    { id: 'hot-tub', label: 'Hot tub', icon: Coffee },
-    { id: 'patio', label: 'Patio', icon: Building },
-    { id: 'bbq-grill', label: 'BBQ grill', icon: UtensilsCrossed },
-    // { id: 'outdoor-dining', label: 'Dining area', icon: TreePine },
-    // { id: 'fire-pit', label: 'Fire pit', icon: Flame },
+    { id: 'pool', label: 'Pool', icon: () => <SvgIcon src="/amenities/Pool.svg" alt="Pool" /> },
+    { id: 'hot-tub', label: 'Hot tub', icon: () => <SvgIcon src="/amenities/Hot tub.svg" alt="Hot tub" /> },
+    { id: 'patio', label: 'Patio', icon: () => <SvgIcon src="/amenities/Patio.svg" alt="Patio" /> },
+    { id: 'bbq-grill', label: 'BBQ grill', icon: () => <SvgIcon src="/amenities/BBQ grill.svg" alt="BBQ grill" /> },
+    // { id: 'outdoor-dining', label: 'Outdoor dining', icon: () => <SvgIcon src="/amenities/Outdoor dining.svg" alt="Outdoor dining" /> },
+    // { id: 'fireplace', label: 'Fireplace', icon: () => <SvgIcon src="/amenities/Fireplace.svg" alt="Fireplace" /> },
   ];
 
   const AmenityCard = ({ 
@@ -74,7 +79,7 @@ const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
     isSelected, 
     onToggle 
   }: { 
-    amenity: { id: string; label: string; icon: any }; 
+    amenity: { id: string; label: string; icon: () => React.ReactNode }; 
     isSelected: boolean; 
     onToggle: () => void; 
   }) => (
@@ -86,7 +91,9 @@ const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
           : 'border-gray-200 hover:border-foreground hover:bg-gray-50'
       }`}
     >
-      <amenity.icon size={18} className={`${isSelected ? 'text-gray-900' : 'text-gray-500'}`} />
+      <div className={`${isSelected ? 'text-gray-900' : 'text-gray-500'}`}>
+        <amenity.icon />
+      </div>
       <span className={`text-xs font-medium truncate w-full ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>
         {amenity.label}
       </span>

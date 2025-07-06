@@ -41,50 +41,62 @@ const VisibilityPage = ({ params }: VisibilityPageProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <div className="max-w-2xl mx-auto px-6 pt-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-medium text-gray-900 mb-6 leading-tight">
-            Choose who to welcome for your first reservation
-          </h1>
-          <p className="text-gray-600 text-lg">
-            After your first guest, anyone can book your place.{' '}
-            <button className="underline hover:no-underline">
-              Learn more
-            </button>
-          </p>
-        </div>
+    <div className="">
+      <div className="">
+        <div className="grid grid-cols-5 gap-16 items-start">
+          {/* Left column - Title and description */}
+          <div className="col-span-2">
+            <h1 className="text-4xl font-medium text-gray-900 mb-4">
+              Choose who to welcome for your first reservation
+            </h1>
+            <p className="text-gray-600 text-lg">
+              After your first guest, anyone can book your place.{' '}
+              <button className="underline hover:no-underline">
+                Learn more
+              </button>
+            </p>
+          </div>
 
-        <div className="space-y-4">
-          {guestOptions.map((option) => (
-            <label
-              key={option.id}
-              className={`block w-full p-6 rounded-xl border-2 transition-all duration-200 cursor-pointer ${
-                selectedOption === option.id
-                  ? 'border-gray-900 bg-gray-50'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
-            >
-              <div className="flex items-start space-x-4">
-                <input
-                  type="radio"
-                  name="guest-type"
-                  value={option.id}
-                  checked={selectedOption === option.id}
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  className="mt-1 w-4 h-4 text-gray-900 border-gray-300 focus:ring-gray-900"
-                />
-                <div className="flex-1">
-                  <h3 className="text-xl font-medium text-gray-900 mb-2">
-                    {option.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {option.description}
-                  </p>
+          {/* Right column - Guest options */}
+          <div className="col-span-3 space-y-4">
+            {guestOptions.map((option) => (
+              <button
+                key={option.id}
+                onClick={() => setSelectedOption(option.id)}
+                className={`w-full p-5 rounded-xl border transition-all duration-200 text-left ${
+                  selectedOption === option.id
+                    ? 'border-gray-900 bg-gray-50'
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                <div className="flex items-start space-x-4">
+                  {/* Radio button */}
+                  <div className="flex-shrink-0 mt-1">
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                      selectedOption === option.id
+                        ? 'border-gray-900 bg-gray-900'
+                        : 'border-gray-300 bg-white'
+                    }`}>
+                      {selectedOption === option.id && (
+                        <div className="w-2 h-2 rounded-full bg-white"></div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 ">
+                      <h3 className="text-lg font-medium">
+                        {option.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm leading-relaxed text-gray-600">
+                      {option.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </label>
-          ))}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
