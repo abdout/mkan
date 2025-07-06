@@ -48,52 +48,57 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
 
   return (
     <div className="min-h-screen bg-white pb-24">
-      <div className="max-w-2xl mx-auto px-6 pt-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-medium text-gray-900 mb-4">
-            Pick your booking settings
-          </h1>
-          <p className="text-gray-600 text-lg">
-            You can change this at any time.{' '}
-            <button className="underline hover:no-underline">
-              Learn more
-            </button>
-          </p>
-        </div>
+      <div className="max-w-6xl mx-auto px-6 pt-16">
+        <div className="grid grid-cols-3 gap-16 items-start">
+          {/* Left column - Title and description */}
+          <div>
+            <h1 className="text-4xl font-medium text-gray-900 mb-4">
+              Pick your<br />
+              booking settings
+            </h1>
+            <p className="text-gray-600 text-lg">
+              You can change this at any time.{' '}
+              <button className="underline hover:no-underline">
+                Learn more
+              </button>
+            </p>
+          </div>
 
-        <div className="space-y-4">
-          {bookingOptions.map((option) => (
-            <button
-              key={option.id}
-              onClick={() => setSelectedOption(option.id)}
-              className={`w-full p-6 rounded-xl border-2 transition-all duration-200 text-left ${
-                selectedOption === option.id
-                  ? 'border-gray-900 bg-gray-50'
-                  : 'border-gray-200 hover:border-gray-300'
-              }`}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <h3 className="text-xl font-medium text-gray-900">
-                      {option.title}
-                    </h3>
-                    {option.recommended && (
-                      <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">
-                        {option.subtitle}
-                      </span>
-                    )}
+          {/* Right column - Booking options */}
+          <div className="col-span-2 space-y-4">
+            {bookingOptions.map((option) => (
+              <button
+                key={option.id}
+                onClick={() => setSelectedOption(option.id)}
+                className={`w-full p-6 rounded-xl border-2 transition-all duration-200 text-left ${
+                  selectedOption === option.id
+                    ? 'border-gray-900 bg-gray-50'
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h3 className="text-xl font-medium text-gray-900">
+                        {option.title}
+                      </h3>
+                      {option.recommended && (
+                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">
+                          {option.subtitle}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-gray-600 leading-relaxed">
+                      {option.description}
+                    </p>
                   </div>
-                  <p className="text-gray-600 leading-relaxed">
-                    {option.description}
-                  </p>
+                  <div className="ml-6 text-gray-400">
+                    <option.icon size={32} />
+                  </div>
                 </div>
-                <div className="ml-6 text-gray-400">
-                  <option.icon size={32} />
-                </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

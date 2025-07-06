@@ -4,16 +4,26 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface HostValidationContextType {
   isNextDisabled: boolean;
-  setNextDisabled: (disabled: boolean) => void;
+  setIsNextDisabled: (disabled: boolean) => void;
   enableNext: () => void;
   disableNext: () => void;
+  customNavigation?: {
+    onBack?: () => void;
+    onNext?: () => void;
+    nextDisabled?: boolean;
+  };
+  setCustomNavigation: (navigation?: {
+    onBack?: () => void;
+    onNext?: () => void;
+    nextDisabled?: boolean;
+  }) => void;
 }
 
 const HostValidationContext = createContext<HostValidationContextType | undefined>(undefined);
 
 export const useHostValidation = () => {
   const context = useContext(HostValidationContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useHostValidation must be used within a HostValidationProvider');
   }
   return context;
@@ -24,18 +34,27 @@ interface HostValidationProviderProps {
 }
 
 export const HostValidationProvider: React.FC<HostValidationProviderProps> = ({ children }) => {
-  const [isNextDisabled, setNextDisabled] = useState(false); // Default to enabled
+  const [isNextDisabled, setIsNextDisabled] = useState(false);
+  const [customNavigation, setCustomNavigation] = useState<{
+    onBack?: () => void;
+    onNext?: () => void;
+    nextDisabled?: boolean;
+  } | undefined>(undefined);
 
-  const enableNext = () => setNextDisabled(false);
-  const disableNext = () => setNextDisabled(true);
+  const enableNext = () => setIsNextDisabled(false);
+  const disableNext = () => setIsNextDisabled(true);
+
+  const value: HostValidationContextType = {
+    isNextDisabled,
+    setIsNextDisabled,
+    enableNext,
+    disableNext,
+    customNavigation,
+    setCustomNavigation
+  };
 
   return (
-    <HostValidationContext.Provider value={{ 
-      isNextDisabled, 
-      setNextDisabled, 
-      enableNext, 
-      disableNext 
-    }}>
+    <HostValidationContext.Provider value={value}>
       {children}
     </HostValidationContext.Provider>
   );

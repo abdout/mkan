@@ -1,16 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { StepNavigation } from '@/components/host';
-import { 
-  Leaf, 
-  Sparkles, 
-  Users, 
-  Palette, 
-  MapPin, 
-  Maximize
-} from 'lucide-react';
+import { useHostValidation } from '@/context/host-validation-context';
+import { MapPin, Home, Sparkles, Users, Building2, LayoutDashboard } from 'lucide-react';
 
 interface DescriptionPageProps {
   params: Promise<{ id: string }>;
@@ -18,8 +11,13 @@ interface DescriptionPageProps {
 
 const DescriptionPage = ({ params }: DescriptionPageProps) => {
   const router = useRouter();
+  const { setCustomNavigation } = useHostValidation();
   const [id, setId] = React.useState<string>('');
   const [selectedHighlights, setSelectedHighlights] = useState<string[]>([]);
+  const [description, setDescription] = useState('You\'ll have a great time at this comfortable place to stay.');
+  const [currentStep, setCurrentStep] = useState<'highlights' | 'description'>('highlights');
+
+  const maxLength = 500;
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
@@ -28,101 +26,134 @@ const DescriptionPage = ({ params }: DescriptionPageProps) => {
   }, [params]);
 
   const handleBack = () => {
+    if (currentStep === 'description') {
+      setCurrentStep('highlights');
+      return;
+    }
     router.push(`/host/${id}/title`);
   };
 
   const handleNext = () => {
-    router.push(`/host/${id}/finish-setup`);
+    if (currentStep === 'highlights') {
+      if (selectedHighlights.length > 0) {
+        setCurrentStep('description');
+      }
+      return;
+    }
+    
+    if (currentStep === 'description' && description.trim().length > 0) {
+      router.push(`/host/${id}/finish-setup`);
+    }
   };
 
-  const toggleHighlight = (highlight: string) => {
+  const nextDisabled = (currentStep === 'highlights' && selectedHighlights.length === 0) ||
+                      (currentStep === 'description' && description.trim().length === 0);
+
+  // Set custom navigation in context
+  useEffect(() => {
+    setCustomNavigation({
+      onBack: handleBack,
+      onNext: handleNext,
+      nextDisabled: nextDisabled
+    });
+
+    // Cleanup on unmount
+    return () => {
+      setCustomNavigation(undefined);
+    };
+  }, [currentStep, selectedHighlights, description, id]);
+
+  const highlights = [
+    { id: '1', title: 'Peaceful', icon: Home },
+    { id: '2', title: 'Unique', icon: Sparkles },
+    { id: '3', title: 'Family-friendly', icon: Users },
+    { id: '4', title: 'Stylish', icon: Building2 },
+    { id: '5', title: 'Central', icon: MapPin },
+    { id: '6', title: 'Spacious', icon: LayoutDashboard }
+  ];
+
+  const toggleHighlight = (highlightId: string) => {
     setSelectedHighlights(prev => {
-      if (prev.includes(highlight)) {
-        return prev.filter(h => h !== highlight);
-      } else if (prev.length < 2) {
-        return [...prev, highlight];
+      if (prev.includes(highlightId)) {
+        return prev.filter(id => id !== highlightId);
+      }
+      if (prev.length < 2) {
+        return [...prev, highlightId];
       }
       return prev;
     });
   };
 
-  const highlights = [
-    { id: 'peaceful', label: 'Peaceful', icon: Leaf },
-    { id: 'unique', label: 'Unique', icon: Sparkles },
-    { id: 'family-friendly', label: 'Family-friendly', icon: Users },
-    { id: 'stylish', label: 'Stylish', icon: Palette },
-    { id: 'central', label: 'Central', icon: MapPin },
-    { id: 'spacious', label: 'Spacious', icon: Maximize },
-  ];
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    if (newValue.length <= maxLength) {
+      setDescription(newValue);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <div className="max-w-2xl mx-auto px-6 pt-16">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-medium text-gray-900 mb-4">
-            Next, let's describe your house
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Choose up to 2 highlights. We'll use these to get your description started.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          {highlights.map((highlight) => {
-            const isSelected = selectedHighlights.includes(highlight.id);
-            const isDisabled = !isSelected && selectedHighlights.length >= 2;
-            
-            return (
-              <button
-                key={highlight.id}
-                onClick={() => toggleHighlight(highlight.id)}
-                disabled={isDisabled}
-                className={`p-6 rounded-xl border-2 transition-all duration-200 text-left flex items-center space-x-4 ${
-                  isSelected
-                    ? 'border-gray-900 bg-gray-50'
-                    : isDisabled
-                    ? 'border-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <highlight.icon 
-                  size={24} 
-                  className={isSelected ? 'text-gray-900' : isDisabled ? 'text-gray-300' : 'text-gray-600'} 
-                />
-                <span className={`text-base font-medium ${
-                  isSelected ? 'text-gray-900' : isDisabled ? 'text-gray-400' : 'text-gray-900'
-                }`}>
-                  {highlight.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {selectedHighlights.length > 0 && (
-          <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">Selected highlights:</p>
-            <div className="flex flex-wrap gap-2">
-              {selectedHighlights.map((highlightId) => {
-                const highlight = highlights.find(h => h.id === highlightId);
-                return (
-                  <span key={highlightId} className="px-3 py-1 bg-white rounded-full text-sm font-medium text-gray-700 border">
-                    {highlight?.label}
-                  </span>
-                );
-              })}
-            </div>
+    <div className="">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+          {/* Left side - Text content */}
+          <div className="">
+            <h1 className="text-4xl font-medium text-gray-900 mb-4">
+              {currentStep === 'highlights' ? (
+                <>
+                  Next, let's describe
+                  <br />
+                  your house
+                </>
+              ) : (
+                <>
+                  Create your description
+                </>
+              )}
+            </h1>
+            <p className="text-gray-600 text-lg">
+              {currentStep === 'highlights' 
+                ? "Choose up to 2 highlights. We'll use these to get your description started."
+                : "Share what makes your place special."}
+            </p>
           </div>
-        )}
-      </div>
 
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-        nextDisabled={selectedHighlights.length === 0}
-      />
+          {/* Right side - Content */}
+          <div>
+            {currentStep === 'highlights' ? (
+              <div className="grid grid-cols-2 gap-4">
+                {highlights.map((highlight) => {
+                  const Icon = highlight.icon;
+                  return (
+                    <button
+                      key={highlight.id}
+                      onClick={() => toggleHighlight(highlight.id)}
+                      className={`flex items-center gap-3 px-6 py-4 rounded-full border transition-all ${
+                        selectedHighlights.includes(highlight.id)
+                          ? 'border-black bg-gray-50'
+                          : 'border-neutral-200 hover:border-neutral-300'
+                      }`}
+                    >
+                      <Icon size={20} className="text-neutral-700" />
+                      <span className="text-base">{highlight.title}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div>
+                <textarea
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  className="w-full h-[200px] p-6 text-lg border border-neutral-300 rounded-lg resize-none focus:outline-none focus:border-neutral-950 transition-colors"
+                />
+                <div className="flex justify-start mt-2 text-sm text-gray-500">
+                  <span>{description.length}/{maxLength}</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -33,19 +33,19 @@ const HOSTING_STEPS = [
   'photos',
   'title',
   'description',
+  'finish-setup',
   'instant-book',
+  'visibility',
   'price',
   'discount',
-  'legal-and-create',
-  'visibility',
-  'finish-setup'
+  'legal-and-create'
 ];
 
 // Group steps into 3 main categories
 const STEP_GROUPS = {
   1: ['about-place', 'structure', 'privacy-type', 'location', 'floor-plan', 'stand-out'],
-  2: ['amenities', 'photos', 'title', 'description', 'instant-book'],
-  3: ['price', 'discount', 'legal-and-create', 'visibility', 'finish-setup']
+  2: ['amenities', 'photos', 'title', 'description', 'finish-setup'],
+  3: ['instant-book', 'visibility', 'price', 'discount', 'legal-and-create']
 };
 
 const HostFooter: React.FC<HostFooterProps> = ({
@@ -66,12 +66,15 @@ const HostFooter: React.FC<HostFooterProps> = ({
   
   // Use validation context if available
   let contextNextDisabled = false;
+  let customNavigation;
   try {
     const validationContext = useHostValidation();
     contextNextDisabled = validationContext.isNextDisabled;
+    customNavigation = validationContext.customNavigation;
   } catch (error) {
     // Context not available, use default value
     contextNextDisabled = false;
+    customNavigation = undefined;
   }
   
   // Extract current step from pathname
@@ -99,6 +102,12 @@ const HostFooter: React.FC<HostFooterProps> = ({
   
   // Navigation functions
   const handleBack = () => {
+    // Use custom navigation if available
+    if (customNavigation?.onBack) {
+      customNavigation.onBack();
+      return;
+    }
+    
     if (onBack) {
       onBack();
       return;
@@ -111,6 +120,12 @@ const HostFooter: React.FC<HostFooterProps> = ({
   };
   
   const handleNext = () => {
+    // Use custom navigation if available
+    if (customNavigation?.onNext) {
+      customNavigation.onNext();
+      return;
+    }
+    
     if (onNext) {
       onNext();
       return;
@@ -143,7 +158,7 @@ const HostFooter: React.FC<HostFooterProps> = ({
   
   // Check if back/next are available
   const canGoBackActual = canGoBack && (currentStepIndex > 0);
-  const canGoNextActual = canGoNext && (currentStepIndex < HOSTING_STEPS.length - 1) && !nextDisabled && !contextNextDisabled;
+  const canGoNextActual = canGoNext && (currentStepIndex < HOSTING_STEPS.length - 1) && !nextDisabled && !contextNextDisabled && !(customNavigation?.nextDisabled);
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 bg-white">
