@@ -1,27 +1,29 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Home, Building, Bed, Ship, TreePine, Castle, Mountain, Container, Lock, Tent, Building2, House, Warehouse, Car } from 'lucide-react';
+import React from 'react';
+import { Home, Building, Bed, Ship, TreePine, Castle, Mountain, Container, Warehouse, Car, Building2 } from 'lucide-react';
+import SelectionCard from './selection-card';
+import { cn } from '@/lib/utils';
 
 interface PropertyType {
   id: string;
   name: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; size?: number }>;
 }
 
 interface PropertySelectorProps {
   selectedType?: string;
   onSelect?: (typeId: string) => void;
   compact?: boolean;
+  className?: string;
 }
 
 const PropertySelector: React.FC<PropertySelectorProps> = ({
   selectedType,
   onSelect,
-  compact = false
+  compact = false,
+  className,
 }) => {
-  const [selected, setSelected] = useState<string>(selectedType || '');
-
   const propertyTypes: PropertyType[] = [
     { id: 'house', name: 'House', icon: Home },
     { id: 'apartment', name: 'Apartment', icon: Building },
@@ -37,38 +39,24 @@ const PropertySelector: React.FC<PropertySelectorProps> = ({
     { id: 'cycladic-home', name: 'Cycladic', icon: Home }
   ];
 
-  const handleSelect = (typeId: string) => {
-    setSelected(typeId);
-    onSelect?.(typeId);
-  };
-
   if (compact) {
     return (
-      <div className="w-full">
+      <div className={cn('w-full', className)}>
         <div className="grid grid-cols-4 gap-3">
           {propertyTypes.map((type) => {
             const IconComponent = type.icon;
-            const isSelected = selected === type.id;
             
             return (
-              <button
+              <SelectionCard
                 key={type.id}
-                onClick={() => handleSelect(type.id)}
-                className={`
-                  relative p-3 border rounded-lg transition-all duration-200 text-left h-20
-                  ${isSelected 
-                    ? 'border-gray-900 bg-gray-50' 
-                    : 'border-gray-200 hover:border-foreground hover:bg-gray-50'
-                  }
-                `}
-              >
-                <div className="flex flex-col items-start space-y-1">
-                  <IconComponent className={`w-5 h-5 ${isSelected ? 'text-gray-900' : 'text-gray-700'}`} />
-                  <span className={`text-xs font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'} leading-tight`}>
-                    {type.name}
-                  </span>
-                </div>
-              </button>
+                id={type.id}
+                title={type.name}
+                icon={<IconComponent size={20} />}
+                isSelected={selectedType === type.id}
+                onClick={onSelect}
+                compact={true}
+                className="h-20"
+              />
             );
           })}
         </div>
@@ -77,37 +65,27 @@ const PropertySelector: React.FC<PropertySelectorProps> = ({
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6">
+    <div className={cn('w-full max-w-4xl mx-auto', className)}>
       <div className="mb-8">
-        <h1 className="text-3xl font-medium text-gray-900 text-center">
+        {/* <h1 className="text-center">
           Which of these best describes your place?
-        </h1>
+        </h1> */}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {propertyTypes.map((type) => {
           const IconComponent = type.icon;
-          const isSelected = selected === type.id;
           
           return (
-            <button
+            <SelectionCard
               key={type.id}
-              onClick={() => handleSelect(type.id)}
-              className={`
-                relative p-6 border-2 rounded-lg transition-all duration-200 text-left
-                ${isSelected 
-                  ? 'border-gray-900 bg-gray-50' 
-                  : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                }
-              `}
-            >
-              <div className="flex flex-col items-start space-y-3">
-                <IconComponent className={`w-8 h-8 ${isSelected ? 'text-gray-900' : 'text-gray-700'}`} />
-                <span className={`text-base font-medium ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>
-                  {type.name}
-                </span>
-              </div>
-            </button>
+              id={type.id}
+              title={type.name}
+              icon={<IconComponent size={32} />}
+              isSelected={selectedType === type.id}
+              onClick={onSelect}
+              className="p-6"
+            />
           );
         })}
       </div>

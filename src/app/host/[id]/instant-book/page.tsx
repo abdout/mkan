@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { StepNavigation } from '@/components/host';
 import { CalendarCheckmark, LightningBoltIcon } from '@/components/atom/airbnb-icons';
 
 interface InstantBookPageProps {
@@ -20,13 +19,6 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
     });
   }, [params]);
 
-  const handleBack = () => {
-    router.push(`/host/${id}/finish-setup`);
-  };
-
-  const handleNext = () => {
-    router.push(`/host/${id}/visibility`);
-  };
 
   const bookingOptions = [
     {
@@ -51,12 +43,12 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
       <div className="">
         <div className="grid grid-cols-3 gap-16 items-start">
           {/* Left column - Title and description */}
-          <div>
-            <h1 className="text-4xl font-medium text-gray-900 mb-4">
+          <div className="space-y-4">
+            <h3>
               Pick your<br />
               booking settings
-            </h1>
-            <p className="text-gray-600 text-lg">
+            </h3>
+            <p>
               You can change this at any time.{' '}
               <button className="underline hover:no-underline">
                 Learn more
@@ -70,26 +62,26 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
               <button
                 key={option.id}
                 onClick={() => setSelectedOption(option.id)}
-                className={`w-full p-5 rounded-xl border transition-all duration-200 text-left ${
+                className={`w-full py-5 px-8 rounded-xl border transition-all duration-200 text-left ${
                   selectedOption === option.id
-                    ? 'border-gray-900 bg-gray-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-foreground bg-accent'
+                    : 'border-border hover:border-foreground/50'
                 }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 ">
-                      <h3 className="text-lg font-medium">
+                      <h5>
                         {option.title}
-                      </h3>
+                      </h5>
                       
                     </div>
                     {option.recommended && (
-                        <span className=" text-green-600 text-xs font-medium ">
+                        <span className="text-green-500">
                           {option.subtitle}
                         </span>
                       )}
-                    <p className="text-sm leading-relaxed">
+                    <p>
                       {option.description}
                     </p>
                   </div>
@@ -102,14 +94,6 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
           </div>
         </div>
       </div>
-
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-        nextDisabled={false}
-      />
     </div>
   );
 };

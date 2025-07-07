@@ -38,14 +38,14 @@ const HOSTING_STEPS = [
   'visibility',
   'price',
   'discount',
-  'legal-and-create'
+  'legal'
 ];
 
 // Group steps into 3 main categories
 const STEP_GROUPS = {
   1: ['about-place', 'structure', 'privacy-type', 'location', 'floor-plan', 'stand-out'],
   2: ['amenities', 'photos', 'title', 'description', 'finish-setup'],
-  3: ['instant-book', 'visibility', 'price', 'discount', 'legal-and-create']
+  3: ['instant-book', 'visibility', 'price', 'discount', 'legal']
 };
 
 const HostFooter: React.FC<HostFooterProps> = ({
@@ -131,6 +131,12 @@ const HostFooter: React.FC<HostFooterProps> = ({
       return;
     }
     
+    // If we're on the legal step (last step), navigate to listings
+    if (currentStepSlug === 'legal') {
+      router.push('/hosting/listings');
+      return;
+    }
+    
     if (currentStepIndex < HOSTING_STEPS.length - 1) {
       const nextStep = HOSTING_STEPS[currentStepIndex + 1];
       router.push(`/host/${params.id}/${nextStep}`);
@@ -158,10 +164,13 @@ const HostFooter: React.FC<HostFooterProps> = ({
   
   // Check if back/next are available
   const canGoBackActual = canGoBack && (currentStepIndex > 0);
-  const canGoNextActual = canGoNext && (currentStepIndex < HOSTING_STEPS.length - 1) && !nextDisabled && !contextNextDisabled && !(customNavigation?.nextDisabled);
+  const canGoNextActual = canGoNext && (currentStepIndex < HOSTING_STEPS.length - 1 || currentStepSlug === 'legal') && !nextDisabled && !contextNextDisabled && !(customNavigation?.nextDisabled);
+  
+  // Set the next button label based on current step
+  const actualNextLabel = currentStepSlug === 'legal' ? 'Create listing' : nextLabel;
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white">
+    <footer className="fixed bottom-0 left-0 right-0">
       {/* Three separate progress bars */}
       <div className="">
         <div className="grid grid-cols-3 gap-2 px-20">
@@ -169,7 +178,7 @@ const HostFooter: React.FC<HostFooterProps> = ({
             <Progress 
               key={index}
               value={getStepProgress(index + 1)} 
-              className="h-1 w-full"
+              className="h-1 w-full "
             />
           ))}
         </div>
@@ -206,7 +215,7 @@ const HostFooter: React.FC<HostFooterProps> = ({
         </div>
 
         {/* Right side - Back and Next buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             onClick={handleBack}
@@ -221,9 +230,10 @@ const HostFooter: React.FC<HostFooterProps> = ({
             onClick={handleNext}
             disabled={!canGoNextActual}
             size='sm'
-            className=""
+            variant="black"
+            
           >
-            {nextLabel}
+            {actualNextLabel}
           </Button>
         </div>
       </div>

@@ -2,7 +2,11 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { StepNavigation } from '@/components/host';
+import { HostStepLayout } from '@/components/host';
+import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
+import { useHostValidation } from '@/context/host-validation-context';
 
 interface DiscountPageProps {
   params: Promise<{ id: string }>;
@@ -14,9 +18,9 @@ const DiscountPage = ({ params }: DiscountPageProps) => {
   const [selectedDiscounts, setSelectedDiscounts] = useState<string[]>([
     'new-listing',
     'last-minute',
-    'weekly',
-    'monthly'
+    'weekly'
   ]);
+  const { enableNext } = useHostValidation();
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
@@ -24,13 +28,10 @@ const DiscountPage = ({ params }: DiscountPageProps) => {
     });
   }, [params]);
 
-  const handleBack = () => {
-    router.push(`/host/${id}/price`);
-  };
-
-  const handleNext = () => {
-    router.push(`/host/${id}/legal-and-create`);
-  };
+  // Enable next button since discounts are optional
+  React.useEffect(() => {
+    enableNext();
+  }, [enableNext]);
 
   const toggleDiscount = (discountId: string) => {
     setSelectedDiscounts(prev => 
@@ -49,7 +50,7 @@ const DiscountPage = ({ params }: DiscountPageProps) => {
     },
     {
       id: 'last-minute',
-      percentage: '15%',
+      percentage: '25%',
       title: 'Last-minute discount',
       description: 'For stays booked 14 days or less before arrival',
     },
@@ -59,79 +60,59 @@ const DiscountPage = ({ params }: DiscountPageProps) => {
       title: 'Weekly discount',
       description: 'For stays of 7 nights or more',
     },
-    {
-      id: 'monthly',
-      percentage: '20%',
-      title: 'Monthly discount',
-      description: 'For stays of 28 nights or more',
-    },
   ];
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      <div className="max-w-2xl mx-auto px-6 pt-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-medium text-gray-900 mb-4">
-            Add discounts
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Help your place stand out to get booked faster and earn your first reviews.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {discounts.map((discount) => (
-            <div
-              key={discount.id}
-              className="flex items-center justify-between p-6 rounded-xl border border-gray-200 bg-gray-50"
-            >
-              <div className="flex items-center space-x-4">
-                <div className="w-16 h-12 bg-white rounded-lg border border-gray-200 flex items-center justify-center">
-                  <span className="text-lg font-semibold text-gray-900">
-                    {discount.percentage}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">
-                    {discount.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {discount.description}
-                  </p>
-                </div>
+    <HostStepLayout
+      title="Add discounts"
+      subtitle="Help your place stand out to get booked faster and earn your first reviews."
+    >
+      <div className="space-y-4">
+        {discounts.map((discount) => (
+          <Card
+            key={discount.id}
+            className={`p-4 cursor-pointer transition-all duration-200 ${
+              selectedDiscounts.includes(discount.id)
+                ? 'border-foreground/50 bg-accent'
+                : 'hover:border-foreground/50'
+            }`}
+            onClick={() => toggleDiscount(discount.id)}
+          >
+            <div className="flex items-center justify-between">
+              {/* Percentage Badge */}
+              <div className="flex-shrink-0">
+                <Badge 
+                  variant={discount.id === 'new-listing' ? 'default' : 'outline'} 
+                  className={`w-12 h-8 bg-transparent text-foreground flex items-center justify-center ${
+                    discount.id !== 'new-listing' ? 'bg-background border border-muted-foreground' : ''
+                  }`}
+                >
+                  {discount.percentage}
+                </Badge>
               </div>
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
+              
+              {/* Title and Description */}
+              <div className="flex-1 mx-4">
+                <h5 className="mb-1">
+                  {discount.title}
+                </h5>
+                <p>
+                  {discount.description}
+                </p>
+              </div>
+              
+              {/* Checkbox */}
+              <div className="flex-shrink-0">
+                <Checkbox
                   checked={selectedDiscounts.includes(discount.id)}
-                  onChange={() => toggleDiscount(discount.id)}
-                  className="sr-only"
+                  onCheckedChange={() => toggleDiscount(discount.id)}
                 />
-                <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${
-                  selectedDiscounts.includes(discount.id)
-                    ? 'bg-gray-900 border-gray-900'
-                    : 'border-gray-300 bg-white hover:border-gray-400'
-                }`}>
-                  {selectedDiscounts.includes(discount.id) && (
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  )}
-                </div>
-              </label>
+              </div>
             </div>
-          ))}
-        </div>
+          </Card>
+        ))}
       </div>
-
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-        nextDisabled={false}
-      />
-    </div>
+    </HostStepLayout>
   );
 };
 

@@ -49,8 +49,8 @@ const FloorPlanPage = ({ params }: FloorPlanPageProps) => {
     onDecrease: () => void; 
     onIncrease: () => void; 
   }) => (
-    <div className="flex items-center justify-between py-6 border-b border-gray-100 last:border-b-0">
-      <div className="text-lg text-gray-900">
+    <div className="flex items-center justify-between py-6 border-b border-border last:border-b-0">
+      <div className="text-foreground">
         {label}
       </div>
       <div className="flex items-center gap-3">
@@ -59,18 +59,18 @@ const FloorPlanPage = ({ params }: FloorPlanPageProps) => {
           disabled={value <= 1}
           className={`w-7 h-7 rounded-full border flex items-center justify-center transition-colors ${
             value <= 1
-              ? 'border-gray-200 text-gray-200 cursor-not-allowed'
-              : 'border-gray-500 text-gray-500 hover:border-gray-950 hover:text-gray-950'
+              ? 'border-muted text-muted-foreground cursor-not-allowed'
+              : 'border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground'
           }`}
         >
           <Minus size={14} strokeWidth={2} />
         </button>
-        <span className="text-base w-2.5 text-center font-medium">
+        <span className="w-2.5 text-center">
           {value}
         </span>
         <button
           onClick={onIncrease}
-          className="w-7 h-7 rounded-full border border-gray-500 text-gray-500 hover:border-gray-950 hover:text-gray-950 flex items-center justify-center transition-colors"
+          className="w-7 h-7 rounded-full border border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center transition-colors"
         >
           <Plus size={14} strokeWidth={2} />
         </button>
@@ -84,18 +84,18 @@ const FloorPlanPage = ({ params }: FloorPlanPageProps) => {
         <div className="flex flex-row gap-12">
           {/* Left div - Title */}
           <div className="flex-1 flex flex-col">
-            <h1 className="text-4xl font-medium text-gray-900 leading-tight text-start">
-              <div>Share some basics</div>
-              <div>about your place</div>
-            </h1>
-            <p className="text-gray-600 text-lg mt-4">
+            <h3 className="">
+              Share some basics <br />
+              about your place
+            </h3>
+            <p className="mt-4">
               You'll add more details later, like bed types.
             </p>
           </div>
 
           {/* Right div - Counter Controls */}
           <div className="flex-1">
-            <div className="bg-white">
+            <div className="bg-background">
               <CounterRow
                 label="Guests"
                 value={counts.guests}

@@ -1,28 +1,31 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, MoreHorizontal } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { ListView, GridView } from '@/components/atom/airbnb-icons';
+import NotificationCard from '@/components/hosting/notification-card';
 
 const HostingListingsPage = () => {
   const router = useRouter();
+  const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
 
   const mockListings = [
     {
       id: '1456438879027340782',
-      image: '/placeholder.jpg',
+      image: '/assets/hero.jpg',
       status: 'action-required',
       title: 'Cozy Downtown Apartment',
     },
     {
       id: '2',
-      image: '/placeholder.jpg', 
-      status: 'in-progress',
+      image: '/assets/find-experience.jpg', 
+      status: 'action-required',
       title: 'Modern Studio Loft',
     },
     {
       id: '3',
-      image: '/placeholder.jpg',
+      image: '/assets/banner.jpg',
       status: 'in-progress', 
       title: 'Beachfront Villa',
     },
@@ -30,6 +33,10 @@ const HostingListingsPage = () => {
 
   const handleEditListing = (listingId: string) => {
     router.push(`/hosting/listings/editor/${listingId}/details/photo-tour`);
+  };
+
+  const toggleViewType = () => {
+    setViewType(viewType === 'grid' ? 'list' : 'grid');
   };
 
   const StatusBadge = ({ status }: { status: string }) => {
@@ -54,71 +61,36 @@ const HostingListingsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-8">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-red-500 rounded flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">A</span>
-                </div>
-                <span className="font-bold text-xl text-red-500">airbnb</span>
-              </div>
-              <nav className="flex space-x-8">
-                <button className="text-gray-600 hover:text-gray-900">Today</button>
-                <button className="text-gray-600 hover:text-gray-900">Calendar</button>
-                <button className="text-gray-900 font-medium border-b-2 border-gray-900 pb-4">Listings</button>
-                <button className="text-gray-600 hover:text-gray-900 relative">
-                  Messages
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="text-gray-600 hover:text-gray-900">Switch to traveling</button>
-              <div className="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center">
-                <span className="text-white font-medium text-sm">A</span>
-              </div>
-              <button className="text-gray-600 hover:text-gray-900 relative">
-                <MoreHorizontal size={20} />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Notification Banner */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-              <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs">✓</span>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">hello mkan</p>
-              <p className="text-base font-medium text-gray-900">Confirm a few key details</p>
-              <p className="text-sm text-gray-600">Required to publish</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <>
+      <NotificationCard
+            subtitle="hello mkan"
+            title="Confirm a few key details"
+            description="Required to publish"
+          />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-medium text-gray-900">Your listings</h1>
-          <div className="flex items-center space-x-4">
-            <button className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-              <MoreHorizontal size={20} className="text-gray-600" />
+          <h1 className="text-3xl font-semibold text-gray-900">Your listings</h1>
+          <div className="flex items-center space-x-3">
+            <button className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 12h18m-9-9l9 9-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button 
+              onClick={toggleViewType}
+              className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
+            >
+              {viewType === 'grid' ? (
+                <ListView size={20} className="text-gray-600" />
+              ) : (
+                <GridView size={20} className="text-gray-600" />
+              )}
             </button>
             <button 
               onClick={() => router.push('/host/overview')}
-              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
             >
               <Plus size={20} className="text-gray-600" />
             </button>
@@ -126,23 +98,32 @@ const HostingListingsPage = () => {
         </div>
 
         {/* Listings Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className={`grid ${viewType === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-6`}>
           {mockListings.map((listing) => (
-            <div key={listing.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div 
+              key={listing.id} 
+              className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md transition-shadow ${viewType === 'list' ? 'flex' : ''}`}
+              onClick={() => handleEditListing(listing.id)}
+            >
               <div className="relative">
-                <div className="aspect-square bg-gray-200 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
-                    <span className="text-gray-500 text-2xl">🏠</span>
-                  </div>
+                <div className={`${viewType === 'list' ? 'w-48 h-32' : 'aspect-square'} bg-gray-200 overflow-hidden`}>
+                  <img 
+                    src={listing.image} 
+                    alt={listing.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="absolute top-3 left-3">
                   <StatusBadge status={listing.status} />
                 </div>
               </div>
-              <div className="p-4">
+              <div className="p-4 flex-1">
                 <p className="text-sm text-gray-600 mb-1">{listing.title}</p>
                 <button
-                  onClick={() => handleEditListing(listing.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditListing(listing.id);
+                  }}
                   className="text-sm font-medium text-gray-900 hover:text-gray-700"
                 >
                   Edit listing
@@ -152,7 +133,7 @@ const HostingListingsPage = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

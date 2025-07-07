@@ -6,11 +6,11 @@
   }
 
   h2 {
-    @apply scroll-m-20  text-5xl font-bold tracking-tight first:mt-0;
+    @apply scroll-m-20  text-5xl font-semibold tracking-tight leading-tight first:mt-0;
   }
 
   h3 {
-    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+    @apply scroll-m-20 text-4xl font-semibold tracking-tight leading-tight;
   }
 
   h4 {
@@ -18,11 +18,11 @@
   }
 
   h5 {
-    @apply scroll-m-20 text-lg font-semibold tracking-tight;
+    @apply scroll-m-20 text-base font-semibold tracking-tight leading-tight;
   }
 
   h6 {
-    @apply scroll-m-20 text-base font-semibold tracking-tight;
+    @apply scroll-m-20 text-xs font-semibold tracking-tight;
   }
 
   /* Paragraph */
@@ -76,7 +76,7 @@
 
   /* Links */
   a {
-    @apply font-medium text-primary  hover:text-primary/80;
+    @apply font-medium text-foreground hover:text-foreground/80;
   }
 
   /* Small text */
@@ -87,6 +87,11 @@
   /* Large text */
   .lead {
     @apply text-xl text-muted-foreground;
+  }
+
+  /* Display text - for very large elements like prices */
+  .display {
+    @apply text-6xl font-bold;
   }
 
   /* Muted text */

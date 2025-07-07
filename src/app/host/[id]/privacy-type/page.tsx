@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Home, DoorOpen, Building } from 'lucide-react';
+import { HostStepLayout, SelectionCard } from '@/components/host';
 import { useHostValidation } from '@/context/host-validation-context';
 
 interface PrivacyTypePageProps {
@@ -48,52 +49,25 @@ const PrivacyTypePage = ({ params }: PrivacyTypePageProps) => {
   ];
 
   return (
-    <div className="">
-      <div className="items-center justify-center">
-        <div className="flex flex-row gap-12">
-          {/* Left div - Title */}
-          <div className="flex-1 flex flex-col">
-            <h1 className="text-4xl font-medium text-gray-900 leading-tight text-start">
-              <div>What type of</div>
-              <div>place will guests have?</div>
-            </h1>
-          </div>
-
-          {/* Right div - Privacy Types */}
-          <div className="flex-1">
-            <div className="space-y-3">
-              {privacyTypes.map((type) => (
-                <button
-                  key={type.id}
-                  onClick={() => setSelectedType(type.id)}
-                  className={`w-full py-3 px-4 rounded-xl border transition-all duration-200 text-left flex items-center justify-between ${
-                    selectedType === type.id
-                      ? 'border-gray-900 bg-gray-50'
-                      : 'border-gray-200 hover:border-foreground hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex-1">
-                    <h3 className={`text-base font-medium mb-1 ${
-                      selectedType === type.id ? 'text-gray-900' : 'text-gray-700'
-                    }`}>
-                      {type.title}
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      {type.description}
-                    </p>
-                  </div>
-                  <div className={`ml-4 ${
-                    selectedType === type.id ? 'text-gray-900' : 'text-gray-400'
-                  }`}>
-                    <type.icon size={24} />
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+    <HostStepLayout
+      title={
+        <h3>What type of <br /> place will guests have?</h3>
+      }
+    >
+      <div className="space-y-3">
+        {privacyTypes.map((type) => (
+          <SelectionCard
+            key={type.id}
+            id={type.id}
+            title={type.title}
+            description={type.description}
+            icon={<type.icon size={24} />}
+            isSelected={selectedType === type.id}
+            onClick={setSelectedType}
+          />
+        ))}
       </div>
-    </div>
+    </HostStepLayout>
   );
 };
 

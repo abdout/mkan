@@ -1,6 +1,6 @@
 // Alternative: Single array approach
 export const ALL_NAVIGATION_ITEMS = [
-  { type: "display", href: "/become-host", label: "Become a host" },
+  { type: "display", href: "/host", label: "Become a host" },
   { type: "display", href: "/create-experience", label: "Create your experience" },
   { type: "display", href: "/help", label: "Help" },
   { type: "display", label: "EUR €" },
@@ -11,7 +11,7 @@ export const ALL_NAVIGATION_ITEMS = [
 
 // Current approach: Separate arrays
 export const NAVIGATION_LINKS = [
-  { href: "/become-host", label: "Become a host" },
+  { href: "/host", label: "Become a host" },
   { href: "/create-experience", label: "Create your experience" },
   { href: "/help", label: "Help" },
 ];

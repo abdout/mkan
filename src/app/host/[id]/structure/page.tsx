@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import PropertySelector from '@/components/host/property-selector';
+import { HostStepLayout, PropertySelector } from '@/components/host';
 import { useHostValidation } from '@/context/host-validation-context';
 
 interface StructurePageProps {
@@ -40,28 +40,17 @@ const StructurePage = ({ params }: StructurePageProps) => {
   };
 
   return (
-    <div className="">
-      <div className="items-center justify-center">
-        <div className="flex flex-row gap-12">
-          {/* Left div - Title */}
-          <div className="flex-1 flex flex-col ">
-            <h1 className="text-4xl font-medium text-gray-900 leading-tight text-start">
-              <div>Which of these best</div>
-              <div>describes your place?</div>
-            </h1>
-          </div>
-
-          {/* Right div - Compact PropertyTypeSelector */}
-          <div className="flex-1">
-            <PropertySelector
-              selectedType={selectedType}
-              onSelect={handlePropertySelect}
-              compact={true}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <HostStepLayout
+      title={
+        <h3>Which of these best <br /> describes your place?</h3>
+      }
+    >
+      <PropertySelector
+        selectedType={selectedType}
+        onSelect={handlePropertySelect}
+        compact={true}
+      />
+    </HostStepLayout>
   );
 };
 

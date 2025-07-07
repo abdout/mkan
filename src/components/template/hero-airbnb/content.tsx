@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setFilters } from "@/state";
-import Navbar from "@/components/template/header-airbnb/header";
+import SiteHeader from "@/components/template/header-airbnb/header";
 
 
 const HeroSection = () => {
@@ -53,7 +53,7 @@ const HeroSection = () => {
     <div className="relative h-screen w-full overflow-hidden">
       {/* Transparent Navbar Overlay */}
       <div className="absolute top-0 left-0 w-full z-50">
-        <Navbar />
+        <SiteHeader />
       </div>
       
       {/* Hero Background Image */}

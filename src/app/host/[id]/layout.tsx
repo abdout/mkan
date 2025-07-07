@@ -11,9 +11,9 @@ interface HostLayoutProps {
 const HostLayout = ({ children }: HostLayoutProps) => {
   return (
     <HostValidationProvider>
-      <div className="px-20">
+      <div className="px-20 bg-background min-h-screen">
         {/* Main content with padding to account for fixed footer */}
-        <main className="h-screen pt-20 ">
+        <main className="h-screen pt-20">
           {children}
         </main>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { StepHeader } from '@/components/host';
+import { HostStepHeader } from '@/components/host';
 import { useHostValidation } from '@/context/host-validation-context';
 
 interface AboutPlaceProps {
@@ -37,7 +37,7 @@ const AboutPlace = ({ params }: AboutPlaceProps) => {
     <div className="w-3/4 max-w-xl mx-auto bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl flex items-center justify-center overflow-hidden">
       <video
         ref={videoRef}
-        className="w-full h-full object-cover "
+        className="w-full h-full object-cover"
         autoPlay
         muted
         playsInline
@@ -72,7 +72,7 @@ const AboutPlace = ({ params }: AboutPlaceProps) => {
   return (
     <div className="">
       <div className="w-full">
-        <StepHeader
+        <HostStepHeader
           stepNumber={1}
           title="Tell us about your place"
           description="In this step, we'll ask you which type of property you have and if guests will book the entire place or just a room. Then let us know the location and how many guests can stay."

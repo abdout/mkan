@@ -19,8 +19,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { SidebarTrigger } from "../../ui/sidebar";
 import { NAVIGATION_LINKS, DISPLAY_ITEMS, AUTH_LINKS, ALL_NAVIGATION_ITEMS } from "./constant";
 import { useCurrentUser } from "../../auth/use-current-user";
+import MobileNav from "./mobile-nav";
 
-const Navbar = () => {
+const SiteHeader = () => {
   const { data: session, status } = useSession();
   const currentUser = useCurrentUser();
   const router = useRouter();
@@ -111,35 +112,25 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Navigation Links - Single Array Approach */}
-        <nav className="flex items-center gap-6">
+        {/* Desktop Navigation Links - Hidden on mobile */}
+        <nav className="hidden md:flex items-center gap-6">
           {filteredNavItems.map((item, index) => {
             const commonClasses = `text-sm font-light ${isLandingPage ? "text-white" : "text-gray-700"} hover:opacity-80`;
             
-            if (item.type === "display" && (item.href === "/login" || item.href === "/join")) {
+            // If item has href, render as Link
+            if (item.href) {
               return (
-                <Link key={index} href={item.href} className={commonClasses}>
+                <Link key={item.href || index} href={item.href} className={commonClasses}>
                   {item.label}
                 </Link>
               );
             }
             
-            if (item.type === "display") {
-              return (
-                <span key={index} className={commonClasses}>
-                  {item.label}
-                </span>
-              );
-            }
-            
+            // If no href, render as display text
             return (
-              <Link
-                key={item.href || index}
-                href={item.href!}
-                className={commonClasses}
-              >
+              <span key={index} className={commonClasses}>
                 {item.label}
-              </Link>
+              </span>
             );
           })}
           
@@ -152,9 +143,12 @@ const Navbar = () => {
             </button>
           )}
         </nav>
+
+        {/* Mobile Navigation - Shows only on mobile */}
+        <MobileNav isLandingPage={isLandingPage} />
       </div>
     </div>
   );
 };
 
-export default Navbar;
+export default SiteHeader;

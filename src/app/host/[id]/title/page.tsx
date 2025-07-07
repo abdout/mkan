@@ -41,13 +41,13 @@ const TitlePage = ({ params }: TitlePageProps) => {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
           {/* Left side - Text content */}
-          <div className="">
-            <h1 className="text-4xl font-medium text-gray-900 mb-4">
+          <div className="space-y-4">
+            <h3>
               Now, let's give your
               <br />
               house a title
-            </h1>
-            <p className="text-gray-600 text-lg">
+            </h3>
+            <p>
               Short titles work best. Have fun with it—you can always change it later.
             </p>
           </div>
@@ -57,23 +57,16 @@ const TitlePage = ({ params }: TitlePageProps) => {
             <textarea
               value={title}
               onChange={handleTitleChange}
-              className="w-full h-[100px] p-6 text-lg border border-neutral-500 rounded-lg resize-none focus:outline-none transition-colors"
+              className="w-full h-[100px] p-6 border border-input rounded-lg resize-none focus:outline-none focus:border-ring transition-colors"
               maxLength={maxLength}
             />
-            <div className="mt-2 text-sm text-gray-500">
+            <div className="mt-2 text-muted-foreground">
               <span>{title.length}/{maxLength}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <StepNavigation
-        onBack={handleBack}
-        onNext={handleNext}
-        backLabel="Back"
-        nextLabel="Next"
-        nextDisabled={title.length === 0}
-      />
     </div>
   );
 };

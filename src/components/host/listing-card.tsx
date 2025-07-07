@@ -25,18 +25,18 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <Card 
-      className="border  hover:border-black py-4 bg-white hover:bg-gray-50 transition-all cursor-pointer shadow-none hover:shadow-none rounded-lg"
+      className="border hover:border-foreground/50 py-4 bg-card hover:bg-accent transition-all cursor-pointer shadow-none hover:shadow-none rounded-lg"
       onClick={handleClick}
     >
-      <CardContent className="flex items-center px-3 ">
+      <CardContent className="flex items-center px-3">
         <div className="flex items-center space-x-3 flex-1">
           <div className="w-10 h-10 bg-muted rounded-md flex items-center justify-center">
-            <Home className="w-5 h-5 text-gray-600" />
+            <Home className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-sm text-gray-900 font-medium">
+            <h5>
               {title}
-            </p>
+            </h5>
           </div>
         </div>
       </CardContent>

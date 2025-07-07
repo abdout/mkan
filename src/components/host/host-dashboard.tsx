@@ -43,16 +43,16 @@ const HostDashboard: React.FC<HostDashboardProps> = ({
     <div className="max-w-xl mx-auto p-6 space-y-6">
       {/* Welcome Header */}
       <div>
-        <h1 className="text-2xl font-medium text-gray-900 mb-6">
+        <h3 className="mb-6">
           Welcome back, {hostName}
-        </h1>
+        </h3>
       </div>
 
       {/* Finish your listing section */}
       <div className="space-y-4">
-        <h2 className="text-lg font-medium text-gray-900">
+        <h4>
           Finish your listing
-        </h2>
+        </h4>
         
         <div className="space-y-3">
           {listings.map((listing) => (

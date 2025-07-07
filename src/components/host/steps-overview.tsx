@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 
 interface Step {
@@ -39,16 +40,16 @@ const StepsOverview: React.FC<StepsOverviewProps> = ({ onGetStarted }) => {
 
   return (
     <div className="h-full flex flex-col px-20">
-      <div className="flex-1 ">
+      <div className="flex-1">
         <div className="h-full max-w-7xl mx-auto flex flex-col">
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-start py-12">
             {/* Left Side - Title */}
             <div>
-              <h1 className="text-4xl md:text-5xl font-medium leading-tight">
+              <h2>
                 It's easy to get
                 <br />
                 started on Mkan
-              </h1>
+              </h2>
             </div>
 
             {/* Right Side - Steps */}
@@ -57,21 +58,21 @@ const StepsOverview: React.FC<StepsOverviewProps> = ({ onGetStarted }) => {
                 <div key={step.number} className="flex gap-6 items-start">
                   <div className="flex gap-3 flex-1">
                     <div className="flex-shrink-0">
-                      <span className="text-lg font-medium">
+                      <h4 className="text-foreground">
                         {step.number}
-                      </span>
+                      </h4>
                     </div>
                     <div>
-                      <h3 className="text-xl font-medium mb-1">
+                      <h4 className="mb-1">
                         {step.title}
-                      </h3>
-                      <p className=" leading-relaxed text-sm">
+                      </h4>
+                      <p>
                         {step.description}
                       </p>
                     </div>
                   </div>
                   <div className="flex-shrink-0 hidden md:block">
-                    <div className="relative w-24 h-24 overflow-hidden ">
+                    <div className="relative w-24 h-24 overflow-hidden">
                       <Image
                         src={step.illustration}
                         alt={step.title}
@@ -87,11 +88,11 @@ const StepsOverview: React.FC<StepsOverviewProps> = ({ onGetStarted }) => {
 
           {/* Bottom Section with HR and Button */}
           <div className="">
-            <hr className="w-full border-t border-gray-200" />
+            <Separator className="w-full" />
             <div className="flex justify-end py-4">
               <Button
                 onClick={onGetStarted}
-                className="bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600"
+                
               >
                 Get started
               </Button>
