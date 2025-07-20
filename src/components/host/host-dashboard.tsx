@@ -40,7 +40,7 @@ const HostDashboard: React.FC<HostDashboardProps> = ({
   onCreateFromExisting
 }) => {
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-6">
+    <div className="max-w-xl mx-auto p-4 space-y-4">
       {/* Welcome Header */}
       <div>
         <h3 className="mb-6">
@@ -50,9 +50,9 @@ const HostDashboard: React.FC<HostDashboardProps> = ({
 
       {/* Finish your listing section */}
       <div className="space-y-4">
-        <h4>
+        <h5>
           Finish your listing
-        </h4>
+        </h5>
         
         <div className="space-y-3">
           {listings.map((listing) => (

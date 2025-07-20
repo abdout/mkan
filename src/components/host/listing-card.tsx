@@ -25,7 +25,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <Card 
-      className="border hover:border-foreground/50 py-4 bg-card hover:bg-accent transition-all cursor-pointer shadow-none hover:shadow-none rounded-lg"
+      className="border hover:border-foreground/50 py-3 bg-card hover:bg-accent transition-all cursor-pointer shadow-none hover:shadow-none rounded-lg"
       onClick={handleClick}
     >
       <CardContent className="flex items-center px-3">

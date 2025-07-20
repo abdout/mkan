@@ -15,10 +15,10 @@ const NewListingOptions: React.FC<NewListingOptionsProps> = ({
   onCreateFromExisting
 }) => {
   return (
-    <div className="space-y-6">
-      <h4>
+    <div className="space-y-4">
+      <h5>
         Start a new listing
-      </h4>
+      </h5>
       
       <div className="space-y-3">
         {/* Create a new listing */}
