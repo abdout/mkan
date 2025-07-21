@@ -3,21 +3,28 @@
 import React from 'react';
 import { StepHeader } from '@/components/host';
 import { useHostValidation } from '@/context/host-validation-context';
+import { ListingProvider, useListing } from '@/components/host/use-listing';
 
 interface FinishSetupPageProps {
   params: Promise<{ id: string }>;
 }
 
-const FinishSetupPage = ({ params }: FinishSetupPageProps) => {
+const FinishSetupPageContent = ({ params }: FinishSetupPageProps) => {
   const [id, setId] = React.useState<string>('');
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const { enableNext } = useHostValidation();
+  const { listing, loadListing } = useListing();
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
       setId(resolvedParams.id);
+      // Load the listing data in the background
+      const listingId = parseInt(resolvedParams.id);
+      if (!isNaN(listingId)) {
+        loadListing(listingId).catch(console.error);
+      }
     });
-  }, [params]);
+  }, [params, loadListing]);
 
   // Enable next button for this informational page
   React.useEffect(() => {
@@ -70,6 +77,14 @@ const FinishSetupPage = ({ params }: FinishSetupPageProps) => {
         />
       </div>
     </div>
+  );
+};
+
+const FinishSetupPage = ({ params }: FinishSetupPageProps) => {
+  return (
+    <ListingProvider>
+      <FinishSetupPageContent params={params} />
+    </ListingProvider>
   );
 };
 

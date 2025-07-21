@@ -3,14 +3,18 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { StepNavigation } from '@/components/host';
+import { useHostValidation } from '@/context/host-validation-context';
+import { ListingProvider, useListing } from '@/components/host/use-listing';
 
 interface TitlePageProps {
   params: Promise<{ id: string }>;
 }
 
-const TitlePage = ({ params }: TitlePageProps) => {
+const TitlePageContent = ({ params }: TitlePageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
+  const { enableNext, disableNext } = useHostValidation();
+  const { listing, updateListingData, loadListing } = useListing();
   const [title, setTitle] = useState<string>('');
 
   const maxLength = 32;
@@ -18,8 +22,29 @@ const TitlePage = ({ params }: TitlePageProps) => {
   React.useEffect(() => {
     params.then((resolvedParams) => {
       setId(resolvedParams.id);
+      // Load the listing data in the background
+      const listingId = parseInt(resolvedParams.id);
+      if (!isNaN(listingId)) {
+        loadListing(listingId).catch(console.error);
+      }
     });
-  }, [params]);
+  }, [params, loadListing]);
+
+  // Load existing title from listing
+  React.useEffect(() => {
+    if (listing?.title) {
+      setTitle(listing.title);
+    }
+  }, [listing]);
+
+  // Enable/disable next button based on title length
+  React.useEffect(() => {
+    if (title.trim().length > 0) {
+      enableNext();
+    } else {
+      disableNext();
+    }
+  }, [title, enableNext, disableNext]);
 
   const handleBack = () => {
     router.push(`/host/${id}/photos`);
@@ -29,10 +54,19 @@ const TitlePage = ({ params }: TitlePageProps) => {
     router.push(`/host/${id}/description`);
   };
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTitleChange = async (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newTitle = event.target.value;
     if (newTitle.length <= maxLength) {
       setTitle(newTitle);
+      
+      // Update backend data with debouncing
+      try {
+        await updateListingData({
+          title: newTitle
+        });
+      } catch (error) {
+        console.error('Error updating title:', error);
+      }
     }
   };
 
@@ -66,8 +100,15 @@ const TitlePage = ({ params }: TitlePageProps) => {
           </div>
         </div>
       </div>
-
     </div>
+  );
+};
+
+const TitlePage = ({ params }: TitlePageProps) => {
+  return (
+    <ListingProvider>
+      <TitlePageContent params={params} />
+    </ListingProvider>
   );
 };
 

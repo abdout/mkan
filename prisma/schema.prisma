@@ -83,7 +83,7 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
   accounts              Account[]
   sessions              Session[]
-  managedProperties     Property[]
+  managedListings       Listing[]
   tenantProfile         Tenant?
 
   createdAt DateTime @default(now())
@@ -157,31 +157,34 @@ model TwoFactorConfirmation {
   @@unique([userId])
 }
 
-model Property {
+model Listing {
   id                Int          @id @default(autoincrement())
-  name              String
-  description       String
-  pricePerMonth     Float
-  securityDeposit   Float
-  applicationFee    Float
-  photoUrls         String[]
-  amenities         Amenity[]
-  highlights        Highlight[]
+  title             String?
+  description       String?
+  pricePerNight     Float?
+  securityDeposit   Float?
+  applicationFee    Float?
+  photoUrls         String[]     @default([])
+  amenities         Amenity[]    @default([])
+  highlights        Highlight[]  @default([])
   isPetsAllowed     Boolean      @default(false)
   isParkingIncluded Boolean      @default(false)
-  beds              Int
-  baths             Float
-  squareFeet        Int
-  maxGuests         Int          @default(2)
-  propertyType      PropertyType
-  postedDate        DateTime     @default(now())
+  bedrooms          Int?
+  bathrooms         Float?
+  squareFeet        Int?
+  guestCount        Int          @default(2)
+  propertyType      PropertyType?
+  postedDate        DateTime?
   averageRating     Float?       @default(0)
   numberOfReviews   Int?         @default(0)
-  locationId Int
-  managerId  String
+  draft             Boolean      @default(true)
+  isPublished       Boolean      @default(false)
+  instantBook       Boolean      @default(false)
+  locationId        Int?
+  hostId            String
 
-  location Location @relation(fields: [locationId], references: [id])
-  manager  User     @relation(fields: [managerId], references: [id])
+  location     Location?     @relation(fields: [locationId], references: [id])
+  host         User          @relation(fields: [hostId], references: [id])
   leases       Lease[]
   applications Application[]
   favoritedBy  Tenant[]      @relation("TenantFavorites")
@@ -196,8 +199,8 @@ model Tenant {
   phoneNumber String
 
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  properties   Property[]    @relation("TenantProperties")
-  favorites    Property[]    @relation("TenantFavorites")
+  listings     Listing[]     @relation("TenantProperties")
+  favorites    Listing[]     @relation("TenantFavorites")
   applications Application[]
   leases       Lease[]
 }
@@ -212,7 +215,7 @@ model Location {
   latitude   Float
   longitude  Float
 
-  properties Property[]
+  listings Listing[]
 }
 
 model Application {
@@ -227,7 +230,7 @@ model Application {
   message         String?
   leaseId         Int?              @unique
 
-  property Property @relation(fields: [propertyId], references: [id])
+  listing Listing @relation(fields: [propertyId], references: [id])
   tenant   Tenant   @relation(fields: [tenantId], references: [userId])
   lease    Lease?   @relation(fields: [leaseId], references: [id])
 }
@@ -241,7 +244,7 @@ model Lease {
   propertyId Int
   tenantId   String
 
-  property    Property     @relation(fields: [propertyId], references: [id])
+  listing     Listing      @relation(fields: [propertyId], references: [id])
   tenant      Tenant       @relation(fields: [tenantId], references: [userId])
   application Application?
   payments    Payment[]

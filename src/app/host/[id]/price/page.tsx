@@ -6,24 +6,38 @@ import { HostStepLayout } from '@/components/host';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import { useHostValidation } from '@/context/host-validation-context';
+import { ListingProvider, useListing } from '@/components/host/use-listing';
 
 interface PricePageProps {
   params: Promise<{ id: string }>;
 }
 
-const PricePage = ({ params }: PricePageProps) => {
+const PricePageContent = ({ params }: PricePageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
+  const { enableNext } = useHostValidation();
+  const { listing, updateListingData, loadListing } = useListing();
   const [price, setPrice] = useState<number>(158);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const { enableNext } = useHostValidation();
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
       setId(resolvedParams.id);
+      // Load the listing data in the background
+      const listingId = parseInt(resolvedParams.id);
+      if (!isNaN(listingId)) {
+        loadListing(listingId).catch(console.error);
+      }
     });
-  }, [params]);
+  }, [params, loadListing]);
+
+  // Load existing price from listing
+  React.useEffect(() => {
+    if (listing?.pricePerNight) {
+      setPrice(listing.pricePerNight);
+    }
+  }, [listing]);
 
   // Enable next button since we have a default price
   React.useEffect(() => {
@@ -49,6 +63,21 @@ const PricePage = ({ params }: PricePageProps) => {
     }
   }, [price, isFocused]);
 
+  const handlePriceChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace('SR', '');
+    const numValue = parseInt(value) || 0;
+    setPrice(numValue);
+    
+    // Update backend data with debouncing
+    try {
+      await updateListingData({
+        pricePerNight: numValue
+      });
+    } catch (error) {
+      console.error('Error updating price:', error);
+    }
+  };
+
   const guestPriceBeforeTaxes = price + 22; // Adding estimated fees
 
   return (
@@ -64,11 +93,7 @@ const PricePage = ({ params }: PricePageProps) => {
               ref={inputRef}
               type="text"
               value={`SR${price}`}
-              onChange={(e) => {
-                const value = e.target.value.replace('SR', '');
-                const numValue = parseInt(value) || 0;
-                setPrice(numValue);
-              }}
+              onChange={handlePriceChange}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               onKeyDown={(e) => {
@@ -139,6 +164,14 @@ const PricePage = ({ params }: PricePageProps) => {
         </div>
       </div>
     </HostStepLayout>
+  );
+};
+
+const PricePage = ({ params }: PricePageProps) => {
+  return (
+    <ListingProvider>
+      <PricePageContent params={params} />
+    </ListingProvider>
   );
 };
 

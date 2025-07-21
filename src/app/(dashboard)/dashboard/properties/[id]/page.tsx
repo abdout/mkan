@@ -11,10 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  getProperty,
-  getPropertyLeases,
-  getPayments,
-} from "@/lib/actions/property-actions";
+  getListing,
+} from "@/components/host/action";
 import { ArrowDownToLine, ArrowLeft, Check, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,7 +39,7 @@ const PropertyManagement = () => {
         let propertyData, leasesData = [];
         
         try {
-          propertyData = await getProperty(propertyId);
+          propertyData = await getListing(propertyId);
         } catch (propError) {
           console.error("Property fetch error:", propError);
           // Create mock property data for testing
@@ -54,7 +52,8 @@ const PropertyManagement = () => {
         }
         
         try {
-          leasesData = await getPropertyLeases(propertyId);
+          // TODO: Implement lease fetching for listings
+    // leasesData = await getPropertyLeases(propertyId);
         } catch (leaseError) {
           console.error("Leases fetch error:", leaseError);
           leasesData = []; // Empty array as fallback

@@ -1,7 +1,7 @@
 import FiltersBar from "./filters-bar";
 import FiltersFull from "./filters-full";
 import Listings from "./listings";
-import { getProperties } from "@/lib/actions/property-actions";
+import { getListings } from "@/components/host/action";
 
 interface SearchPageProps {
   searchParams: Promise<{
@@ -31,10 +31,10 @@ export default async function PropertyContent({ searchParams }: SearchPageProps)
   };
 
   // Fetch properties using server action with error handling
-  let properties: Awaited<ReturnType<typeof getProperties>> = [];
+  let properties: Awaited<ReturnType<typeof getListings>> = [];
   try {
     console.log('Fetching properties with filters:', filters);
-    properties = await getProperties(filters);
+    properties = await getListings(filters);
     console.log('Properties fetched:', properties.length);
   } catch (error) {
     console.error('Error fetching properties:', error);

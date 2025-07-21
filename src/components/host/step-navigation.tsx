@@ -1,62 +1,59 @@
-"use client";
+"use client"
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
+import React from 'react'
 
 interface StepNavigationProps {
-  onBack?: () => void;
-  onNext?: () => void;
-  backLabel?: string;
-  nextLabel?: string;
-  canGoBack?: boolean;
-  canGoNext?: boolean;
-  nextDisabled?: boolean;
+  onNext: () => void
+  onPrevious?: () => void
+  isNextDisabled?: boolean
+  isPreviousDisabled?: boolean
+  nextLabel?: string
+  previousLabel?: string
+  showPrevious?: boolean
 }
 
-const StepNavigation: React.FC<StepNavigationProps> = ({
-  onBack,
-  onNext,
-  backLabel = "Back",
-  nextLabel = "Next",
-  canGoBack = true,
-  canGoNext = true,
-  nextDisabled = false
-}) => {
+export function StepNavigation(props: StepNavigationProps) {
+  const {
+    onNext,
+    onPrevious,
+    isNextDisabled = false,
+    isPreviousDisabled = false,
+    nextLabel = 'Next',
+    previousLabel = 'Back',
+    showPrevious = true,
+  } = props
+
+  const previousButton = showPrevious ? (
+    <button
+      type="button"
+      onClick={onPrevious}
+      disabled={isPreviousDisabled}
+      className={`px-6 py-2.5 rounded-lg font-medium transition-colors ${
+        isPreviousDisabled
+          ? 'text-muted-foreground cursor-not-allowed'
+          : 'text-foreground hover:bg-muted'
+      }`}
+    >
+      {previousLabel}
+    </button>
+  ) : (
+    <div /> // Spacer
+  )
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* Back Button */}
-        <div>
-          {canGoBack && onBack ? (
-            <Button
-              variant="ghost"
-              onClick={onBack}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              {backLabel}
-            </Button>
-          ) : (
-            <div></div>
-          )}
-        </div>
-
-        {/* Next Button */}
-        <div>
-          {canGoNext && onNext && (
-            <Button
-              onClick={onNext}
-              disabled={nextDisabled}
-              className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2 rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed"
-            >
-              {nextLabel}
-            </Button>
-          )}
-        </div>
-      </div>
+    <div className="flex items-center justify-between pt-8 border-t">
+      {previousButton}
+      <button
+        type="submit"
+        disabled={isNextDisabled}
+        className={`px-6 py-2.5 rounded-lg font-medium transition-colors ${
+          isNextDisabled
+            ? 'bg-muted text-muted-foreground cursor-not-allowed'
+            : 'bg-primary text-primary-foreground hover:bg-primary/90'
+        }`}
+      >
+        {nextLabel}
+      </button>
     </div>
-  );
-};
-
-export default StepNavigation; 
+  )
+} 

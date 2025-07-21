@@ -4,22 +4,36 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { HostStepLayout, PropertySelector } from '@/components/host';
 import { useHostValidation } from '@/context/host-validation-context';
+import { ListingProvider, useListing } from '@/components/host/use-listing';
 
 interface StructurePageProps {
   params: Promise<{ id: string }>;
 }
 
-const StructurePage = ({ params }: StructurePageProps) => {
+const StructurePageContent = ({ params }: StructurePageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
   const { enableNext, disableNext } = useHostValidation();
+  const { listing, updateListingData, loadListing } = useListing();
 
   React.useEffect(() => {
     params.then((resolvedParams) => {
       setId(resolvedParams.id);
+      // Load the listing data in the background
+      const listingId = parseInt(resolvedParams.id);
+      if (!isNaN(listingId)) {
+        loadListing(listingId).catch(console.error);
+      }
     });
-  }, [params]);
+  }, [params, loadListing]);
+
+  // Load existing property type from listing
+  React.useEffect(() => {
+    if (listing?.propertyType) {
+      setSelectedType(listing.propertyType.toLowerCase());
+    }
+  }, [listing]);
 
   // Initialize with disabled state since no property type is selected
   React.useEffect(() => {
@@ -35,8 +49,17 @@ const StructurePage = ({ params }: StructurePageProps) => {
     }
   }, [selectedType, enableNext, disableNext]);
 
-  const handlePropertySelect = (typeId: string) => {
+  const handlePropertySelect = async (typeId: string) => {
     setSelectedType(typeId);
+    
+    // Update backend data
+    try {
+      await updateListingData({
+        propertyType: typeId.toUpperCase() as any
+      });
+    } catch (error) {
+      console.error('Error updating property type:', error);
+    }
   };
 
   return (
@@ -51,6 +74,14 @@ const StructurePage = ({ params }: StructurePageProps) => {
         compact={true}
       />
     </HostStepLayout>
+  );
+};
+
+const StructurePage = ({ params }: StructurePageProps) => {
+  return (
+    <ListingProvider>
+      <StructurePageContent params={params} />
+    </ListingProvider>
   );
 };
 

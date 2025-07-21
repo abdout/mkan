@@ -4,15 +4,17 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Minus, Plus } from 'lucide-react';
 import { useHostValidation } from '@/context/host-validation-context';
+import { ListingProvider, useListing } from '@/components/host/use-listing';
 
 interface FloorPlanPageProps {
   params: Promise<{ id: string }>;
 }
 
-const FloorPlanPage = ({ params }: FloorPlanPageProps) => {
+const FloorPlanPageContent = ({ params }: FloorPlanPageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
   const { enableNext } = useHostValidation();
+  const { listing, updateListingData, loadListing } = useListing();
   const [counts, setCounts] = useState({
     guests: 4,
     bedrooms: 1,
@@ -23,19 +25,52 @@ const FloorPlanPage = ({ params }: FloorPlanPageProps) => {
   React.useEffect(() => {
     params.then((resolvedParams) => {
       setId(resolvedParams.id);
+      // Load the listing data in the background
+      const listingId = parseInt(resolvedParams.id);
+      if (!isNaN(listingId)) {
+        loadListing(listingId).catch(console.error);
+      }
     });
-  }, [params]);
+  }, [params, loadListing]);
+
+  // Load existing values from listing
+  React.useEffect(() => {
+    if (listing) {
+      setCounts({
+        guests: listing.guestCount || 4,
+        bedrooms: listing.bedrooms || 1,
+        beds: 1, // beds field doesn't exist in schema, keep default
+        bathrooms: listing.bathrooms || 1,
+      });
+    }
+  }, [listing]);
 
   // Enable next button since we have default values
   React.useEffect(() => {
     enableNext();
   }, [enableNext]);
 
-  const updateCount = (field: keyof typeof counts, delta: number) => {
-    setCounts(prev => ({
-      ...prev,
-      [field]: Math.max(1, prev[field] + delta)
-    }));
+  const updateCount = async (field: keyof typeof counts, delta: number) => {
+    const newCounts = {
+      ...counts,
+      [field]: Math.max(1, counts[field] + delta)
+    };
+    setCounts(newCounts);
+
+    // Update backend data
+    try {
+      const updateData: any = {};
+      if (field === 'guests') updateData.guestCount = newCounts.guests;
+      if (field === 'bedrooms') updateData.bedrooms = newCounts.bedrooms;
+      if (field === 'bathrooms') updateData.bathrooms = newCounts.bathrooms;
+      // beds field doesn't exist in schema, skip backend update for it
+      
+      if (Object.keys(updateData).length > 0) {
+        await updateListingData(updateData);
+      }
+    } catch (error) {
+      console.error('Error updating floor plan data:', error);
+    }
   };
 
   const CounterRow = ({ 
@@ -125,6 +160,14 @@ const FloorPlanPage = ({ params }: FloorPlanPageProps) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const FloorPlanPage = ({ params }: FloorPlanPageProps) => {
+  return (
+    <ListingProvider>
+      <FloorPlanPageContent params={params} />
+    </ListingProvider>
   );
 };
 

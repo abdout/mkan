@@ -3,15 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useHostValidation } from '@/context/host-validation-context';
+import { ListingProvider, useListing } from '@/components/host/use-listing';
 import { Peaceful, Unique, Stylish, Central, Spacious, FamilyFriendly } from '@/components/atom/airbnb-icons';
 
 interface DescriptionPageProps {
   params: Promise<{ id: string }>;
 }
 
-const DescriptionPage = ({ params }: DescriptionPageProps) => {
+const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
   const router = useRouter();
   const { setCustomNavigation } = useHostValidation();
+  const { listing, updateListingData, loadListing } = useListing();
   const [id, setId] = React.useState<string>('');
   const [selectedHighlights, setSelectedHighlights] = useState<string[]>([]);
   const [description, setDescription] = useState('You\'ll have a great time at this comfortable place to stay.');
@@ -22,8 +24,25 @@ const DescriptionPage = ({ params }: DescriptionPageProps) => {
   React.useEffect(() => {
     params.then((resolvedParams) => {
       setId(resolvedParams.id);
+      // Load the listing data in the background
+      const listingId = parseInt(resolvedParams.id);
+      if (!isNaN(listingId)) {
+        loadListing(listingId).catch(console.error);
+      }
     });
-  }, [params]);
+  }, [params, loadListing]);
+
+  // Load existing data from listing
+  React.useEffect(() => {
+    if (listing) {
+      if (listing.description) {
+        setDescription(listing.description);
+      }
+      if (listing.highlights) {
+        setSelectedHighlights(listing.highlights.map(h => h.toLowerCase()));
+      }
+    }
+  }, [listing]);
 
   const handleBack = () => {
     if (currentStep === 'description') {
@@ -33,15 +52,31 @@ const DescriptionPage = ({ params }: DescriptionPageProps) => {
     router.push(`/host/${id}/title`);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep === 'highlights') {
       if (selectedHighlights.length > 0) {
+        // Update backend with highlights
+        try {
+          await updateListingData({
+            highlights: selectedHighlights.map(h => h.toUpperCase()) as any[]
+          });
+        } catch (error) {
+          console.error('Error updating highlights:', error);
+        }
         setCurrentStep('description');
       }
       return;
     }
     
     if (currentStep === 'description' && description.trim().length > 0) {
+      // Update backend with description
+      try {
+        await updateListingData({
+          description: description.trim()
+        });
+      } catch (error) {
+        console.error('Error updating description:', error);
+      }
       router.push(`/host/${id}/finish-setup`);
     }
   };
@@ -155,6 +190,14 @@ const DescriptionPage = ({ params }: DescriptionPageProps) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const DescriptionPage = ({ params }: DescriptionPageProps) => {
+  return (
+    <ListingProvider>
+      <DescriptionPageContent params={params} />
+    </ListingProvider>
   );
 };
 

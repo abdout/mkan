@@ -1,60 +1,40 @@
-import FiltersBar from "./FiltersBar";
-import FiltersFull from "./FiltersFull";
-import Listings from "./Listings";
-import { getProperties } from "@/lib/actions/property-actions";
+import { getListings } from '@/components/host/action';
+import { PropertyContent } from "@/components/site/property/content";
 
-interface SearchPageProps {
-  searchParams: Promise<{
-    location?: string;
-    priceMin?: string;
-    priceMax?: string;
-    beds?: string;
-    baths?: string;
-    propertyType?: string;
-    amenities?: string;
-  }>;
+async function getListingsData(filters: any) {
+  try {
+    const listings = await getListings({ ...filters, publishedOnly: true });
+    return listings;
+  } catch (error) {
+    console.error("Error fetching listings:", error);
+    return [];
+  }
 }
 
-export default async function SearchPage({ searchParams }: SearchPageProps) {
-  // Await searchParams for Next.js 15 compatibility
-  const params = await searchParams;
-  
-  // Parse search params for filters - show all properties by default if no location specified
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const filters = {
-    location: params.location || undefined, // Changed from 'Los Angeles' to undefined to show all
-    priceMin: params.priceMin ? parseInt(params.priceMin) : undefined,
-    priceMax: params.priceMax ? parseInt(params.priceMax) : undefined,
-    beds: params.beds,
-    baths: params.baths,
-    propertyType: params.propertyType,
-    amenities: params.amenities ? params.amenities.split(',') : undefined,
+    location: searchParams.location as string | undefined,
+    priceMin: searchParams.priceMin
+      ? Number(searchParams.priceMin)
+      : undefined,
+    priceMax: searchParams.priceMax
+      ? Number(searchParams.priceMax)
+      : undefined,
+    beds: searchParams.beds ? Number(searchParams.beds) : undefined,
+    baths: searchParams.baths ? Number(searchParams.baths) : undefined,
+    propertyType: searchParams.propertyType as any | undefined,
+    amenities: searchParams.amenities as any | undefined,
   };
 
-  // Fetch properties using server action with error handling
-  let properties: Awaited<ReturnType<typeof getProperties>> = [];
-  try {
-    console.log('Fetching properties with filters:', filters);
-    properties = await getProperties(filters);
-    console.log('Properties fetched:', properties.length);
-  } catch (error) {
-    console.error('Error fetching properties:', error);
-    // Return empty array on error to prevent page crash
-    properties = [];
-  }
+  const listings = await getListingsData(filters);
 
   return (
-    <div className="w-full">
-      <div className="border-b border-gray-200">
-        <FiltersBar />
-      </div>
-      
-      <div className="flex relative">
-        <div className="flex-1">
-          <Listings properties={properties} />
-        </div>
-        
-        <FiltersFull />
-      </div>
+    <div className="bg-background">
+      <PropertyContent properties={listings} />
     </div>
   );
 }

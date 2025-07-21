@@ -4,7 +4,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
 import { getAuthUser } from "@/lib/actions/user-actions";
-import { getManagerProperties } from "@/lib/actions/property-actions";
+import { getHostListings } from "@/components/host/action";
 import type { Property } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 
@@ -26,7 +26,7 @@ const Properties = () => {
         
         // Then get their properties
         if (user?.id) {
-          const properties = await getManagerProperties(user.id);
+          const properties = await getHostListings(user.id);
           setManagerProperties(properties);
         }
       } catch (err: any) {

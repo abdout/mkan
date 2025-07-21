@@ -1,15 +1,15 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+"use client"
+
+import React from 'react'
 
 interface StepWrapperProps {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
 }
 
-const StepWrapper: React.FC<StepWrapperProps> = ({ children, className }) => (
-  <div className={cn('max-w-6xl mx-auto px-4 py-8', className)}>
-    {children}
-  </div>
-);
-
-export default StepWrapper; 
+export function StepWrapper({ children }: StepWrapperProps) {
+  return (
+    <div className="max-w-2xl mx-auto">
+      {children}
+    </div>
+  )
+} 

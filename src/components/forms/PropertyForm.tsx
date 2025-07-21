@@ -11,7 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { createProperty, PropertyFormData } from '@/lib/actions/property-actions'
+import { createListing, ListingFormData } from '@/components/host/action'
 import { Amenity, Highlight, PropertyType } from '@prisma/client'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
@@ -175,12 +175,12 @@ export function PropertyForm() {
       const filteredPhotoUrls = photoUrls.filter(url => url.trim() !== '')
       console.log('🖼️ Filtered photo URLs:', filteredPhotoUrls)
       
-      const propertyData: PropertyFormData = {
+      const propertyData: ListingFormData = {
         ...data,
         photoUrls: filteredPhotoUrls,
       }
 
-      console.log('🚀 Calling createProperty with final data:', propertyData)
+      console.log('🚀 Calling createListing with final data:', propertyData)
       console.log('📊 Data validation before API call:', {
         hasName: !!propertyData.name,
         hasDescription: !!propertyData.description && propertyData.description.length >= 10,
@@ -195,7 +195,7 @@ export function PropertyForm() {
         photoUrlsCount: propertyData.photoUrls.length
       })
 
-      const result = await createProperty(propertyData)
+      const result = await createListing(propertyData)
       console.log('✅ Create property API result:', result)
       
       if (result.success) {

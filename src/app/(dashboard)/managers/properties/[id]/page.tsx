@@ -11,10 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  getProperty,
-  getPropertyLeases,
-  getPayments,
-} from "@/lib/actions/property-actions";
+  getListing,
+} from "@/components/host/action";
 import { ArrowDownToLine, ArrowLeft, Check, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,21 +32,20 @@ const PropertyTenants = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const [propertyData, leasesData] = await Promise.all([
-          getProperty(propertyId),
-          getPropertyLeases(propertyId),
-        ]);
+        const propertyData = await getListing(propertyId);
         
         setProperty(propertyData);
-        setLeases(leasesData);
+        // TODO: Implement lease and payment fetching for listings
+        // const leasesData = await getPropertyLeases(propertyId);
+        // setLeases(leasesData);
         
         // Fetch payments for all leases
-        if (leasesData.length > 0) {
-          const allPayments = await Promise.all(
-            leasesData.map((lease: any) => getPayments(lease.id))
-          );
-          setPayments(allPayments.flat());
-        }
+        // if (leasesData.length > 0) {
+        //   const allPayments = await Promise.all(
+        //     leasesData.map((lease: any) => getPayments(lease.id))
+        //   );
+        //   setPayments(allPayments.flat());
+        // }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

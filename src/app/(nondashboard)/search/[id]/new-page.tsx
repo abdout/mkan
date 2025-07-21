@@ -1,4 +1,4 @@
-import { getProperty } from '@/lib/actions/property-actions'
+import { getListing } from '@/components/host/action'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -25,7 +25,7 @@ export default async function PropertyPage({
     notFound()
   }
 
-  const property = await getProperty(propertyId)
+  const property = await getListing(propertyId)
 
   if (!property) {
     console.error('❌ Property not found for ID:', propertyId)

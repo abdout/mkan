@@ -1,96 +1,46 @@
 "use client";
 
-import React from 'react';
-import { Home, Building, Bed, Ship, TreePine, Castle, Mountain, Container, Warehouse, Car, Building2 } from 'lucide-react';
-import SelectionCard from './selection-card';
-import { cn } from '@/lib/utils';
-
-interface PropertyType {
-  id: string;
-  name: string;
-  icon: React.ComponentType<{ className?: string; size?: number }>;
-}
+import React from "react";
+import { Check } from "lucide-react";
 
 interface PropertySelectorProps {
-  selectedType?: string;
-  onSelect?: (typeId: string) => void;
-  compact?: boolean;
-  className?: string;
+  title: string;
+  description: string;
+  isSelected: boolean;
+  onClick: () => void;
 }
 
-const PropertySelector: React.FC<PropertySelectorProps> = ({
-  selectedType,
-  onSelect,
-  compact = false,
-  className,
-}) => {
-  const propertyTypes: PropertyType[] = [
-    { id: 'house', name: 'House', icon: Home },
-    { id: 'apartment', name: 'Apartment', icon: Building },
-    { id: 'barn', name: 'Barn', icon: Warehouse },
-    { id: 'bed-breakfast', name: 'Bed', icon: Bed },
-    { id: 'boat', name: 'Boat', icon: Ship },
-    { id: 'cabin', name: 'Cabin', icon: TreePine },
-    { id: 'camper-rv', name: 'Camper', icon: Car },
-    { id: 'casa-particular', name: 'Casa', icon: Building2 },
-    { id: 'castle', name: 'Castle', icon: Castle },
-    { id: 'cave', name: 'Cave', icon: Mountain },
-    { id: 'container', name: 'Container', icon: Container },
-    { id: 'cycladic-home', name: 'Cycladic', icon: Home }
-  ];
-
-  if (compact) {
-    return (
-      <div className={cn('w-full', className)}>
-        <div className="grid grid-cols-4 gap-3">
-          {propertyTypes.map((type) => {
-            const IconComponent = type.icon;
-            
-            return (
-              <SelectionCard
-                key={type.id}
-                id={type.id}
-                title={type.name}
-                icon={<IconComponent size={20} />}
-                isSelected={selectedType === type.id}
-                onClick={onSelect}
-                compact={true}
-                className="h-20"
-              />
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-
+export function PropertySelector({
+  title,
+  description,
+  isSelected,
+  onClick,
+}: PropertySelectorProps) {
   return (
-    <div className={cn('w-full max-w-4xl mx-auto', className)}>
-      <div className="mb-8">
-        {/* <h1 className="text-center">
-          Which of these best describes your place?
-        </h1> */}
-      </div>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`
+        w-full p-6 rounded-xl border-2 transition-colors text-left
+        ${
+          isSelected
+            ? "border-primary bg-primary/5"
+            : "border-border hover:border-muted-foreground"
+        }
+      `}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-lg font-medium">{title}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {propertyTypes.map((type) => {
-          const IconComponent = type.icon;
-          
-          return (
-            <SelectionCard
-              key={type.id}
-              id={type.id}
-              title={type.name}
-              icon={<IconComponent size={32} />}
-              isSelected={selectedType === type.id}
-              onClick={onSelect}
-              className="p-6"
-            />
-          );
-        })}
+        {isSelected && (
+          <div className="rounded-full bg-primary p-1">
+            <Check className="w-4 h-4 text-primary-foreground" />
+          </div>
+        )}
       </div>
-    </div>
+    </button>
   );
-};
-
-export default PropertySelector; 
+} 

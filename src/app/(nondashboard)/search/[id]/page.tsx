@@ -1,4 +1,4 @@
-import { getProperty } from '@/lib/actions/property-actions'
+import { getListing } from '@/components/host/action'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -27,7 +27,7 @@ export default async function PropertyPage({
 
   let property;
   try {
-    property = await getProperty(propertyId)
+    property = await getListing(propertyId)
   } catch (error) {
     console.error('❌ Error fetching property for ID:', propertyId, error)
     // Create fallback property data

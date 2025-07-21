@@ -1,29 +1,63 @@
-import React from 'react';
-import { Minus, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+"use client"
+
+import React from 'react'
+import { Minus, Plus } from 'lucide-react'
 
 interface CounterProps {
-  value: number;
-  onChange: (value: number) => void;
-  min?: number;
-  max?: number;
-  label?: string;
-  className?: string;
+  value: number
+  onIncrement: () => void
+  onDecrement: () => void
+  min?: number
+  max?: number
+  step?: number
 }
 
-const Counter: React.FC<CounterProps> = ({ value, onChange, min = 1, max = 99, label, className }) => (
-  <div className={className}>
-    {label && <span className="block mb-1 font-medium">{label}</span>}
-    <div className="flex items-center gap-3">
-      <Button variant="outline" size="icon" onClick={() => onChange(Math.max(min, value - 1))} disabled={value <= min}>
-        <Minus size={16} />
-      </Button>
-      <span className="w-8 text-center">{value}</span>
-      <Button variant="outline" size="icon" onClick={() => onChange(Math.min(max, value + 1))} disabled={value >= max}>
-        <Plus size={16} />
-      </Button>
-    </div>
-  </div>
-);
+export function Counter({
+  value,
+  onIncrement,
+  onDecrement,
+  min = 0,
+  max = 100,
+  step = 1,
+}: CounterProps) {
+  const isDecrementDisabled = value <= min
+  const isIncrementDisabled = value >= max
 
-export default Counter; 
+  return (
+    <div className="flex items-center gap-4">
+      <button
+        type="button"
+        onClick={onDecrement}
+        disabled={isDecrementDisabled}
+        className={`
+          w-10 h-10 rounded-full border flex items-center justify-center transition-colors
+          ${isDecrementDisabled
+            ? 'border-muted text-muted-foreground cursor-not-allowed'
+            : 'border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground'
+          }
+        `}
+      >
+        <Minus size={16} strokeWidth={2} />
+      </button>
+
+      <span className="w-12 text-center text-lg font-medium">
+        {value}
+      </span>
+
+      <button
+        type="button"
+        onClick={onIncrement}
+        disabled={isIncrementDisabled}
+        className={`
+          w-10 h-10 rounded-full border flex items-center justify-center transition-colors
+          ${isIncrementDisabled
+            ? 'border-muted text-muted-foreground cursor-not-allowed'
+            : 'border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground'
+          }
+        `}
+      >
+        <Plus size={16} strokeWidth={2} />
+      </button>
+    </div>
+  )
+} 

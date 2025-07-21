@@ -1,48 +1,33 @@
-"use client"
+"use client";
+import React, { useState, useEffect } from "react";
+import { PropertyCard } from "@/components/site/property/card";
+import { Listing } from "@/components/host/use-listing";
 
-import React, { useState } from 'react'
-import { PropertyGrid } from './card'
-import { PROPERTY_DATA } from './constant'
+interface PropertyContentProps {
+  properties: Listing[];
+}
 
-export function Property() {
-  const [properties, setProperties] = useState(PROPERTY_DATA)
+export const PropertyContent = ({ properties: initialProperties }: PropertyContentProps) => {
+  const [properties, setProperties] = useState(initialProperties);
 
-  const handleFavoriteToggle = (id: string, isFavorite: boolean) => {
-    setProperties(prev => 
-      prev.map(property => 
-        property.id === id 
-          ? { ...property, isFavorite }
-          : property
-      )
-    )
-  }
-
-  const handleCardClick = (id: string) => {
-    console.log('Property clicked:', id)
-    // Add navigation logic here
-  }
-
-  const propertiesWithHandlers = properties.map(property => ({
-    ...property,
-    onFavoriteToggle: handleFavoriteToggle,
-    onCardClick: handleCardClick
-  }))
+  useEffect(() => {
+    setProperties(initialProperties);
+  }, [initialProperties]);
 
   return (
-    <div className="layout-container py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Featured Properties
-        </h1>
-        <p className="text-gray-600">
-          Discover amazing places to stay around the world
-        </p>
+    <div className="py-10 lg:py-14">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {properties.map((property) => (
+          <PropertyCard
+            key={property.id}
+            id={property.id!}
+            title={property.title!}
+            address={`${property.address}, ${property.city}`}
+            price={property.pricePerNight!}
+            imageUrl={property.photoUrls?.[0] || ""}
+          />
+        ))}
       </div>
-      
-      <PropertyGrid 
-        properties={propertiesWithHandlers}
-        className="mb-8"
-      />
     </div>
-  )
-}
+  );
+};
