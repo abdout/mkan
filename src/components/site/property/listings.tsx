@@ -19,7 +19,7 @@ export const PropertyListings = ({ properties }: PropertyListingsProps) => {
   }
 
   const handleCardClick = (propertyId: string) => {
-    window.location.href = `/listing/${propertyId}`
+    window.location.href = `/listings/${propertyId}`
   }
 
   if (!properties || properties.length === 0) {
