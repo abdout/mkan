@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { HostStepLayout, PropertySelector } from '@/components/host';
+import HostStepLayout from '@/components/host/host-step-layout';
+import PropertySelector, { mapPropertyTypeToPrisma } from '@/components/host/property-type-selector';
+import { useListing } from '@/components/host/use-listing';
 import { useHostValidation } from '@/context/host-validation-context';
-import { ListingProvider, useListing } from '@/components/host/use-listing';
 
 interface StructurePageProps {
   params: Promise<{ id: string }>;
@@ -52,10 +53,11 @@ const StructurePageContent = ({ params }: StructurePageProps) => {
   const handlePropertySelect = async (typeId: string) => {
     setSelectedType(typeId);
     
-    // Update backend data
+    // Update backend data using the mapping function
     try {
+      const prismaPropertyType = mapPropertyTypeToPrisma(typeId);
       await updateListingData({
-        propertyType: typeId.toUpperCase() as any
+        propertyType: prismaPropertyType
       });
     } catch (error) {
       console.error('Error updating property type:', error);
@@ -77,12 +79,4 @@ const StructurePageContent = ({ params }: StructurePageProps) => {
   );
 };
 
-const StructurePage = ({ params }: StructurePageProps) => {
-  return (
-    <ListingProvider>
-      <StructurePageContent params={params} />
-    </ListingProvider>
-  );
-};
-
-export default StructurePage; 
+export default StructurePageContent; 

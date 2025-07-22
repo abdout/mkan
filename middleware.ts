@@ -28,6 +28,10 @@ export default auth((req) => {
     pathname.startsWith("/managers/") ||
     pathname === "/tenants" ||
     pathname.startsWith("/tenants/") ||
+    pathname === "/host" ||
+    pathname.startsWith("/host/") ||
+    pathname === "/hosting" ||
+    pathname.startsWith("/hosting/") ||
     pathname === "/project" || 
     pathname.startsWith("/project/") ||
     pathname === "/task" || 

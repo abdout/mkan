@@ -4,8 +4,9 @@ import React from 'react';
 import Image from 'next/image';
 import SelectionCard from './selection-card';
 import { cn } from '@/lib/utils';
+import { Amenity } from '@prisma/client';
 
-interface Amenity {
+interface AmenityOption {
   id: string;
   label: string;
   icon: () => React.ReactNode;
@@ -28,12 +29,32 @@ const SvgIcon = ({ src, alt, size = 24 }: { src: string; alt: string; size?: num
   />
 );
 
+// Mapping function to convert UI amenity IDs to Prisma enum values
+export const mapAmenityToPrisma = (amenityId: string): Amenity => {
+  const mapping: Record<string, Amenity> = {
+    'wifi': Amenity.WiFi,
+    'tv': Amenity.HighSpeedInternet, // Assuming TV is mapped to HighSpeedInternet
+    'kitchen': Amenity.Dishwasher, // Assuming kitchen is mapped to Dishwasher
+    'washer': Amenity.WasherDryer,
+    'free-parking': Amenity.Parking,
+    'paid-parking': Amenity.Parking,
+    'air-conditioning': Amenity.AirConditioning,
+    'dedicated-workspace': Amenity.HighSpeedInternet, // Assuming workspace is mapped to HighSpeedInternet
+    'pool': Amenity.Pool,
+    'hot-tub': Amenity.Pool, // Assuming hot tub is mapped to Pool
+    'patio': Amenity.HardwoodFloors, // Assuming patio is mapped to HardwoodFloors
+    'bbq-grill': Amenity.HardwoodFloors, // Assuming BBQ grill is mapped to HardwoodFloors
+  };
+  
+  return mapping[amenityId] || Amenity.WiFi; // Default to WiFi if not found
+};
+
 const AmenitySelector: React.FC<AmenitySelectorProps> = ({
   selectedAmenities,
   onToggle,
   className,
 }) => {
-  const guestFavorites: Amenity[] = [
+  const guestFavorites: AmenityOption[] = [
     { id: 'wifi', label: 'Wifi', icon: () => <SvgIcon src="/amenities/Wifi.svg" alt="Wifi" /> },
     { id: 'tv', label: 'TV', icon: () => <SvgIcon src="/amenities/TV.svg" alt="TV" /> },
     { id: 'kitchen', label: 'Kitchen', icon: () => <SvgIcon src="/amenities/Kitchen.svg" alt="Kitchen" /> },
@@ -44,7 +65,7 @@ const AmenitySelector: React.FC<AmenitySelectorProps> = ({
     { id: 'dedicated-workspace', label: 'Workspace', icon: () => <SvgIcon src="/amenities/Workspace.svg" alt="Workspace" /> },
   ];
 
-  const standoutAmenities: Amenity[] = [
+  const standoutAmenities: AmenityOption[] = [
     { id: 'pool', label: 'Pool', icon: () => <SvgIcon src="/amenities/Pool.svg" alt="Pool" /> },
     { id: 'hot-tub', label: 'Hot tub', icon: () => <SvgIcon src="/amenities/Hot tub.svg" alt="Hot tub" /> },
     { id: 'patio', label: 'Patio', icon: () => <SvgIcon src="/amenities/Patio.svg" alt="Patio" /> },

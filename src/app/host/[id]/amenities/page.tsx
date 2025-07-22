@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { HostStepLayout, AmenitySelector } from '@/components/host';
+import HostStepLayout from '@/components/host/host-step-layout';
+import AmenitySelector, { mapAmenityToPrisma } from '@/components/host/amenity-selector';
+import { useListing } from '@/components/host/use-listing';
 import { useHostValidation } from '@/context/host-validation-context';
-import { ListingProvider, useListing } from '@/components/host/use-listing';
 
 interface AmenitiesPageProps {
   params: Promise<{ id: string }>;
@@ -47,15 +48,15 @@ const AmenitiesPageContent = ({ params }: AmenitiesPageProps) => {
     
     setSelectedAmenities(newSelectedAmenities);
 
-    // Update backend data
+    // Update backend data using the mapping function
     try {
       // Convert frontend amenity IDs to backend enum values
       const backendAmenities = newSelectedAmenities.map(amenityId => 
-        amenityId.toUpperCase().replace(/-/g, '_')
+        mapAmenityToPrisma(amenityId)
       );
       
       await updateListingData({
-        amenities: backendAmenities as any[]
+        amenities: backendAmenities
       });
     } catch (error) {
       console.error('Error updating amenities:', error);
@@ -77,12 +78,4 @@ const AmenitiesPageContent = ({ params }: AmenitiesPageProps) => {
   );
 };
 
-const AmenitiesPage = ({ params }: AmenitiesPageProps) => {
-  return (
-    <ListingProvider>
-      <AmenitiesPageContent params={params} />
-    </ListingProvider>
-  );
-};
-
-export default AmenitiesPage; 
+export default AmenitiesPageContent; 

@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { HostDashboard } from '@/components/host';
 import { getHostListings, createListing } from '@/components/host/action';
+import { useAuthRedirect } from '@/hooks/use-auth-redirect';
 
 const BecomeAHostPage = () => {
   const router = useRouter();
+  const { session, status } = useAuthRedirect();
   const [backendListings, setBackendListings] = useState<any[]>([]);
   const [isCreating, setIsCreating] = useState(false);
 
   // Load backend data but don't show loading state to match frontend
-  useEffect(() => {
+  React.useEffect(() => {
     async function loadListings() {
       try {
         const hostListings = await getHostListings();
@@ -59,10 +61,27 @@ const BecomeAHostPage = () => {
     console.log('Create from existing');
   };
 
+  // Show loading while checking session
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated
+  if (!session) {
+    return null; // Will redirect in useEffect
+  }
+
   return (
     <div className="min-h-screen">
       <HostDashboard 
-        hostName="Abdout"
+        hostName={session.user?.name || "Host"}
         onListingClick={handleListingClick}
         onCreateNew={handleCreateNew}
         onCreateFromExisting={handleCreateFromExisting}

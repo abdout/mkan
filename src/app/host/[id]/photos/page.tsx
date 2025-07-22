@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { StepNavigation } from '@/components/host';
-import { useHostValidation } from '@/context/host-validation-context';
-import { ListingProvider, useListing } from '@/components/host/use-listing';
 import Image from 'next/image';
 import { Plus } from 'lucide-react';
+import HostStepLayout from '@/components/host/host-step-layout';
+import { useListing } from '@/components/host/use-listing';
+import { useHostValidation } from '@/context/host-validation-context';
 
 interface PhotosPageProps {
   params: Promise<{ id: string }>;
@@ -15,7 +15,7 @@ interface PhotosPageProps {
 const PhotosPageContent = ({ params }: PhotosPageProps) => {
   const router = useRouter();
   const [id, setId] = React.useState<string>('');
-  const { enableNext, disableNext } = useHostValidation();
+  const { enableNext } = useHostValidation();
   const { listing, updateListingData, loadListing } = useListing();
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -38,48 +38,43 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
     }
   }, [listing]);
 
-  // Enable/disable next button based on photo count
+  // Enable next button since photos are optional
   React.useEffect(() => {
-    if (uploadedPhotos.length >= 5) {
-      enableNext();
-    } else {
-      disableNext();
-    }
-  }, [uploadedPhotos.length, enableNext, disableNext]);
-
-  const handleBack = () => {
-    router.push(`/host/${id}/amenities`);
-  };
-
-  const handleNext = () => {
-    router.push(`/host/${id}/title`);
-  };
+    enableNext();
+  }, [enableNext]);
 
   const uploadFileToCloudinary = async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'your_upload_preset'); // You'll need to set this up
+    // For now, create a local object URL as a fallback
+    // This allows the app to work without Cloudinary configuration
+    const objectUrl = URL.createObjectURL(file);
     
-    try {
-      const response = await fetch(
-        'https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', // Replace with your cloud name
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
+    // In a production environment, you would use the actual Cloudinary API
+    // const formData = new FormData();
+    // formData.append('file', file);
+    // formData.append('upload_preset', 'cptcecyi'); // Use the working upload preset
+    
+    // try {
+    //   const response = await fetch(
+    //     'https://api.cloudinary.com/v1_1/your_cloud_name/image/upload',
+    //     {
+    //       method: 'POST',
+    //       body: formData,
+    //     }
+    //   );
       
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
+    //   if (!response.ok) {
+    //     throw new Error('Upload failed');
+    //   }
       
-      const data = await response.json();
-      return data.secure_url;
-    } catch (error) {
-      console.error('Upload error:', error);
-      // Fallback: create object URL for preview
-      return URL.createObjectURL(file);
-    }
+    //   const data = await response.json();
+    //   return data.secure_url;
+    // } catch (error) {
+    //   console.error('Upload error:', error);
+    //   // Fallback: create object URL for preview
+    //   return URL.createObjectURL(file);
+    // }
+    
+    return objectUrl;
   };
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -228,7 +223,7 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
               You'll need 5 photos to get started. You can add more or make changes later.
             </p>
           </div>
-
+          
           {/* Right side - Upload boxes */}
           <div>
             {uploadedPhotos.length === 0 ? (
@@ -264,18 +259,9 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
                 </div>
               </div>
             ) : (
-              // Grid of upload boxes
+              // Grid of photos
               <div className="grid grid-cols-3 gap-4">
                 {renderUploadBoxes()}
-              </div>
-            )}
-
-            {uploadedPhotos.length > 0 && (
-              <div className="mt-4 text-center">
-                <p className="text-sm text-muted-foreground">
-                  {uploadedPhotos.length} of 5+ photos uploaded
-                  {uploadedPhotos.length >= 5 && ' ✓'}
-                </p>
               </div>
             )}
           </div>
@@ -285,12 +271,4 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
   );
 };
 
-const PhotosPage = ({ params }: PhotosPageProps) => {
-  return (
-    <ListingProvider>
-      <PhotosPageContent params={params} />
-    </ListingProvider>
-  );
-};
-
-export default PhotosPage; 
+export default PhotosPageContent; 

@@ -2,13 +2,28 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Heart, Star, Sparkles, Home, MapPin, Users } from 'lucide-react';
+import { useListing } from '@/components/host/use-listing';
 import { useHostValidation } from '@/context/host-validation-context';
-import { ListingProvider, useListing } from '@/components/host/use-listing';
-import { Peaceful, Unique, Stylish, Central, Spacious, FamilyFriendly } from '@/components/atom/airbnb-icons';
+import { Highlight } from '@prisma/client';
 
 interface DescriptionPageProps {
   params: Promise<{ id: string }>;
 }
+
+// Mapping function to convert UI highlight IDs to Prisma enum values
+const mapHighlightToPrisma = (highlightId: string): Highlight => {
+  const mapping: Record<string, Highlight> = {
+    '1': Highlight.QuietNeighborhood, // Peaceful
+    '2': Highlight.RecentlyRenovated, // Unique
+    '3': Highlight.FamilyFriendly, // Family-friendly
+    '4': Highlight.RecentlyRenovated, // Stylish
+    '5': Highlight.CloseToTransit, // Central
+    '6': Highlight.GreatView, // Spacious
+  };
+  
+  return mapping[highlightId] || Highlight.QuietNeighborhood; // Default to QuietNeighborhood if not found
+};
 
 const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
   const router = useRouter();
@@ -55,10 +70,14 @@ const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
   const handleNext = async () => {
     if (currentStep === 'highlights') {
       if (selectedHighlights.length > 0) {
-        // Update backend with highlights
+        // Update backend with highlights using the mapping function
         try {
+          const backendHighlights = selectedHighlights.map(highlightId => 
+            mapHighlightToPrisma(highlightId)
+          );
+          
           await updateListingData({
-            highlights: selectedHighlights.map(h => h.toUpperCase()) as any[]
+            highlights: backendHighlights
           });
         } catch (error) {
           console.error('Error updating highlights:', error);
@@ -99,12 +118,12 @@ const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
   }, [currentStep, selectedHighlights, description, id]);
 
   const highlights = [
-    { id: '1', title: 'Peaceful', icon: Peaceful },
-    { id: '2', title: 'Unique', icon: Unique },
-    { id: '3', title: 'Family-friendly', icon: Stylish },
-    { id: '4', title: 'Stylish', icon: Spacious },
-    { id: '5', title: 'Central', icon: Central },
-    { id: '6', title: 'Spacious', icon: FamilyFriendly }
+    { id: '1', title: 'Peaceful', icon: Heart },
+    { id: '2', title: 'Unique', icon: Star },
+    { id: '3', title: 'Family-friendly', icon: Users },
+    { id: '4', title: 'Stylish', icon: Sparkles },
+    { id: '5', title: 'Central', icon: MapPin },
+    { id: '6', title: 'Spacious', icon: Home }
   ];
 
   const toggleHighlight = (highlightId: string) => {
@@ -193,12 +212,4 @@ const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
   );
 };
 
-const DescriptionPage = ({ params }: DescriptionPageProps) => {
-  return (
-    <ListingProvider>
-      <DescriptionPageContent params={params} />
-    </ListingProvider>
-  );
-};
-
-export default DescriptionPage; 
+export default DescriptionPageContent; 

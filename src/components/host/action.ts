@@ -57,32 +57,14 @@ export async function createListing(data: Partial<ListingFormData> = {}) {
   console.log('🏗️ === CREATE LISTING SERVER ACTION STARTED ===')
   console.log('📨 Received data:', data)
   
-  // TODO: Uncomment auth check when ready for production
-  // const session = await auth()
+  const session = await auth()
   
-  // if (!session?.user?.id) {
-  //   throw new Error('You must be logged in to create a listing')
-  // }
+  if (!session?.user?.id) {
+    throw new Error('You must be logged in to create a listing')
+  }
 
   try {
-    console.log('👤 Finding or creating test user...')
-    let testUser = await db.user.findUnique({
-      where: { email: 'test@example.com' }
-    })
-    
-    if (!testUser) {
-      console.log('👤 Creating new test user...')
-      testUser = await db.user.create({
-        data: {
-          email: 'test@example.com',
-          username: 'Test Host',
-          role: 'MANAGER'
-        }
-      })
-      console.log('✅ Test user created:', testUser.id)
-    } else {
-      console.log('✅ Found existing test user:', testUser.id)
-    }
+    console.log('👤 Using authenticated user:', session.user.id)
 
     // Create location if provided
     let locationId = null
@@ -124,7 +106,7 @@ export async function createListing(data: Partial<ListingFormData> = {}) {
       photoUrls: data.photoUrls || [],
       draft: data.draft ?? true,
       isPublished: data.isPublished ?? false,
-      host: { connect: { id: testUser.id } },
+      host: { connect: { id: session.user.id } },
       ...(locationId && { location: { connect: { id: locationId } } })
     }
     
@@ -162,7 +144,26 @@ export async function updateListing(id: number, data: Partial<ListingFormData>) 
   console.log('📨 Listing ID:', id)
   console.log('📨 Update data:', data)
   
+  const session = await auth()
+  
+  if (!session?.user?.id) {
+    throw new Error('You must be logged in to update a listing')
+  }
+  
   try {
+    // Check if the listing belongs to the authenticated user
+    const existingListing = await db.listing.findUnique({
+      where: { id },
+      select: { hostId: true }
+    })
+
+    if (!existingListing) {
+      throw new Error('Listing not found')
+    }
+
+    if (existingListing.hostId !== session.user.id) {
+      throw new Error('You can only update your own listings')
+    }
     // Handle location update if provided
     let locationUpdate = {}
     if (data.address || data.city || data.state || data.country) {
@@ -391,18 +392,30 @@ export async function getListings(filters?: ListingFilters) {
 
 export async function getHostListings(hostId?: string) {
   try {
-    // TODO: Get hostId from session when auth is ready
-    const testUser = await db.user.findUnique({
-      where: { email: 'test@example.com' }
-    })
-
-    if (!testUser) {
-      return []
+    // Get the authenticated user from session
+    const session = await auth()
+    
+    let userId: string;
+    
+    if (session?.user?.id) {
+      // Use authenticated user's ID
+      userId = hostId || session.user.id;
+    } else {
+      // Fallback to test user for development
+      const testUser = await db.user.findUnique({
+        where: { email: 'test@example.com' }
+      });
+      
+      if (!testUser) {
+        throw new Error('No authenticated user and no test user found');
+      }
+      
+      userId = hostId || testUser.id;
     }
 
     const listings = await db.listing.findMany({
       where: {
-        hostId: hostId || testUser.id
+        hostId: userId
       },
       include: {
         location: true,
@@ -427,7 +440,27 @@ export async function getHostListings(hostId?: string) {
 }
 
 export async function deleteListing(id: number) {
+  const session = await auth()
+  
+  if (!session?.user?.id) {
+    throw new Error('You must be logged in to delete a listing')
+  }
+
   try {
+    // Check if the listing belongs to the authenticated user
+    const existingListing = await db.listing.findUnique({
+      where: { id },
+      select: { hostId: true }
+    })
+
+    if (!existingListing) {
+      throw new Error('Listing not found')
+    }
+
+    if (existingListing.hostId !== session.user.id) {
+      throw new Error('You can only delete your own listings')
+    }
+
     await db.listing.delete({
       where: { id }
     })
@@ -443,7 +476,27 @@ export async function deleteListing(id: number) {
 }
 
 export async function publishListing(id: number) {
+  const session = await auth()
+  
+  if (!session?.user?.id) {
+    throw new Error('You must be logged in to publish a listing')
+  }
+
   try {
+    // Check if the listing belongs to the authenticated user
+    const existingListing = await db.listing.findUnique({
+      where: { id },
+      select: { hostId: true }
+    })
+
+    if (!existingListing) {
+      throw new Error('Listing not found')
+    }
+
+    if (existingListing.hostId !== session.user.id) {
+      throw new Error('You can only publish your own listings')
+    }
+
     // Validate listing completeness
     const listing = await db.listing.findUnique({
       where: { id },

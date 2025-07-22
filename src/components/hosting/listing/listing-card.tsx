@@ -1,0 +1,143 @@
+"use client";
+
+import React from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Listing } from '@/types/listing';
+import { Badge } from '@/components/ui/badge';
+
+interface ListingCardProps {
+  listing: Listing;
+  viewType: 'grid' | 'list';
+}
+
+const ListingCard: React.FC<ListingCardProps> = ({ listing, viewType }) => {
+  const router = useRouter();
+
+  const getListingStatus = (listing: Listing) => {
+    if (!listing.draft && listing.isPublished) {
+      return { 
+        label: 'Published', 
+        circleColor: 'bg-green-500'
+      };
+    } else if (listing.draft && !listing.isPublished) {
+      // Check if listing has basic info filled (title, description, etc.)
+      const hasBasicInfo = listing.title && listing.description && listing.pricePerNight;
+      const hasLocation = listing.location;
+      const hasPhotos = listing.photoUrls && listing.photoUrls.length > 0;
+      
+      if (hasBasicInfo && hasLocation && hasPhotos) {
+        return { 
+          label: 'Action required', 
+          circleColor: 'bg-red-500'
+        };
+      } else {
+        return { 
+          label: 'In progress', 
+          circleColor: 'bg-orange-500'
+        };
+      }
+    } else if (listing.draft && listing.isPublished) {
+      return { 
+        label: 'Action required', 
+        circleColor: 'bg-red-500'
+      };
+    } else {
+      return { 
+        label: 'In progress', 
+        circleColor: 'bg-orange-500'
+      };
+    }
+  };
+
+  const getListingImage = (listing: Listing) => {
+    if (listing.photoUrls && listing.photoUrls.length > 0) {
+      return listing.photoUrls[0];
+    }
+    return '/assets/hero.jpg'; // Default fallback image
+  };
+
+  const getListingTitle = (listing: Listing) => {
+    if (listing.title) {
+      return listing.title;
+    }
+    if (listing.location) {
+      return `${listing.location.city}, ${listing.location.state}`;
+    }
+    return 'Untitled Listing';
+  };
+
+  const getListingDescription = (listing: Listing) => {
+    if (listing.description) {
+      return listing.description;
+    }
+    if (listing.location) {
+      return `${listing.location.address}, ${listing.location.city}`;
+    }
+    return 'No description available';
+  };
+
+  const handleCardClick = () => {
+    const status = getListingStatus(listing);
+    
+    if (status.label === 'Action required') {
+      // Navigate to photo-tour for action required
+      router.push(`/hosting/listings/editor/${listing.id}/details/photo-tour`);
+    } else {
+      // Navigate to onboarding for in progress
+      router.push(`/host/${listing.id}/about-place`);
+    }
+  };
+
+  const status = getListingStatus(listing);
+  const image = getListingImage(listing);
+  const title = getListingTitle(listing);
+  const description = getListingDescription(listing);
+
+  return (
+    <div 
+      className={`cursor-pointer ${viewType === 'list' ? 'flex' : ''}`}
+      onClick={handleCardClick}
+    >
+      <div className="relative p-2">
+        <div className={`${viewType === 'list' ? 'w-48 h-28' : 'aspect-[4/3]'} bg-gray-200 overflow-hidden rounded-lg`}>
+          <Image 
+            src={image} 
+            alt={title}
+            width={viewType === 'list' ? 192 : 300}
+            height={viewType === 'list' ? 112 : 225}
+            className="w-full h-full object-cover rounded-lg"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/assets/hero.jpg';
+            }}
+          />
+        </div>
+        <div className="absolute top-5 left-5">
+          <Badge className="flex items-center gap-1 bg-muted text-foreground">
+            <div className={`w-2 h-2 rounded-full ${status.circleColor}`}></div>
+            {status.label}
+          </Badge>
+        </div>
+      </div>
+      
+      <div className="p-3 flex-1">
+        <h3 className="text-base font-semibold text-gray-900 mb-1 truncate">
+          {title}
+        </h3>
+        
+        <p className="text-sm text-gray-600 mb-2 overflow-hidden text-ellipsis" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+          {description}
+        </p>
+        
+        {listing.pricePerNight && (
+          <p className="text-sm font-medium text-gray-900">
+            ${listing.pricePerNight}/night
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ListingCard;

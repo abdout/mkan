@@ -1,73 +1,76 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
 import { ListView, GridView } from '@/components/atom/airbnb-icons';
-import NotificationCard from '@/components/hosting/notification-card';
+import { getHostListings } from '@/components/host/action';
+import { useSession } from 'next-auth/react';
+import ListingCard from '@/components/hosting/listing/listing-card';
+import { Listing } from '@/types/listing';
 
 const HostingListingsPage = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const mockListings = [
-    {
-      id: '1456438879027340782',
-      image: '/assets/hero.jpg',
-      status: 'action-required',
-      title: 'Cozy Downtown Apartment',
-    },
-    {
-      id: '2',
-      image: '/assets/find-experience.jpg', 
-      status: 'action-required',
-      title: 'Modern Studio Loft',
-    },
-    {
-      id: '3',
-      image: '/assets/banner.jpg',
-      status: 'in-progress', 
-      title: 'Beachfront Villa',
-    },
-  ];
+  useEffect(() => {
+    const fetchListings = async () => {
+      if (status === 'loading') return;
+      
+      try {
+        setIsLoading(true);
+        setError(null);
+        const hostListings = await getHostListings(session?.user?.id);
+        setListings(hostListings);
+      } catch (err) {
+        console.error('Error fetching listings:', err);
+        setError('Failed to load your listings. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const handleEditListing = (listingId: string) => {
-    router.push(`/hosting/listings/editor/${listingId}/details/photo-tour`);
-  };
+    fetchListings();
+  }, [session, status]);
 
   const toggleViewType = () => {
     setViewType(viewType === 'grid' ? 'list' : 'grid');
   };
 
-  const StatusBadge = ({ status }: { status: string }) => {
-    const getStatusConfig = (status: string) => {
-      switch (status) {
-        case 'action-required':
-          return { label: 'Action required', color: 'text-red-700 bg-red-100' };
-        case 'in-progress':
-          return { label: 'In progress', color: 'text-orange-700 bg-orange-100' };
-        default:
-          return { label: 'Draft', color: 'text-gray-700 bg-gray-100' };
-      }
-    };
-
-    const config = getStatusConfig(status);
-    
+  if (status === 'loading' || isLoading) {
     return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
-        {config.label}
-      </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-gray-500">Loading your listings...</div>
+        </div>
+      </div>
     );
-  };
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-red-500 text-center">
+            <p className="mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
-      <NotificationCard
-            subtitle="hello mkan"
-            title="Confirm a few key details"
-            description="Required to publish"
-          />
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-8">
@@ -97,41 +100,40 @@ const HostingListingsPage = () => {
           </div>
         </div>
 
-        {/* Listings Grid */}
-        <div className={`grid ${viewType === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-6`}>
-          {mockListings.map((listing) => (
-            <div 
-              key={listing.id} 
-              className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md transition-shadow ${viewType === 'list' ? 'flex' : ''}`}
-              onClick={() => handleEditListing(listing.id)}
-            >
-              <div className="relative">
-                <div className={`${viewType === 'list' ? 'w-48 h-32' : 'aspect-square'} bg-gray-200 overflow-hidden`}>
-                  <img 
-                    src={listing.image} 
-                    alt={listing.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="absolute top-3 left-3">
-                  <StatusBadge status={listing.status} />
-                </div>
-              </div>
-              <div className="p-4 flex-1">
-                <p className="text-sm text-gray-600 mb-1">{listing.title}</p>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleEditListing(listing.id);
-                  }}
-                  className="text-sm font-medium text-gray-900 hover:text-gray-700"
-                >
-                  Edit listing
-                </button>
-              </div>
+        {/* Empty State */}
+        {listings.length === 0 && (
+          <div className="text-center py-12">
+            <div className="mx-auto h-12 w-12 text-gray-400">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
             </div>
-          ))}
-        </div>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">No listings yet</h3>
+            <p className="mt-1 text-sm text-gray-500">Get started by creating your first listing.</p>
+            <div className="mt-6">
+              <button
+                onClick={() => router.push('/host/overview')}
+                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <Plus className="-ml-1 mr-2 h-5 w-5" />
+                Create Listing
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Listings Grid */}
+        {listings.length > 0 && (
+          <div className={`grid ${viewType === 'grid' ? 'grid-cols-4' : 'grid-cols-1'} gap-4`}>
+            {listings.map((listing) => (
+              <ListingCard 
+                key={listing.id} 
+                listing={listing} 
+                viewType={viewType}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

@@ -1,11 +1,13 @@
 import HeroSection from "@/components/site/HeroSection";
 import { PropertyContent } from "@/components/site/property/content";
 import { getListings } from "@/components/host/action";
+import AirbnbIconsRow from "@/components/atom/airbnb-icons-row";
+import { Listing } from "@/types/listing";
 
 async function getPublishedListings() {
   try {
     const listings = await getListings({ publishedOnly: true });
-    return listings;
+    return listings as Listing[];
   } catch (error) {
     console.error("Error fetching published listings:", error);
     return [];
@@ -18,9 +20,10 @@ export default async function Home() {
   return (
     <div className="bg-background">
       <HeroSection />
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="layout-container space-y-10">
+        <AirbnbIconsRow />
         <PropertyContent properties={listings} />
-      </main>
+      </div>
     </div>
   );
 }

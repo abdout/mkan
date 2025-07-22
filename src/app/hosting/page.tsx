@@ -1,20 +1,41 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import NotificationCard from '@/components/hosting/notification-card';
+import { useAuthRedirect } from '@/hooks/use-auth-redirect';
 
 const HostingPage = () => {
+  const router = useRouter();
+  const { session, status } = useAuthRedirect();
   const [activeTab, setActiveTab] = useState<'today' | 'upcoming'>('today');
+
+  // Show loading while checking session
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated
+  if (!session) {
+    return null; // Will redirect in useEffect
+  }
 
   return (
     <>
       {/* Notification Row */}
-      <NotificationCard
+      {/* <NotificationCard
             subtitle="hello mkan"
             title="Confirm a few key details"
             description="Required to publish"
-          />
+          /> */}
           
        
 

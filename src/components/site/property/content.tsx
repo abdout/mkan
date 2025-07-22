@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { PropertyCard } from "@/components/site/property/card";
-import { Listing } from "@/components/host/use-listing";
+import { Listing } from "@/types/listing";
+import { PropertyListings } from "./listings";
 
 interface PropertyContentProps {
   properties: Listing[];
@@ -11,22 +11,17 @@ export const PropertyContent = ({ properties: initialProperties }: PropertyConte
   const [properties, setProperties] = useState(initialProperties);
 
   useEffect(() => {
-    setProperties(initialProperties);
+    // Filter to show only published listings
+    const publishedProperties = initialProperties.filter(property => property.isPublished === true);
+    setProperties(publishedProperties);
   }, [initialProperties]);
 
   return (
-    <div className="py-10 lg:py-14">
-      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {properties.map((property) => (
-          <PropertyCard
-            key={property.id}
-            id={property.id!}
-            title={property.title!}
-            address={`${property.address}, ${property.city}`}
-            price={property.pricePerNight!}
-            imageUrl={property.photoUrls?.[0] || ""}
-          />
-        ))}
+    <div className="w-full">
+      <div className="flex relative">
+        <div className="flex-1">
+          <PropertyListings properties={properties} />
+        </div>
       </div>
     </div>
   );
