@@ -5,6 +5,7 @@ import AirbnbPropertyHeader from "@/components/atom/airbnb-property-header";
 import AirbnbImages from "@/components/atom/airbnb-images";
 import AirbnbReviews from "@/components/atom/airbnb-reviews";
 import AirbnbReserve from "@/components/atom/airbnb-reserve";
+import AmenityViewer from "@/components/listings/amenity-viewer";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Bed, Bath, Users, Square } from "lucide-react";
 import { Listing } from "@/types/listing";
@@ -143,25 +144,9 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                         </div>
 
                         {/* Amenities */}
-                        {listing.amenities && listing.amenities.length > 0 && (
-                            <div className="border-b border-gray-200 pb-8">
-                                <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                                    What this place offers
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {listing.amenities.map((amenity, index) => (
-                                        <div key={index} className="flex items-center space-x-3">
-                                            <div className="w-6 h-6 bg-gray-100 rounded flex items-center justify-center">
-                                                <span className="text-xs">✓</span>
-                                            </div>
-                                            <span className="text-sm text-gray-700">
-                                                {amenity.replace(/([A-Z])/g, ' $1').trim()}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+                        <div className="border-b border-gray-200 pb-8">
+                            <AmenityViewer />
+                        </div>
                     </div>
                     {/* Reservation Widget - Moved here under images */}
                     <div>

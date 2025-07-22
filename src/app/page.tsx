@@ -3,6 +3,7 @@ import { PropertyContent } from "@/components/site/property/content";
 import { getListings } from "@/components/host/action";
 import AirbnbIconsRow from "@/components/atom/airbnb-icons-row";
 import { Listing } from "@/types/listing";
+import AirbnbInspiration from "@/components/atom/airbnb-inspiration";
 
 async function getPublishedListings() {
   try {
@@ -23,6 +24,7 @@ export default async function Home() {
       <div className="layout-container space-y-10">
         <AirbnbIconsRow />
         <PropertyContent properties={listings} />
+        <AirbnbInspiration />
       </div>
     </div>
   );

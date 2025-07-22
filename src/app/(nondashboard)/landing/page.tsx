@@ -4,7 +4,7 @@ import FeaturesSection from "./FeaturesSection";
 import DiscoverSection from "./DiscoverSection";
 import CallToActionSection from "./CallToActionSection";
 import FooterSection from "./FooterSection";
-import { Property } from "@/components/site/property/content";
+import { PropertyContent } from "@/components/site/property/content";
 import AirbnbFilter from "@/components/atom/airbnb-filter";
 import AirbnbPropertyHeader from "@/components/atom/airbnb-property-header";
 import AirbnbSelect from "@/components/atom/airbnb-select";
@@ -14,7 +14,7 @@ import AirbnbReserve from "@/components/atom/airbnb-reserve";
 import AirbnbInspiration from "@/components/atom/airbnb-inspiration";
 import AirbnbReviews from "@/components/atom/airbnb-reviews";
 
-import PropertyContent from "@/components/property/content";
+import PropertyContentComponent from "@/components/property/content";
 
 const Landing = () => {
   return (
@@ -23,7 +23,7 @@ const Landing = () => {
       <div className="layout-container space-y-10">
       <AirbnbIconsRow />
       
-      <PropertyContent searchParams={Promise.resolve({})} />
+      <PropertyContentComponent searchParams={Promise.resolve({})} />
       
       
       <AirbnbPropertyHeader 
@@ -47,7 +47,7 @@ const Landing = () => {
       <AirbnbReviews />
       <AirbnbSelect type="location" />
       <AirbnbFilter />
-      <Property />
+      <PropertyContent properties={[]} />
       </div>
       <FeaturesSection />
       <DiscoverSection />

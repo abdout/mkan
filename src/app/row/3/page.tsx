@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Calendar from '@/components/row/Calendar';
 import Categories from '@/components/row/Categories';
 import CategoryBox from '@/components/row/CategoryBox';
@@ -42,30 +42,38 @@ const Page = () => {
     <div className="container mx-auto px-4 py-8 space-y-12">
       <div className="space-y-4">
         <h2 className="text-2xl font-bold">User Menu</h2>
-        <UserMenu />
+        <Suspense fallback={<div>Loading...</div>}>
+          <UserMenu />
+        </Suspense>
       </div>
 
       <div className="space-y-4">
         <h2 className="text-2xl font-bold">Categories</h2>
-        <Categories />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Categories />
+        </Suspense>
       </div>
 
       <div className="space-y-4">
         <h2 className="text-2xl font-bold">Category Box</h2>
-        <CategoryBox 
-          icon={TbBeach}
-          label="Beach"
-          description="This property is close to the beach!"
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <CategoryBox 
+            icon={TbBeach}
+            label="Beach"
+            description="This property is close to the beach!"
+          />
+        </Suspense>
       </div>
 
       <div className="space-y-4">
         <h2 className="text-2xl font-bold">Category Input</h2>
-        <CategoryInput 
-          icon={TbBeach}
-          label="Beach"
-          onClick={() => {}}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <CategoryInput 
+            icon={TbBeach}
+            label="Beach"
+            onClick={() => {}}
+          />
+        </Suspense>
       </div>
 
       <div className="space-y-4">
@@ -128,7 +136,9 @@ const Page = () => {
 
       <div className="space-y-4">
         <h2 className="text-2xl font-bold">Rent Modal</h2>
-        <RentModal />
+        <Suspense fallback={<div>Loading...</div>}>
+          <RentModal />
+        </Suspense>
       </div>
     </div>
   );
