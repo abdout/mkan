@@ -3,10 +3,24 @@ export interface Listing {
   title: string | null;
   description: string | null;
   pricePerNight: number | null;
+  securityDeposit?: number | null;
+  applicationFee?: number | null;
   photoUrls: string[];
+  amenities?: string[];
+  highlights?: string[];
+  isPetsAllowed?: boolean;
+  isParkingIncluded?: boolean;
+  bedrooms?: number | null;
+  bathrooms?: number | null;
+  squareFeet?: number | null;
+  guestCount?: number;
+  propertyType?: string | null;
+  postedDate: Date | null;
+  averageRating?: number | null;
+  numberOfReviews?: number | null;
   draft: boolean;
   isPublished: boolean;
-  postedDate: Date | null;
+  instantBook?: boolean;
   location: {
     id: number;
     address: string;
