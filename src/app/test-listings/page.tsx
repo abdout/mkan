@@ -2,6 +2,9 @@ import { getListings } from '@/components/host/action';
 import { getHostListings } from '@/components/host/action';
 import { db } from '@/lib/db';
 
+// Force dynamic rendering to allow use of headers() in auth
+export const dynamic = 'force-dynamic';
+
 export default async function TestListingsPage() {
   // Get all listings (no filter)
   const allListings = await getListings({});
