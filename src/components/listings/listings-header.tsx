@@ -57,23 +57,29 @@ const ListingsHeader = () => {
             </Link>
           </div>
 
-          {/* Center - Navigation Links */}
-          <div className="flex justify-center">
-            <nav className="flex space-x-8">
+          {/* Center - Navigation Links and Small Search */}
+          <div className="flex justify-center relative">
+            {/* Navigation Links */}
+            <nav className={`flex space-x-8 transition-all duration-300 ${isScrolled ? 'transform -translate-y-full opacity-0 absolute' : 'transform translate-y-0 opacity-100'}`}>
               {navigationItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`relative text-sm font-medium transition-all duration-300 ${
+                  className={`relative text-sm font-medium ${
                     isActiveRoute(item.href)
                       ? 'text-gray-900 border-b-2 border-gray-900 pb-0.5'
                       : 'text-gray-600 hover:text-gray-900'
-                  } ${isScrolled ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`}
+                  }`}
                 >
                   {item.name}
                 </Link>
               ))}
             </nav>
+
+            {/* Small Search */}
+            <div className={`transition-all duration-300 ${isScrolled ? 'transform translate-y-0 opacity-100' : 'transform translate-y-full opacity-0 absolute'}`}>
+              <SmallSearch />
+            </div>
           </div>
 
           {/* Right side - User Controls - Fixed Position */}

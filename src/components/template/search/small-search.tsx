@@ -5,21 +5,21 @@ import { Search } from "lucide-react"
 
 export default function Component() {
   return (
-    <div className="bg-[#ffffff] rounded-full shadow-lg border border-[#e5e7eb] flex items-center overflow-hidden w-80">
+    <div className="bg-[#ffffff] rounded-full shadow-lg border border-[#e5e7eb] flex items-center overflow-hidden w-96">
         <button onClick={() => {}} className="flex-1 px-6 py-4 text-left">
-          <div className="font-semibold text-[#000000] text-sm">Anywhere</div>
+          <div className="font-semibold text-[#000000] text-xs">Anywhere</div>
         </button>
 
         <div className="w-px h-8 bg-[#e5e7eb]"></div>
 
         <button onClick={() => {}} className="flex-1 px-6 py-4 text-left">
-          <div className="font-semibold text-[#000000] text-sm">Anytime</div>
+          <div className="font-semibold text-[#000000] text-xs">Anytime</div>
         </button>
 
         <div className="w-px h-8 bg-[#e5e7eb]"></div>
 
         <button onClick={() => {}} className="flex-1 px-6 py-4 text-left">
-          <div className="font-semibold text-[#000000] text-sm">Add guests</div>
+          <div className="font-semibold text-[#000000] text-xs">Add guests</div>
         </button>
 
         <div className="pr-2">
