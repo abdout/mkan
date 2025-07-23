@@ -135,7 +135,7 @@ export default function Component() {
   }
 
   return (
-    <div className="relative w-full px-32" ref={searchBarRef}>
+    <div className="relative w-full" ref={searchBarRef}>
       <div
         className={`flex items-center border border-[#e5e7eb] rounded-full shadow-sm transition-colors ${
           activeButton ? "bg-[#e5e7eb]" : "bg-white"

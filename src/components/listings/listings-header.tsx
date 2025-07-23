@@ -20,14 +20,9 @@ const ListingsHeader = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrolled = window.scrollY > 0;
-      console.log('Scroll position:', window.scrollY, 'Is scrolled:', scrolled);
-      setIsScrolled(scrolled);
+      setIsScrolled(window.scrollY > 0);
     };
 
-    // Set initial state
-    handleScroll();
-    
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -37,10 +32,10 @@ const ListingsHeader = () => {
   };
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-red-100' : 'bg-muted'}`}>
+    <header className="bg-muted sticky top-0 z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`relative flex items-center justify-between transition-all duration-300 ${isScrolled ? 'h-12' : 'h-16'}`}>
-          {/* Left side - Logo */}
+        <div className="relative grid grid-cols-3 items-center h-16">
+          {/* Left side - Logo - Fixed Position */}
           <div className="flex items-center">
             {/* Mkan Logo */}
             <Link href="/hosting" className="cursor-pointer hover:text-gray-700" scroll={false}>
@@ -63,24 +58,26 @@ const ListingsHeader = () => {
           </div>
 
           {/* Center - Navigation Links */}
-          <nav className="flex space-x-8">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`relative text-sm font-medium transition-all duration-300 ${
-                  isActiveRoute(item.href)
-                    ? 'text-gray-900 border-b-2 border-gray-900 pb-0.5'
-                    : 'text-gray-600 hover:text-gray-900'
-                } ${isScrolled ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
+          <div className="flex justify-center">
+            <nav className="flex space-x-8">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`relative text-sm font-medium transition-all duration-300 ${
+                    isActiveRoute(item.href)
+                      ? 'text-gray-900 border-b-2 border-gray-900 pb-0.5'
+                      : 'text-gray-600 hover:text-gray-900'
+                  } ${isScrolled ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+          </div>
 
-          {/* Right side - User Controls */}
-          <div className="flex items-center space-x-4">
+          {/* Right side - User Controls - Fixed Position */}
+          <div className="flex items-center justify-end">
             <Link
               href="/search"
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
@@ -101,7 +98,7 @@ const ListingsHeader = () => {
       </div>
       
       {/* Second Row - Big Search Component */}
-      <div className={`flex justify-center py-8 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden' : 'h-auto'}`}>
+      <div className={`w-full px-4 sm:px-6 lg:px-32 py-3 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden' : 'h-auto'}`}>
         <div className={`transition-all duration-300 ${isScrolled ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`}>
           <BigSearch />
         </div>
