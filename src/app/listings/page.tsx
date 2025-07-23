@@ -20,14 +20,7 @@ export default async function ListingsPage() {
     <div className="min-h-screen bg-background">
       <ListingsHeader />
       <div className="layout-container py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            All Available Properties
-          </h1>
-          <p className="text-gray-600">
-            Discover amazing places to stay from our community of hosts
-          </p>
-        </div>
+        
         
         <PropertyContent properties={listings} />
       </div>

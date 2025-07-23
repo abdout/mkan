@@ -78,10 +78,8 @@ export function PropertyCard({
           />
 
           {/* Favorite Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-3 right-3.5 w-6 h-6 backdrop-blur-sm rounded-full"
+          <button
+            className="absolute top-3 right-3.5 w-6 h-6 backdrop-blur-sm bg-white/20 hover:bg-white/30 rounded-full border border-white/20 flex items-center justify-center transition-colors"
             onClick={handleFavoriteClick}
           >
             <Heart
@@ -90,7 +88,7 @@ export function PropertyCard({
                 isLiked ? "fill-red-500 text-red-500" : "text-white"
               )}
             />
-          </Button>
+          </button>
 
           {/* Superhost Badge */}
           {isSuperhostBadge && (
