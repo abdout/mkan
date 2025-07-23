@@ -17,15 +17,15 @@
 
   @media (min-width: 768px) {
     .layout-container {
-      padding-left: 1.5rem !important; /* md:px-6 = 24px */
-      padding-right: 1.5rem !important;
+      padding-left: 2rem !important; /* md:px-6 = 24px */
+      padding-right: 2rem !important;
     }
   }
 
   @media (min-width: 1024px) {
     .layout-container {
-      padding-left: 1.5rem !important; /* lg:px-8 = 32px */
-      padding-right: 1.5rem !important;
+      padding-left: 2.5rem !important; /* lg:px-8 = 32px */
+      padding-right: 2.5rem !important;
     }
   }
 

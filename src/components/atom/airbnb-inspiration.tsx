@@ -51,14 +51,14 @@ const AirbnbInspiration: React.FC<AirbnbInspirationProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`w-full px-10 ${className}`}>
+    <div className={`w-full ${className}`}>
       {/* Section Title */}
       <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">
         Inspiration for your next trip
       </h2>
 
       {/* Destination Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {destinations.map((destination) => (
           <div
             key={destination.id}

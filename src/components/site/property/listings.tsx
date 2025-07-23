@@ -63,7 +63,7 @@ export const PropertyListings = ({ properties }: PropertyListingsProps) => {
       </h3>
       
       {viewMode === 'grid' ? (
-        <div className="p-4">
+        <div className="">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {transformedProperties.map((property) => (
               <PropertyCard key={property.id} {...property} />
