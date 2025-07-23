@@ -7,6 +7,7 @@ import AirbnbInspiration from "@/components/atom/airbnb-inspiration";
 import GiftCard from "@/components/atom/airbnb-gift-card";
 import Ask from "@/components/atom/airbnb-ask";
 
+
 async function getPublishedListings() {
   try {
     const listings = await getListings({ publishedOnly: true });
@@ -23,13 +24,14 @@ export default async function Home() {
   return (
     <div className="bg-background">
       <HeroSection />
-      <div className="layout-container space-y-10">
+      <div className="layout-container space-y-10 pb-20">
         <AirbnbIconsRow />
         <PropertyContent properties={listings} />
         <AirbnbInspiration />
         <GiftCard />
         <Ask />
       </div>
+
     </div>
   );
 }
