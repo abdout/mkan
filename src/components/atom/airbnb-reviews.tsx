@@ -82,11 +82,11 @@ const AirbnbReviews: React.FC<AirbnbReviewsProps> = ({
       {/* Content Row Below - Full Width */}
       <div className="flex items-start justify-between w-full">
         {/* Overall Rating Column */}
-        <div className="flex flex-col justify-start">
-          <h3 className="text-sm font-medium mb-4">Overall rating</h3>
-          <div className="">
+        <div className="flex flex-col justify-start w-[15%]">
+          <h3 className="text-sm font-medium mb-2">Overall rating</h3>
+          <div className="space-y-1">
             {[5, 4, 3, 2, 1].map((star, index) => (
-              <div key={star} className="flex items-center space-x-3">
+              <div key={star} className="flex items-center space-x-3 -mb-1">
                 <span className="text-sm w-2">{star}</span>
                 <div className="flex-1 bg-gray-200 rounded-full h-1">
                   <div 
@@ -107,10 +107,10 @@ const AirbnbReviews: React.FC<AirbnbReviewsProps> = ({
           {categories.map((category, index) => (
             <React.Fragment key={index}>
               <div className="flex flex-col justify-start flex-1">
-                <h4 className="text-sm font-medium text-gray-900 mb-2">
+                <h4 className="text-sm font-medium text-gray-900 mb-1">
                   {category.name}
                 </h4>
-                <span className="text-lg font-semibold mb-6">
+                <span className="text-lg font-semibold mb-4">
                   {category.rating}
                 </span>
                 <div className="text-gray-700 mt-auto">

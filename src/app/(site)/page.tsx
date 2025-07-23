@@ -6,7 +6,7 @@ import { Listing } from "@/types/listing";
 import AirbnbInspiration from "@/components/atom/airbnb-inspiration";
 import GiftCard from "@/components/atom/airbnb-gift-card";
 import Ask from "@/components/atom/airbnb-ask";
-
+import SiteFooter from "@/components/template/footer-airbnb/site-footer";
 
 async function getPublishedListings() {
   try {
@@ -31,7 +31,7 @@ export default async function Home() {
         <GiftCard />
         <Ask />
       </div>
-
+        
     </div>
   );
 }

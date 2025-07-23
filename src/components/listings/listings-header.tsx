@@ -38,7 +38,7 @@ const ListingsHeader = () => {
           {/* Left side - Logo - Fixed Position */}
           <div className="flex items-center w-1/3">
             {/* Mkan Logo */}
-            <Link href="/hosting" className="cursor-pointer hover:text-gray-700" scroll={false}>
+            <Link href="/" className="cursor-pointer hover:text-gray-700" scroll={false}>
               <div className="flex items-center gap-2">
                 <Image
                   src="/tent.png"

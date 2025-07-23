@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Bed, Bath, Users, Square } from "lucide-react";
 import { Listing } from "@/types/listing";
 import PropertyGallery from "@/components/atom/airbnb-img";
+import AirbnbInfo from "./atom/airbnb-info";
+import Review from "./listings/review";
 
 interface ListingDetailsClientProps {
     listing: Listing;
@@ -54,7 +56,7 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                 onShare={handleShare}
                 onSave={handleSave}
                 isSaved={false} // TODO: Add saved state logic
-                className="mb-8"
+                className="mb-4"
             />
 
             {/* Main Content */}
@@ -74,9 +76,9 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                     onShowAllPhotos={handleShowAllPhotos}
                     className="mb-8"
                 /> */}
-                <div className="flex gap-4">
+                <div className="flex gap-20 mt-10">
                     
-                    <div>
+                    <div className="flex-1 max-w-2xl">
                         {/* Property Details */}
                         <div className="border-b border-gray-200 pb-8">
                             <div className="flex items-center justify-between mb-4">
@@ -131,6 +133,7 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                                 )}
                             </div>
 
+
                             {/* Location */}
                             {listing.location && (
                                 <div className="flex items-center space-x-2 mb-4">
@@ -151,19 +154,23 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                             )}
                         </div>
 
+                        <AirbnbInfo />
+
                         {/* Amenities */}
                         <div className="border-b border-gray-200 pb-8">
                             <AmenityViewer />
                         </div>
                     </div>
-                    {/* Reservation Widget - Moved here under images */}
-                    <div>
-                        <AirbnbReserve
-                            pricePerNight={listing.pricePerNight || 0}
-                            rating={listing.averageRating || 4.5}
-                            reviewCount={listing.numberOfReviews || 0}
-                            className="w-full"
-                        />
+                    {/* Reservation Widget - Fixed position */}
+                    <div className="w-80 flex-shrink-0">
+                        <div className="sticky top-8">
+                            <AirbnbReserve
+                                pricePerNight={listing.pricePerNight || 0}
+                                rating={listing.averageRating || 4.5}
+                                reviewCount={listing.numberOfReviews || 0}
+                                className="w-full"
+                            />
+                        </div>
                     </div>
 
                 </div>
@@ -174,6 +181,8 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                     totalReviews={listing.numberOfReviews || 0}
                     className="border-b border-gray-200 pb-8"
                 />
+
+                <Review />
 
                 {/* Host Information */}
                 <div className="border-b border-gray-200 pb-8">

@@ -94,7 +94,7 @@ const AirbnbPropertyHeader: React.FC<AirbnbPropertyHeaderProps> = ({
               variant="ghost"
               size="sm"
               onClick={onShare}
-              className="flex items-center space-x-1 text-gray-700 hover:bg-transparent hover:underline text-sm font-normal"
+              className="flex items-center space-x-1 text-gray-700 hover:bg-transparent hover:underline text-sm font-medium underline"
             >
               <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
                 <path d="M6.16675 3.16675H4.50008C3.7637 3.16675 3.16675 3.7637 3.16675 4.50008V11.5001C3.16675 12.2365 3.7637 12.8334 4.50008 12.8334H11.5001C12.2365 12.8334 12.8334 12.2365 12.8334 11.5001V9.83341" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -108,7 +108,7 @@ const AirbnbPropertyHeader: React.FC<AirbnbPropertyHeaderProps> = ({
               variant="ghost"
               size="sm"
               onClick={onSave}
-              className={`flex items-center space-x-1 hover:bg-transparent hover:underline text-sm font-normal ${
+              className={`flex items-center space-x-1 hover:bg-transparent hover:underline text-sm font-medium underline ${
                 isSaved ? 'text-red-500' : 'text-gray-700'
               }`}
             >
@@ -121,8 +121,8 @@ const AirbnbPropertyHeader: React.FC<AirbnbPropertyHeaderProps> = ({
         </div>
       </div>
 
-      {/* Divider */}
-      <div className="mt-6 border-b border-gray-200" />
+      {/* Divider
+      <div className="mt-6 border-b border-gray-200" /> */}
     </div>
   );
 };
