@@ -1,11 +1,14 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
+import { db } from '@/lib/db'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Edit, Trash2, MapPin, DollarSign, Bed, Bath, Square } from 'lucide-react'
+
+// Force dynamic rendering to allow use of headers() in auth
+export const dynamic = 'force-dynamic';
 
 export default async function PropertiesPage() {
   // TODO: Uncomment auth check when ready for production
@@ -18,8 +21,8 @@ export default async function PropertiesPage() {
   console.log('🏠 === PROPERTIES PAGE DEBUG ===')
   
   // Debug: Check all users and properties in database
-  const allUsers = await prisma.user.findMany()
-  const allProperties = await prisma.property.findMany({
+  const allUsers = await db.user.findMany()
+  const allProperties = await db.property.findMany({
     include: { location: true, manager: true }
   })
   
@@ -32,7 +35,7 @@ export default async function PropertiesPage() {
   })))
   
   // For debugging: Show all properties instead of filtering by user
-  const properties = await prisma.property.findMany({
+  const properties = await db.property.findMany({
     // where: {
     //   managerId: session.user.id
     // },

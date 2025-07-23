@@ -3,6 +3,9 @@ import Header from "@/components/Header";
 import { getManagerApplications, type ApplicationWithDetails } from "@/components/application/action";
 import { ApplicationTabs } from "../../../../components/application/tabs";
 
+// Force dynamic rendering to allow use of headers() in auth
+export const dynamic = 'force-dynamic';
+
 const Applications = async () => {
   const result = await getManagerApplications();
 
