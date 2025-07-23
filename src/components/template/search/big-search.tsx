@@ -218,7 +218,7 @@ export default function Component() {
             <Button
               size="icon"
               className={`rounded-full bg-[#de3151] hover:bg-[#de3151]/90 text-white transition-all duration-300 ${
-                activeButton ? "w-28 h-14 px-4" : "w-10 h-10"
+                activeButton ? "w-28 h-14 px-4" : "w-12 h-12"
               }`}
             >
               <Search className="w-4 h-4" />

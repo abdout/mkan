@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Menu } from 'lucide-react';
 import BigSearch from '@/components/template/search/big-search';
 import SmallSearch from '@/components/template/search/small-search';
 
@@ -32,11 +32,11 @@ const ListingsHeader = () => {
   };
 
   return (
-    <header className="bg-muted sticky top-0 z-50 transition-all duration-300">
+    <header className="bg-muted sticky top-0 z-50 transition-all duration-300 border-b ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative grid grid-cols-3 items-center h-16">
+        <div className="relative flex items-center h-14 pt-4 min-h-[56px]">
           {/* Left side - Logo - Fixed Position */}
-          <div className="flex items-center">
+          <div className="flex items-center w-1/3">
             {/* Mkan Logo */}
             <Link href="/hosting" className="cursor-pointer hover:text-gray-700" scroll={false}>
               <div className="flex items-center gap-2">
@@ -58,7 +58,7 @@ const ListingsHeader = () => {
           </div>
 
           {/* Center - Navigation Links and Small Search */}
-          <div className="flex justify-center relative">
+          <div className="flex-1 flex justify-center relative">
             {/* Navigation Links */}
             <nav className={`flex space-x-8 transition-all duration-300 ${isScrolled ? 'transform -translate-y-full opacity-0 absolute' : 'transform translate-y-0 opacity-100'}`}>
               {navigationItems.map((item) => (
@@ -77,35 +77,27 @@ const ListingsHeader = () => {
             </nav>
 
             {/* Small Search */}
-            <div className={`transition-all duration-300 ${isScrolled ? 'transform translate-y-0 opacity-100' : 'transform translate-y-full opacity-0 absolute'}`}>
+            <div className={`pt-1 transition-all duration-300 ${isScrolled ? 'transform translate-y-0 opacity-100' : 'transform translate-y-full opacity-0 absolute'}`}>
               <SmallSearch />
             </div>
           </div>
 
           {/* Right side - User Controls - Fixed Position */}
-          <div className="flex items-center justify-end">
-            <Link
-              href="/search"
-              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Switch to traveling
-            </Link>
-            
+          <div className="flex items-center justify-end space-x-2 w-1/3">
             <div className="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center">
               <span className="text-white font-medium text-sm">A</span>
             </div>
             
-            <button className="text-gray-600 hover:text-gray-900 relative transition-colors">
-              <MoreHorizontal size={20} />
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            <button className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
+              <Menu size={16} className="text-gray-600" />
             </button>
           </div>
         </div>
       </div>
       
       {/* Second Row - Big Search Component */}
-      <div className={`w-full px-4 sm:px-6 lg:px-32 py-3 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden' : 'h-auto'}`}>
-        <div className={`transition-all duration-300 ${isScrolled ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`}>
+      <div className={`w-full px-4 sm:px-6 lg:px-32 pt-3 pb-4 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden' : 'h-auto'}`}>
+        <div className={`transition-all duration-300 ${isScrolled ? 'transform -translate-y-full opacity-0 scale-75' : 'transform translate-y-0 opacity-100 scale-100'}`}>
           <BigSearch />
         </div>
       </div>
