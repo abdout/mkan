@@ -1,4 +1,5 @@
 import { getListings } from "@/components/host/action";
+import ListingsHeader from "@/components/listings/listings-header";
 import { PropertyContent } from "@/components/site/property/content";
 import { Listing } from "@/types/listing";
 
@@ -17,6 +18,7 @@ export default async function ListingsPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <ListingsHeader />
       <div className="layout-container py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">

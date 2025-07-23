@@ -1,138 +1,195 @@
-import React from 'react';
-import Link from 'next/link';
-import { 
-  FOOTER_SECTIONS, 
-  SOCIAL_LINKS, 
-  FOOTER_LEGAL_LINKS, 
-  FOOTER_LANGUAGE_CURRENCY, 
-  FOOTER_COPYRIGHT 
-} from './constant';
-import { Facebook, Twitter, Instagram, Globe, ChevronUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-
-const SocialIcon = ({ icon }: { icon: string }) => {
-  const iconProps = {
-    size: 18,
-    className: "text-gray-600 hover:text-gray-900 transition-colors"
-  };
-
-  switch (icon) {
-    case 'facebook':
-      return <Facebook {...iconProps} />;
-    case 'twitter':
-      return <Twitter {...iconProps} />;
-    case 'instagram':
-      return <Instagram {...iconProps} />;
-    default:
-      return <Globe {...iconProps} />;
-  }
-};
+import Link from "next/link"
+import { Globe, DollarSign, Facebook, Twitter, Instagram } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function SiteFooter() {
   return (
-    <footer className="bg-gray-50 border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Main Footer Content */}
-        <div className="pt-12 pb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {FOOTER_SECTIONS.map((section) => (
-              <div key={section.title} className="space-y-3">
-                <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wide">
-                  {section.title}
-                </h3>
-                <ul className="space-y-2">
-                  {section.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-sm font-normal text-gray-600 hover:text-gray-900 transition-colors duration-150 leading-relaxed"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+    <div className="bg-[#f9fafb] border-t border-[#e5e7eb]">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        {/* Main footer content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          {/* Support Column */}
+          <div>
+            <h3 className="text-[#000000] font-semibold text-sm mb-4">Support</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Help Center
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Safety information
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Cancellation options
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Our COVID-19 Response
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Supporting people with disabilities
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Report a neighborhood concern
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Community Column */}
+          <div>
+            <h3 className="text-[#000000] font-semibold text-sm mb-4">Community</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Airbnb.org: disaster relief housing
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Support: Afghan refugees
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Celebrating diversity & belonging
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Combating discriminatino
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Hosting Column */}
+          <div>
+            <h3 className="text-[#000000] font-semibold text-sm mb-4">Hosting</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Try hosting
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  AirCover: protection for Hosts
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Explore hosting resources
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Visit our community forum
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  How to host responsibly
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* About Column */}
+          <div>
+            <h3 className="text-[#000000] font-semibold text-sm mb-4">About</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Newsroom
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Learn about new features
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Letter from our founders
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Investors
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-[#4b5563] text-sm hover:underline">
+                  Airbnb Luxe
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <Separator className="bg-gray-200" />
-
-        {/* Bottom Footer */}
-        <div className="py-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            
-            {/* Left side - Legal Links and Copyright */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-              <div className="flex items-center flex-wrap gap-1">
-                <span className="text-sm font-normal text-gray-600">
-                  © {FOOTER_COPYRIGHT.year} Airbnb, Inc.
-                </span>
-                <span className="text-gray-400 mx-2">·</span>
-                {FOOTER_LEGAL_LINKS.map((link, index) => (
-                  <React.Fragment key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm font-normal text-gray-600 hover:text-gray-900 transition-colors duration-150 hover:underline"
-                    >
-                      {link.label}
-                    </Link>
-                    {index < FOOTER_LEGAL_LINKS.length - 1 && (
-                      <span className="text-gray-400 mx-2">·</span>
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
+        {/* Bottom section */}
+        <div className="border-t border-[#e5e7eb] pt-6">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            {/* Left side - Copyright and legal links */}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-[#4b5563]">
+              <span>© 2022 Airbnb, Inc.</span>
+              <span>·</span>
+              <Link href="#" className="hover:underline">
+                Privacy
+              </Link>
+              <span>·</span>
+              <Link href="#" className="hover:underline">
+                Terms
+              </Link>
+              <span>·</span>
+              <Link href="#" className="hover:underline">
+                Sitemap
+              </Link>
             </div>
 
-            {/* Right side - Language, Currency, and Social */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-              
-              {/* Language and Currency Selector */}
-              <div className="flex items-center gap-3">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="h-9 px-3 text-sm font-medium text-gray-900 bg-white border-gray-300 hover:border-gray-400 hover:bg-gray-50 rounded-lg"
-                >
-                  <Globe className="w-4 h-4 mr-2" />
-                  {FOOTER_LANGUAGE_CURRENCY.language.label}
+            {/* Right side - Language, currency, and social icons */}
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="sm" className="text-[#4b5563] hover:bg-[#ffffff] gap-2">
+                <Globe className="w-4 h-4" />
+                English (US)
+              </Button>
+              <Button variant="ghost" size="sm" className="text-[#4b5563] hover:bg-[#ffffff] gap-2">
+                <DollarSign className="w-4 h-4" />
+                USD
+              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="icon" className="w-8 h-8 text-[#4b5563] hover:bg-[#ffffff]">
+                  <Facebook className="w-4 h-4" />
+                  <span className="sr-only">Facebook</span>
                 </Button>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="h-9 px-3 text-sm font-medium text-gray-900 bg-white border-gray-300 hover:border-gray-400 hover:bg-gray-50 rounded-lg"
-                >
-                  {FOOTER_LANGUAGE_CURRENCY.currency.label}
+                <Button variant="ghost" size="icon" className="w-8 h-8 text-[#4b5563] hover:bg-[#ffffff]">
+                  <Twitter className="w-4 h-4" />
+                  <span className="sr-only">Twitter</span>
                 </Button>
-              </div>
-
-              {/* Social Links */}
-              <div className="flex items-center gap-3">
-                {SOCIAL_LINKS.map((social) => (
-                  <Link
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors duration-150"
-                    aria-label={`Follow us on ${social.name}`}
-                  >
-                    <SocialIcon icon={social.icon} />
-                  </Link>
-                ))}
+                <Button variant="ghost" size="icon" className="w-8 h-8 text-[#4b5563] hover:bg-[#ffffff]">
+                  <Instagram className="w-4 h-4" />
+                  <span className="sr-only">Instagram</span>
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Decorative bottom border */}
-      <div className="h-1 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500"></div>
-    </footer>
-  );
+    </div>
+  )
 }

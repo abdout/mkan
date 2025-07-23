@@ -1,6 +1,7 @@
 import { getListing } from "@/components/host/action";
 import { notFound } from "next/navigation";
 import ListingDetailsClient from "@/components/listing-details-client";
+import PropertyGallery from "@/components/atom/airbnb-img";
 
 interface ListingPageProps {
   params: {
@@ -28,8 +29,9 @@ export default async function ListingPage({ params }: ListingPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background mx-14">
       <ListingDetailsClient listing={listing} />
+      {/* <PropertyGallery /> */}
     </div>
   );
 }

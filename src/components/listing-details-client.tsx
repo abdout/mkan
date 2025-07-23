@@ -9,6 +9,7 @@ import AmenityViewer from "@/components/listings/amenity-viewer";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Bed, Bath, Users, Square } from "lucide-react";
 import { Listing } from "@/types/listing";
+import PropertyGallery from "@/components/atom/airbnb-img";
 
 interface ListingDetailsClientProps {
     listing: Listing;
@@ -57,15 +58,22 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
             />
 
             {/* Main Content */}
+
+            <PropertyGallery 
+                images={listing.photoUrls || []}
+                onSave={handleSave}
+                isSaved={false}
+                onShowAllPhotos={handleShowAllPhotos}
+            />
             <div className="space-y-8">
                 {/* Images */}
-                <AirbnbImages
+                {/* <AirbnbImages
                     images={listing.photoUrls || []}
                     onSave={handleSave}
                     isSaved={false}
                     onShowAllPhotos={handleShowAllPhotos}
                     className="mb-8"
-                />
+                /> */}
                 <div className="flex gap-4">
                     
                     <div>
