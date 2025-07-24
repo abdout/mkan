@@ -35,50 +35,44 @@ export default function DetailCard({
         <img
           src={image}
           alt={title}
-          className="w-[300px] h-[200px] object-cover rounded-xl border border-gray-200"
+          className="w-[250px] h-[170px] object-cover rounded-xl border border-gray-200"
         />
       </div>
 
       {/* Property Details */}
-      <div className="flex-1 flex flex-col gap-4">
+      <div className="flex-1 flex flex-col justify-between h-[170px]">
         {/* Header */}
         <div className="flex justify-between items-start">
           <div className="flex flex-col">
-            <p className="text-sm font-normal text-gray-500">{location}</p>
-            <h3 className="text-xl font-medium text-gray-900">{title}</h3>
+            <p className="text-xs font-normal text-gray-500">{location}</p>
+            <h3 className="text-base font-medium text-gray-900">{title}</h3>
           </div>
           <Button 
             variant="ghost" 
             size="icon" 
-            className="w-8 h-8 p-0"
+            className="w-6 h-6 p-0"
           >
-            <Heart className={`h-5 w-5 ${isFavorited ? 'fill-pink-300 text-pink-500' : 'text-gray-700'}`} />
+            <Heart className={`h-4 w-4 ${isFavorited ? 'fill-pink-300 text-pink-500' : 'text-gray-700'}`} />
           </Button>
         </div>
 
-        {/* Divider */}
-        <div className="w-10 h-px bg-gray-200"></div>
-
         {/* Details */}
         <div className="flex flex-col">
-          <p className="text-sm font-normal text-gray-500">{guests} · Entire Home · {beds} · {baths}</p>
-          <p className="text-sm font-normal text-gray-500">{amenities}</p>
+          <p className="text-xs font-normal text-gray-500">{guests} · Entire Home · {beds} · {baths}</p>
+          <p className="text-xs font-normal text-gray-500">{amenities}</p>
         </div>
-
-        {/* Divider */}
-        <div className="w-10 h-px bg-gray-200"></div>
 
         {/* Footer */}
         <div className="flex justify-between items-end">
           <div className="flex items-center gap-1">
-            <span className="text-sm font-medium text-gray-700">{rating}</span>
-            <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-            <span className="text-sm font-normal text-gray-700">({reviews} reviews)</span>
+            <span className="text-xs font-medium text-gray-700">{rating}</span>
+            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+            <span className="text-xs font-normal text-gray-700">({reviews} reviews)</span>
           </div>
           
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-medium text-gray-700">{price}</span>
-            <span className="text-sm font-normal text-gray-700">/night</span>
+          <div className="flex items-center gap-1">
+            <span className="text-sm font-medium text-gray-700">{price}</span>
+            <span className="text-xs font-normal text-gray-700">/night</span>
           </div>
         </div>
       </div>

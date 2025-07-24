@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 export default function SearchMap() {
   return (
-    <div className="w-[450px] border-l border-gray-200">
+    <div className="w-[430px] border-l border-gray-200">
       {/* Fixed map container - absolutely no movement */}
       <div className="fixed top-16 right-0 w-[450px] h-[calc(100vh-64px)] bg-gray-100">
         {/* Actual map image */}
