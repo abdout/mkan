@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ShareIcon, HeartIcon } from '@/components/atom/icons';
 
 interface AirbnbPropertyHeaderProps {
   title: string;
@@ -96,11 +97,7 @@ const AirbnbPropertyHeader: React.FC<AirbnbPropertyHeaderProps> = ({
               onClick={onShare}
               className="flex items-center space-x-1 text-gray-700 hover:bg-transparent hover:underline text-sm font-medium underline"
             >
-              <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none">
-                <path d="M6.16675 3.16675H4.50008C3.7637 3.16675 3.16675 3.7637 3.16675 4.50008V11.5001C3.16675 12.2365 3.7637 12.8334 4.50008 12.8334H11.5001C12.2365 12.8334 12.8334 12.2365 12.8334 11.5001V9.83341" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M12.8333 6.16675V3.16675H9.83325" stroke="#141414" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M12.6666 3.33325L7.83325 8.16659" stroke="#141414" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <ShareIcon className="w-4 h-4" />
               <span>Share</span>
             </Button>
             
@@ -112,9 +109,7 @@ const AirbnbPropertyHeader: React.FC<AirbnbPropertyHeaderProps> = ({
                 isSaved ? 'text-red-500' : 'text-gray-700'
               }`}
             >
-              <svg className="w-3 h-3" viewBox="0 0 12 10" fill="none">
-                <path fillRule="evenodd" clipRule="evenodd" d="M5.99677 1.82206C5.03042 0.739919 3.41896 0.448827 2.20818 1.43974C0.997409 2.43065 0.826949 4.08741 1.77778 5.25937L5.99677 9.16659L10.2158 5.25937C11.1666 4.08741 11.0169 2.42023 9.78536 1.43974C8.55377 0.45925 6.96312 0.739919 5.99677 1.82206Z" stroke={isSaved ? '#DE3151' : 'black'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill={isSaved ? '#DE3151' : 'none'}/>
-              </svg>
+              <HeartIcon className={`w-4 h-4 ${isSaved ? 'fill-red-500 text-red-500' : ''}`} />
               <span>Save</span>
             </Button>
           </div>

@@ -66,6 +66,7 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                 onSave={handleSave}
                 isSaved={false}
                 onShowAllPhotos={handleShowAllPhotos}
+                listingId={listing.id?.toString()}
             />
             <div className="space-y-8">
                 {/* Images */}
@@ -163,7 +164,7 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                     </div>
                     {/* Reservation Widget - Fixed position */}
                     <div className="w-80 flex-shrink-0">
-                        <div className="sticky top-8">
+                        <div className="sticky top-24">
                             <AirbnbReserve
                                 pricePerNight={listing.pricePerNight || 0}
                                 rating={listing.averageRating || 4.5}

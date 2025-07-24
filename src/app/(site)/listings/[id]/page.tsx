@@ -1,7 +1,6 @@
 import { getListing } from "@/components/host/action";
 import { notFound } from "next/navigation";
 import ListingDetailsClient from "@/components/listing-details-client";
-import PropertyGallery from "@/components/atom/airbnb-img";
 import Location from "@/components/atom/airbnb-map";
 import DetailsHeader from "@/components/listings/detials-header";
 
@@ -35,7 +34,6 @@ export default async function ListingPage({ params }: ListingPageProps) {
       <DetailsHeader />
       <ListingDetailsClient listing={listing} />
       <Location />
-      {/* <PropertyGallery /> */}
     </div>
   );
 }
