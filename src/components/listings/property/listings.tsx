@@ -4,7 +4,6 @@ import React from 'react'
 import { useAppSelector } from '@/state/redux'
 import { PropertyCard } from './card'
 import { Listing } from '@/types/listing'
-import Link from 'next/link'
 
 interface PropertyListingsProps {
   properties: Listing[]
@@ -43,10 +42,10 @@ export const PropertyListings = ({ properties }: PropertyListingsProps) => {
   const transformedProperties = properties.map(property => ({
     id: property.id.toString(),
     images: property.photoUrls || [],
-    title: property.title || "Property",
+    title: property.title || property.name || "Property",
     location: `${property.location?.city || ""}, ${property.location?.state || ""}`,
     dates: undefined, // You can add availability dates logic here
-    price: property.pricePerNight || 0,
+    price: property.pricePerNight || property.pricePerMonth || 0,
     rating: property.averageRating || 4.5, // Default rating
     isSuperhostBadge: false, // You can add logic for this
     isFavorite: false, // TODO: Implement user favorites
@@ -56,18 +55,12 @@ export const PropertyListings = ({ properties }: PropertyListingsProps) => {
 
   return (
     <div className="w-full">
-      {/* <h3 className="text-sm px-4 font-bold mb-4">
+      <h3 className="text-sm px-4 font-bold mb-4">
         {properties.length}{' '}
         <span className="text-gray-700 font-normal">
           Properties Available
         </span>
-      </h3> */}
-      <Link href='/search' className="text-xl font-bold mb-6 flex items-center gap-1 hover:text-gray-700 transition-colors">
-        Popular homes in Khartoum
-        <svg className="w-3 h-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M9 5l7 7-7 7" />
-        </svg>
-      </Link>
+      </h3>
       
       {viewMode === 'grid' ? (
         <div className="">

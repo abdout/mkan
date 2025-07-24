@@ -7,6 +7,8 @@ import AirbnbInspiration from "@/components/atom/airbnb-inspiration";
 import GiftCard from "@/components/atom/airbnb-gift-card";
 import Ask from "@/components/atom/airbnb-ask";
 import SiteFooter from "@/components/template/footer-airbnb/site-footer";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 async function getPublishedListings() {
   try {
@@ -27,6 +29,11 @@ export default async function Home() {
       <div className="layout-container space-y-10 pb-20">
         <AirbnbIconsRow />
         <PropertyContent properties={listings} />
+        <Link href='/listings' className="my-14 flex justify-center">
+        <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90">
+          Explore All Listings
+        </Button>
+        </Link>
         <AirbnbInspiration />
         <GiftCard />
         <Ask />

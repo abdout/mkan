@@ -3,10 +3,12 @@
 import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 
 type ActiveButton = "location" | "checkin" | "checkout" | "guests" | null
 
 export default function Component() {
+  const router = useRouter()
   const [activeButton, setActiveButton] = useState<ActiveButton>(null)
   const [hoveredButton, setHoveredButton] = useState<ActiveButton>(null)
   const searchBarRef = useRef<HTMLDivElement>(null)
@@ -216,6 +218,7 @@ export default function Component() {
           {/* Search Button */}
           <div className="pr-2">
             <Button
+              onClick={() => router.push('/search')}
               size="icon"
               className={`rounded-full bg-[#de3151] hover:bg-[#de3151]/90 text-white transition-all duration-300 ${
                 activeButton ? "w-28 h-14 px-4" : "w-12 h-12"

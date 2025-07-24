@@ -46,7 +46,10 @@ async function main() {
       highlights: [Highlight.GreatView, Highlight.RecentlyRenovated, Highlight.HighSpeedInternetAccess, Highlight.QuietNeighborhood],
       photoUrls: [
         'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800',
-        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800'
+        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
+        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
+        'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+        'https://images.unsplash.com/photo-1555854877-bab0e5b6856c?w=800'
       ],
       location: {
         address: 'Al-Manshiya Street, Building 15',
@@ -79,7 +82,10 @@ async function main() {
       highlights: [Highlight.QuietNeighborhood, Highlight.GreatView, Highlight.RecentlyRenovated],
       photoUrls: [
         'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800',
-        'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800'
+        'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
+        'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
+        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800',
+        'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800'
       ],
       location: {
         address: 'Al-Riyadh District, Villa 8',
@@ -95,38 +101,6 @@ async function main() {
       instantBook: false,
       averageRating: 4.6,
       numberOfReviews: 18
-    },
-    {
-      title: 'Student Housing Near University',
-      description: 'Affordable student accommodation near University of Khartoum. Clean, furnished rooms with shared kitchen and study areas. Perfect for students seeking convenient and budget-friendly housing.',
-      pricePerNight: 60,
-      securityDeposit: 600,
-      applicationFee: 25,
-      bedrooms: 1,
-      bathrooms: 0.5,
-      squareFeet: 200,
-      propertyType: PropertyType.Rooms,
-      isPetsAllowed: false,
-      isParkingIncluded: false,
-      amenities: [Amenity.WiFi, Amenity.HighSpeedInternet, Amenity.AirConditioning],
-      highlights: [Highlight.HighSpeedInternetAccess, Highlight.CloseToTransit, Highlight.QuietNeighborhood],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1555854877-bab0e5b6856c?w=800'
-      ],
-      location: {
-        address: 'University Street, Building 3',
-        city: 'Khartoum',
-        state: 'Khartoum',
-        country: 'Sudan',
-        postalCode: '11113',
-        latitude: 15.5007,
-        longitude: 32.5299
-      },
-      isPublished: true,
-      draft: false,
-      instantBook: true,
-      averageRating: 4.4,
-      numberOfReviews: 12
     },
 
     // PUBLISHED LISTINGS - Omdurman
@@ -145,8 +119,11 @@ async function main() {
       amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking, Amenity.WasherDryer, Amenity.PetsAllowed],
       highlights: [Highlight.QuietNeighborhood, Highlight.GreatView, Highlight.CloseToTransit],
       photoUrls: [
-        'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
-        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800'
+        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
+        'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
+        'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800',
+        'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800',
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800'
       ],
       location: {
         address: 'Al-Thawra Street, Villa 12',
@@ -178,7 +155,11 @@ async function main() {
       amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking, Amenity.Dishwasher],
       highlights: [Highlight.RecentlyRenovated, Highlight.CloseToTransit, Highlight.QuietNeighborhood],
       photoUrls: [
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800'
+        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800',
+        'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800',
+        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
+        'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
+        'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800'
       ],
       location: {
         address: 'Al-Sahafa District, Building 7',
@@ -196,7 +177,7 @@ async function main() {
       numberOfReviews: 15
     },
 
-    // PUBLISHED LISTINGS - Khartoum North
+    // PUBLISHED LISTINGS - Khartoum Bahri (formerly Khartoum North)
     {
       title: 'Executive Townhouse',
       description: 'Elegant townhouse in the prestigious Al-Kalakla district. Features modern design, private garden, and premium amenities. Perfect for professionals and small families.',
@@ -213,11 +194,14 @@ async function main() {
       highlights: [Highlight.RecentlyRenovated, Highlight.QuietNeighborhood, Highlight.GreatView],
       photoUrls: [
         'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
-        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800'
+        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800',
+        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
+        'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
+        'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=800'
       ],
       location: {
         address: 'Al-Kalakla Street, Townhouse 5',
-        city: 'Khartoum North',
+        city: 'Khartoum Bahri',
         state: 'Khartoum',
         country: 'Sudan',
         postalCode: '11116',
@@ -248,7 +232,10 @@ async function main() {
       highlights: [Highlight.GreatView, Highlight.CloseToTransit, Highlight.QuietNeighborhood],
       photoUrls: [
         'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800',
-        'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800'
+        'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
+        'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
+        'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800'
       ],
       location: {
         address: 'Red Sea Street, Building 10',
@@ -282,7 +269,11 @@ async function main() {
       amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking, Amenity.WasherDryer, Amenity.PetsAllowed],
       highlights: [Highlight.QuietNeighborhood, Highlight.GreatView],
       photoUrls: [
-        'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800'
+        'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800',
+        'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
+        'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800',
+        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800',
+        'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800'
       ],
       location: {
         address: 'Agricultural District, Villa 3',
@@ -316,7 +307,11 @@ async function main() {
       amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking, Amenity.PetsAllowed],
       highlights: [Highlight.GreatView, Highlight.QuietNeighborhood],
       photoUrls: [
-        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800'
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+        'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800',
+        'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=800',
+        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800',
+        'https://images.unsplash.com/photo-1555854877-bab0e5b6856c?w=800'
       ],
       location: {
         address: 'Mountain District, Cottage 7',
@@ -332,301 +327,6 @@ async function main() {
       instantBook: false,
       averageRating: 4.7,
       numberOfReviews: 16
-    },
-
-    // DRAFT LISTINGS
-    {
-      title: 'Eco-Friendly Tiny House',
-      description: 'Sustainable tiny house with solar panels and rainwater collection. Perfect for environmentally conscious renters seeking a minimalist lifestyle.',
-      pricePerNight: 70,
-      securityDeposit: 700,
-      applicationFee: 25,
-      bedrooms: 1,
-      bathrooms: 1,
-      squareFeet: 400,
-      propertyType: PropertyType.Tinyhouse,
-      isPetsAllowed: true,
-      isParkingIncluded: true,
-      amenities: [Amenity.WiFi, Amenity.PetsAllowed],
-      highlights: [Highlight.QuietNeighborhood, Highlight.GreatView],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800'
-      ],
-      location: {
-        address: 'Green Valley Road, Tiny House 1',
-        city: 'Khartoum',
-        state: 'Khartoum',
-        country: 'Sudan',
-        postalCode: '11117',
-        latitude: 15.5007,
-        longitude: 32.5899
-      },
-      isPublished: false,
-      draft: true,
-      instantBook: false,
-      averageRating: 0,
-      numberOfReviews: 0
-    },
-    {
-      title: 'Luxury High-Rise Apartment',
-      description: 'Premium apartment in luxury high-rise building with concierge service, rooftop pool, and stunning city views. Located in the heart of Khartoum.',
-      pricePerNight: 300,
-      securityDeposit: 3000,
-      applicationFee: 120,
-      bedrooms: 2,
-      bathrooms: 2,
-      squareFeet: 1500,
-      propertyType: PropertyType.Apartment,
-      isPetsAllowed: false,
-      isParkingIncluded: true,
-      amenities: [Amenity.AirConditioning, Amenity.Pool, Amenity.Gym, Amenity.WiFi, Amenity.Parking, Amenity.Dishwasher],
-      highlights: [Highlight.GreatView, Highlight.HighSpeedInternetAccess, Highlight.CloseToTransit],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
-        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'
-      ],
-      location: {
-        address: 'Financial Plaza, Floor 15',
-        city: 'Khartoum',
-        state: 'Khartoum',
-        country: 'Sudan',
-        postalCode: '11118',
-        latitude: 15.5007,
-        longitude: 32.5599
-      },
-      isPublished: false,
-      draft: true,
-      instantBook: false,
-      averageRating: 0,
-      numberOfReviews: 0
-    },
-
-    // IN PROGRESS LISTINGS
-    {
-      title: 'Downtown Studio',
-      description: 'Modern studio apartment in the heart of downtown Khartoum. Perfect for young professionals and students.',
-      pricePerNight: 90,
-      securityDeposit: 900,
-      applicationFee: 35,
-      bedrooms: 1,
-      bathrooms: 1,
-      squareFeet: 500,
-      propertyType: PropertyType.Apartment,
-      isPetsAllowed: false,
-      isParkingIncluded: false,
-      amenities: [Amenity.WiFi, Amenity.AirConditioning],
-      highlights: [Highlight.CloseToTransit, Highlight.HighSpeedInternetAccess],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800'
-      ],
-      location: {
-        address: 'Downtown Street, Studio 12',
-        city: 'Khartoum',
-        state: 'Khartoum',
-        country: 'Sudan',
-        postalCode: '11119',
-        latitude: 15.5007,
-        longitude: 32.5599
-      },
-      isPublished: false,
-      draft: false,
-      instantBook: false,
-      averageRating: 0,
-      numberOfReviews: 0
-    },
-    {
-      title: 'Garden Apartment',
-      description: 'Beautiful garden apartment with private outdoor space in Omdurman. Features a small garden and peaceful surroundings.',
-      pricePerNight: 110,
-      securityDeposit: 1100,
-      applicationFee: 45,
-      bedrooms: 2,
-      bathrooms: 1,
-      squareFeet: 900,
-      propertyType: PropertyType.Apartment,
-      isPetsAllowed: true,
-      isParkingIncluded: true,
-      amenities: [Amenity.WiFi, Amenity.PetsAllowed, Amenity.Parking, Amenity.AirConditioning],
-      highlights: [Highlight.QuietNeighborhood, Highlight.GreatView],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'
-      ],
-      location: {
-        address: 'Garden Street, Apartment 5',
-        city: 'Omdurman',
-        state: 'Khartoum',
-        country: 'Sudan',
-        postalCode: '11120',
-        latitude: 15.6007,
-        longitude: 32.4899
-      },
-      isPublished: false,
-      draft: false,
-      instantBook: false,
-      averageRating: 0,
-      numberOfReviews: 0
-    },
-
-    // ACTION REQUIRED LISTINGS
-    {
-      title: 'Traditional House',
-      description: 'Beautiful traditional Sudanese house with courtyard. Needs photos and final details.',
-      pricePerNight: 130,
-      securityDeposit: 1300,
-      applicationFee: 50,
-      bedrooms: 3,
-      bathrooms: 2,
-      squareFeet: 1600,
-      propertyType: PropertyType.Villa,
-      isPetsAllowed: true,
-      isParkingIncluded: true,
-      amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking, Amenity.PetsAllowed],
-      highlights: [Highlight.QuietNeighborhood],
-      photoUrls: [], // Missing photos - action required
-      location: {
-        address: 'Traditional District, House 8',
-        city: 'Khartoum',
-        state: 'Khartoum',
-        country: 'Sudan',
-        postalCode: '11121',
-        latitude: 15.5007,
-        longitude: 32.5699
-      },
-      isPublished: false,
-      draft: false,
-      instantBook: false,
-      averageRating: 0,
-      numberOfReviews: 0
-    },
-    {
-      title: 'Modern Apartment',
-      description: 'Contemporary apartment with modern amenities. Located in a growing neighborhood.',
-      pricePerNight: 160,
-      securityDeposit: 1600,
-      applicationFee: 65,
-      bedrooms: 2,
-      bathrooms: 2,
-      squareFeet: 1100,
-      propertyType: PropertyType.Apartment,
-      isPetsAllowed: false,
-      isParkingIncluded: true,
-      amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking, Amenity.Dishwasher],
-      highlights: [Highlight.RecentlyRenovated, Highlight.CloseToTransit],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800'
-      ],
-      location: {
-        address: 'Modern Street, Apartment 15',
-        city: 'Khartoum North',
-        state: 'Khartoum',
-        country: 'Sudan',
-        postalCode: '11122',
-        latitude: 15.6507,
-        longitude: 32.5499
-      },
-      isPublished: false,
-      draft: false,
-      instantBook: false,
-      averageRating: 0,
-      numberOfReviews: 0
-    },
-
-    // ADDITIONAL SUDANESE CITIES
-    {
-      title: 'El Obeid Villa',
-      description: 'Spacious villa in El Obeid with traditional design and modern amenities. Perfect for families seeking comfort in this historic city.',
-      pricePerNight: 95,
-      securityDeposit: 950,
-      applicationFee: 40,
-      bedrooms: 4,
-      bathrooms: 2,
-      squareFeet: 2000,
-      propertyType: PropertyType.Villa,
-      isPetsAllowed: true,
-      isParkingIncluded: true,
-      amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking, Amenity.WasherDryer, Amenity.PetsAllowed],
-      highlights: [Highlight.QuietNeighborhood, Highlight.GreatView],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800'
-      ],
-      location: {
-        address: 'Central District, Villa 6',
-        city: 'El Obeid',
-        state: 'North Kordofan',
-        country: 'Sudan',
-        postalCode: '55555',
-        latitude: 13.1842,
-        longitude: 30.2167
-      },
-      isPublished: true,
-      draft: false,
-      instantBook: false,
-      averageRating: 4.2,
-      numberOfReviews: 6
-    },
-    {
-      title: 'Nyala Apartment',
-      description: 'Modern apartment in Nyala with all essential amenities. Located near the city center with easy access to markets and services.',
-      pricePerNight: 85,
-      securityDeposit: 850,
-      applicationFee: 35,
-      bedrooms: 2,
-      bathrooms: 1,
-      squareFeet: 800,
-      propertyType: PropertyType.Apartment,
-      isPetsAllowed: false,
-      isParkingIncluded: true,
-      amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking],
-      highlights: [Highlight.CloseToTransit, Highlight.QuietNeighborhood],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800'
-      ],
-      location: {
-        address: 'City Center, Building 4',
-        city: 'Nyala',
-        state: 'South Darfur',
-        country: 'Sudan',
-        postalCode: '66666',
-        latitude: 12.0500,
-        longitude: 24.8833
-      },
-      isPublished: true,
-      draft: false,
-      instantBook: true,
-      averageRating: 4.0,
-      numberOfReviews: 4
-    },
-    {
-      title: 'Al-Fashir Townhouse',
-      description: 'Elegant townhouse in Al-Fashir with traditional Sudanese architecture. Features a private courtyard and garden.',
-      pricePerNight: 75,
-      securityDeposit: 750,
-      applicationFee: 30,
-      bedrooms: 3,
-      bathrooms: 2,
-      squareFeet: 1400,
-      propertyType: PropertyType.Townhouse,
-      isPetsAllowed: true,
-      isParkingIncluded: true,
-      amenities: [Amenity.AirConditioning, Amenity.WiFi, Amenity.Parking, Amenity.PetsAllowed],
-      highlights: [Highlight.QuietNeighborhood, Highlight.GreatView],
-      photoUrls: [
-        'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800'
-      ],
-      location: {
-        address: 'Traditional Quarter, Townhouse 3',
-        city: 'Al-Fashir',
-        state: 'North Darfur',
-        country: 'Sudan',
-        postalCode: '77777',
-        latitude: 13.6279,
-        longitude: 25.3494
-      },
-      isPublished: true,
-      draft: false,
-      instantBook: false,
-      averageRating: 4.1,
-      numberOfReviews: 3
     }
   ]
 
@@ -698,7 +398,7 @@ async function main() {
   console.log(`   - In Progress listings: ${inProgressCount}`)
   console.log(`   - Action Required listings: ${actionRequiredCount}`)
   console.log(`   - Total listings: ${listingData.length}`)
-  console.log(`\n🌍 Cities covered: Khartoum, Omdurman, Khartoum North, Port Sudan, Wad Madani, Kassala, El Obeid, Nyala, Al-Fashir`)
+  console.log(`\n🌍 Cities covered: Khartoum, Omdurman, Khartoum Bahri, Port Sudan, Wad Madani, Kassala`)
   console.log(`🌐 Visit http://localhost:3000/dashboard/properties to see your listings!`)
   console.log(`🔍 Visit http://localhost:3000/search to see published listings!`)
 }

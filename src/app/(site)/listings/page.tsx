@@ -1,6 +1,6 @@
 import { getListings } from "@/components/host/action";
 import ListingsHeader from "@/components/listings/listings-header";
-import { PropertyContent } from "@/components/site/property/content";
+import { PropertyContent } from "@/components/listings/property/content";
 import { Listing } from "@/types/listing";
 
 async function getPublishedListings() {
