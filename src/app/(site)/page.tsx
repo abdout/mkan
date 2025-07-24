@@ -29,8 +29,8 @@ export default async function Home() {
       <div className="layout-container space-y-10 pb-20">
         <AirbnbIconsRow />
         <PropertyContent properties={listings} />
-        <Link href='/listings' className="my-14 flex justify-center">
-        <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90">
+        <Link href='/listings' className="flex my-14">
+        <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 h-12 px-10">
           Explore All Listings
         </Button>
         </Link>
