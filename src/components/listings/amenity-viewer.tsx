@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface AmenityItem {
   id: string;
@@ -59,6 +60,14 @@ const AmenityViewer: React.FC<AmenityViewerProps> = ({
           </div>
         ))}
       </div>
+
+      {/* Show all amenities button */}
+      <Button 
+        variant="outline" 
+        className="w-auto bg-muted border-0 text-gray-700 hover:bg-gray-50"
+      >
+        Show all 23 amenities
+      </Button>
     </div>
   );
 };

@@ -12,6 +12,8 @@ import { Listing } from "@/types/listing";
 import PropertyGallery from "@/components/atom/airbnb-img";
 import AirbnbInfo from "./atom/airbnb-info";
 import Review from "./listings/review";
+import HostedBy from "./listings/hosted-by";
+import MeetHost from "./listings/meet-host";
 
 interface ListingDetailsClientProps {
     listing: Listing;
@@ -154,6 +156,7 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                                 </div>
                             )}
                         </div>
+                        <HostedBy />
 
                         <AirbnbInfo />
 
@@ -184,6 +187,7 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                 />
 
                 <Review />
+                <MeetHost />
 
                 {/* Host Information */}
                 <div className="border-b border-gray-200 pb-8">

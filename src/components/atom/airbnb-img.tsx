@@ -124,45 +124,6 @@ export default function PropertyGallery({
             fill
             className="object-cover hover:scale-105 transition-transform duration-300"
           />
-          
-          {/* Share and Save buttons */}
-          <div className="absolute top-4 right-4 flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                // Handle share functionality
-                if (navigator.share) {
-                  navigator.share({
-                    title: 'Property Listing',
-                    url: window.location.href
-                  })
-                } else {
-                  navigator.clipboard.writeText(window.location.href)
-                }
-              }}
-              className="bg-white/90 hover:bg-white shadow-md rounded-full p-2"
-            >
-              <ShareIcon className="w-4 h-4 text-gray-700" />
-            </Button>
-            
-            {onSave && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onSave();
-                }}
-                className="bg-white/90 hover:bg-white shadow-md rounded-full p-2"
-              >
-                <HeartIcon 
-                  className={`w-4 h-4 ${isSaved ? 'fill-red-500 text-red-500' : 'text-gray-700'}`} 
-                />
-              </Button>
-            )}
-          </div>
         </div>
 
         {/* Grid of smaller images */}
