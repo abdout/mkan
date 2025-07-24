@@ -8,7 +8,7 @@ import SearchBar from './search';
 
 export default function HelpHeader() {
   return (
-    <header className="bg-white sticky top-0 z-50 ">
+    <header className="bg-white sticky top-0 z-50 -mx-22 px-22">
       <div className="">
         <div className="relative flex items-center justify-between h-16">
           {/* Left side - Logo */}

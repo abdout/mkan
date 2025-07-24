@@ -7,6 +7,7 @@ import Tabs from "@/components/help/tabs";
 import { useState } from "react";
 import Guides from "@/components/help/guides";
 import Article from "@/components/help/article";
+import ExploreMore from "@/components/help/explore-more";
 
 export default function HelpPage() {
   const [activeTab, setActiveTab] = useState('guest');
@@ -36,6 +37,7 @@ export default function HelpPage() {
       {renderTabContent()}
       <Guides />    
       <Article />
+      <ExploreMore />
     </div>
   );
 }
