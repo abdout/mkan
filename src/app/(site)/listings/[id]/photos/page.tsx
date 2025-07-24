@@ -38,7 +38,7 @@ export default function PhotoTourPage({ params }: PhotoTourPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-10">
       {/* Sticky Header */}
       <div className="sticky top-0 z-50 bg-white">
         <div className="flex items-center justify-between p-4">
