@@ -1,54 +1,84 @@
 import { Heart, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-export default function DetailCard() {
+interface DetailCardProps {
+  title?: string
+  location?: string
+  guests?: string
+  beds?: string
+  baths?: string
+  amenities?: string
+  rating?: string
+  reviews?: string
+  price?: string
+  image?: string
+  isFavorited?: boolean
+}
+
+export default function DetailCard({
+  title = "Bordeaux Getaway",
+  location = "Entire home in Bordeaux",
+  guests = "4-6 guests",
+  beds = "5 beds",
+  baths = "3 bath",
+  amenities = "Wifi · Kitchen · Free Parking",
+  rating = "5.0",
+  reviews = "318",
+  price = "$325",
+  image = "/placeholder.svg?height=200&width=300",
+  isFavorited = false
+}: DetailCardProps) {
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white">
-      <div className="flex gap-6 bg-white rounded-lg overflow-hidden">
-        {/* Property Image */}
-        <div className="flex-1">
-          <img
-            src="/placeholder.svg?height=300&width=500"
-            alt="Bordeaux Getaway - Modern living room"
-            className="w-full h-[300px] object-cover rounded-lg"
-          />
+    <div className="flex gap-6">
+      {/* Property Image */}
+      <div className="relative flex-shrink-0">
+        <img
+          src={image}
+          alt={title}
+          className="w-[300px] h-[200px] object-cover rounded-xl border border-gray-200"
+        />
+      </div>
+
+      {/* Property Details */}
+      <div className="flex-1 flex flex-col gap-4">
+        {/* Header */}
+        <div className="flex justify-between items-start">
+          <div className="flex flex-col">
+            <p className="text-sm font-normal text-gray-500">{location}</p>
+            <h3 className="text-xl font-medium text-gray-900">{title}</h3>
+          </div>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="w-8 h-8 p-0"
+          >
+            <Heart className={`h-5 w-5 ${isFavorited ? 'fill-pink-300 text-pink-500' : 'text-gray-700'}`} />
+          </Button>
         </div>
 
-        {/* Property Details */}
-        <div className="flex-1 flex flex-col justify-between py-2">
-          <div>
-            {/* Header with favorite button */}
-            <div className="flex justify-between items-start mb-2">
-              <p className="text-[#6b7280] text-sm font-medium">Entire home in Bordeaux</p>
-              <Button variant="ghost" size="icon" className="text-[#6b7280] hover:text-[#374151]">
-                <Heart className="h-6 w-6" />
-              </Button>
-            </div>
+        {/* Divider */}
+        <div className="w-10 h-px bg-gray-200"></div>
 
-            {/* Main Title */}
-            <h1 className="text-[#374151] text-2xl font-semibold mb-6">Bordeaux Getaway</h1>
+        {/* Details */}
+        <div className="flex flex-col">
+          <p className="text-sm font-normal text-gray-500">{guests} · Entire Home · {beds} · {baths}</p>
+          <p className="text-sm font-normal text-gray-500">{amenities}</p>
+        </div>
 
-            {/* Property Details */}
-            <div className="space-y-3 mb-6">
-              <p className="text-[#6b7280] text-base">4-6 guests • Entire Home • 5 beds • 3 bath</p>
-              <p className="text-[#6b7280] text-base">Wifi • Kitchen • Free Parking</p>
-            </div>
+        {/* Divider */}
+        <div className="w-10 h-px bg-gray-200"></div>
+
+        {/* Footer */}
+        <div className="flex justify-between items-end">
+          <div className="flex items-center gap-1">
+            <span className="text-sm font-medium text-gray-700">{rating}</span>
+            <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+            <span className="text-sm font-normal text-gray-700">({reviews} reviews)</span>
           </div>
-
-          {/* Rating and Price */}
-          <div className="flex justify-between items-end">
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-[#fcd34d] text-[#fcd34d]" />
-                <span className="text-[#374151] font-medium">5.0</span>
-              </div>
-              <span className="text-[#6b7280]">(318 reviews)</span>
-            </div>
-
-            <div className="text-right">
-              <span className="text-[#374151] text-2xl font-semibold">$325</span>
-              <span className="text-[#6b7280] text-base ml-1">/night</span>
-            </div>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-medium text-gray-700">{price}</span>
+            <span className="text-sm font-normal text-gray-700">/night</span>
           </div>
         </div>
       </div>

@@ -190,7 +190,7 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                 <MeetHost />
 
                 {/* Host Information */}
-                <div className="border-b border-gray-200 pb-8">
+                {/* <div className="border-b border-gray-200 pb-8">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4">
                         Hosted by {listing.host?.username || "Host"}
                     </h3>
@@ -209,7 +209,7 @@ export default function ListingDetailsClient({ listing }: ListingDetailsClientPr
                             </p>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );
