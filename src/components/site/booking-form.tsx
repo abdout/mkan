@@ -65,7 +65,7 @@ export default function BookingForm() {
 
           {/* Search button */}
           <div className="pt-2 flex justify-end">
-            <Button className="px-8 py-1 h-10 text-sm font-medium bg-[#ff5a5f] hover:bg-[#ff5a5f]/90 text-white rounded-xs">
+            <Button className="px-8 py-1 h-10 text-sm font-medium bg-[#de3151] hover:bg-[#de3151]/90 text-white rounded-xs">
               Search
             </Button>
           </div>
