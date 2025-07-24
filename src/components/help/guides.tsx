@@ -6,24 +6,24 @@ export default function Guides() {
   const guides = [
     {
       title: "Getting started on Airbnb",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop&crop=center",
     },
     {
       title: "Finding a stay that's right for you",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop&crop=center",
     },
     {
       title: "AirCover for guests",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=center",
     },
     {
       title: "Setting up your Airbnb account",
-      image: "/placeholder.svg?height=300&width=400",
+      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop&crop=center",
     },
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-semibold text-gray-900">Guides for getting started</h1>
@@ -38,7 +38,7 @@ export default function Guides() {
         {guides.map((guide, index) => (
           <Card
             key={index}
-            className="group cursor-pointer border-0 shadow-none hover:shadow-lg transition-shadow duration-300"
+            className="border-0 shadow-none"
           >
             <CardContent className="p-0">
               <div className="relative overflow-hidden rounded-xl">
@@ -47,7 +47,7 @@ export default function Guides() {
                   alt={guide.title}
                   width={400}
                   height={300}
-                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-64 object-cover"
                 />
               </div>
               <div className="pt-4">

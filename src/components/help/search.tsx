@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 
 export default function SearchBar() {
   return (
-    <div className="flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4 pt-6">
       <div className="relative w-full max-w-sm">
         <div className="relative flex items-center">
           <Input
