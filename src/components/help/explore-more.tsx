@@ -7,13 +7,13 @@ export default function ExploreMore() {
   return (
          <div className="bg-neutral-900 text-white -mx-22 px-22 py-10">
       <div className="max-w-7xl mx-auto">
-                 <h1 className="text-4xl lg:text-5xl font-semibold mb-8">Explore more</h1>
+                 <h3 className="">Explore more</h3>
 
         <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
                      {/* Left side - Cards */}
            <div className="lg:col-span-2 -mt-4">
              {/* Two smaller cards in a row */}
-             <div className="grid grid-cols-2 gap-4">
+             <div className="grid grid-cols-2 gap-4 pt-6 my-6">
                                {/* Community Policies Card */}
                 <Card className="bg-neutral-800 border-none overflow-hidden h-78 p-0">
                   <CardContent className="p-0">
@@ -53,9 +53,9 @@ export default function ExploreMore() {
           </div>
 
           {/* Right side - Contact Section */}
-          <div className="space-y-4 items-start justify-start">
+          <div className="space-y-4 -mt-4">
             <div>
-              <h2 className="text-2xl lg:text-4xl font-semibold mb-4">Need to get in touch?</h2>
+              <h2 className="text-2xl lg:text-3xl font-semibold mb-4">Need to get in touch?</h2>
               <p className="text-gray-300 text-lg mb-4">
                 {"We'll start with some questions and get you to the right place."}
               </p>
