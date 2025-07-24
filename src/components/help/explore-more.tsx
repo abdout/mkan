@@ -53,7 +53,7 @@ export default function ExploreMore() {
           </div>
 
           {/* Right side - Contact Section */}
-          <div className="space-y-4 -mt-4">
+          <div className="space-y-4">
             <div>
               <h2 className="text-2xl lg:text-3xl font-semibold mb-4">Need to get in touch?</h2>
               <p className="text-gray-300 text-lg mb-4">
