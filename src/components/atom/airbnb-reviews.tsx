@@ -100,7 +100,7 @@ const AirbnbReviews: React.FC<AirbnbReviewsProps> = ({
         </div>
 
         {/* Vertical Separator */}
-        <div className="w-px bg-gray-300 h-24 mx-8"></div>
+        <div className="w-[0.5px] bg-gray-300 h-24 mx-8"></div>
 
         {/* Category Columns - Spread Across Full Width */}
         <div className="flex items-start space-x-8 flex-1">
@@ -118,7 +118,7 @@ const AirbnbReviews: React.FC<AirbnbReviewsProps> = ({
                 </div>
               </div>
               {index < categories.length - 1 && (
-                <div className="w-px bg-gray-300 h-24"></div>
+                <div className="w-[0.5px] bg-gray-300 h-24"></div>
               )}
             </React.Fragment>
           ))}

@@ -24,7 +24,7 @@ export default function AirbnbReview({
   className = ""
 }: AirbnbReviewProps) {
   return (
-    <div className={`max-w-md mx-auto p-4 ${className}`}>
+    <div className={`max-w-md mx-auto ${className}`}>
       <Card className="border-0 shadow-none bg-transparent">
         <CardContent className="p-0">
           <div className="space-y-3">
