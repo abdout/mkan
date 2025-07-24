@@ -5,8 +5,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 export default function SearchMap() {
   return (
     <div className="w-[430px] border-l border-gray-200">
-      {/* Fixed map container - absolutely no movement */}
-      <div className="fixed top-16 right-0 w-[450px] h-[calc(100vh-64px)] bg-gray-100">
+      {/* Sticky map container - sticks until end of listings */}
+      <div className="sticky top-16 w-[430px] h-[calc(100vh-64px)] bg-gray-100">
         {/* Actual map image */}
         <img
           src="/search-map.png"

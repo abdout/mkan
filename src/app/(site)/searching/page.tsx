@@ -23,7 +23,7 @@ export default async function SearchPage() {
       <SearchHeader />
       <div className="flex">
         {/* Left side - Property listings */}
-        <div className="flex-1">
+        <div className="flex-1 min-h-screen">
           {/* Header with search results count */}
           <div className="p-10 border-b border-gray-200">
             <h1 className="text-base font-normal text-gray-500 mb-6">
