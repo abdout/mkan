@@ -79,7 +79,7 @@ const AmenitySelector: React.FC<AmenitySelectorProps> = ({
         <h5 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
           What about these guest favorites?
         </h5>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 pt-2 ">
+        <div className="grid grid-cols-4 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 pt-2 ">
           {guestFavorites.map((amenity) => (
             <SelectionCard
               key={amenity.id}
@@ -100,7 +100,7 @@ const AmenitySelector: React.FC<AmenitySelectorProps> = ({
         <h5 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
           Do you have any standout amenities?
         </h5>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 pt-2">
+        <div className="grid grid-cols-4 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 pt-2">
           {standoutAmenities.map((amenity) => (
             <SelectionCard
               key={amenity.id}
