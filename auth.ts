@@ -45,6 +45,8 @@ export const {
       },
     },
   },
+  // Ensure proper URL handling for production
+  trustHost: true,
   events: {
     async linkAccount({ user }) {
       console.log("OAuth account linked:", user.email);
@@ -134,7 +136,7 @@ export const {
   },
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  // Enable debug mode temporarily to get detailed error information
-  debug: true, // Set to true for both dev and production to debug
+  // Enable debug mode only in development
+  debug: process.env.NODE_ENV === "development",
   ...authConfig,
 })
