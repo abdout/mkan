@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import ListingDetailsClient from "@/components/listing-details-client";
 import Location from "@/components/atom/airbnb-map";
 import DetailsHeader from "@/components/listings/detials-header";
+import MobileListingDetails from "@/components/listings/mobile-listing-details";
+import MobileReserve from "@/components/listings/mobile-reserve";
+import MobileReviews from "@/components/listings/mobile-reviews";
 
 interface ListingPageProps {
   params: {
@@ -30,10 +33,25 @@ export default async function ListingPage({ params }: ListingPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background mx-14">
-      <DetailsHeader />
-      <ListingDetailsClient listing={listing} />
-      <Location />
+    <div className="min-h-screen bg-background">
+      {/* Desktop Layout - Preserved */}
+      <div className="hidden md:block mx-14">
+        <DetailsHeader />
+        <ListingDetailsClient listing={listing} />
+        <Location />
+      </div>
+
+      {/* Mobile Layout */}
+      <div className="md:hidden">
+        <MobileListingDetails 
+          listing={listing}
+          images={listing.photoUrls || []}
+        />
+        <MobileReviews />
+        <MobileReserve 
+          pricePerNight={listing.pricePerNight || 700}
+        />
+      </div>
     </div>
   );
 }
