@@ -26,7 +26,7 @@ const HostingHeader = () => {
   };
 
   return (
-    <header className="bg-white">
+    <header className="bg-muted px-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           {/* Left side - Logo */}
@@ -73,26 +73,26 @@ const HostingHeader = () => {
 
           {/* Right side - User Controls */}
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <Link
+            {/* <Link
               href="/search"
               className="hidden sm:block text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
               Switch to traveling
-            </Link>
+            </Link> */}
             
             <div className="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center">
               <span className="text-white font-medium text-sm">A</span>
             </div>
             
-            <button className="text-gray-600 hover:text-gray-900 relative transition-colors">
+            {/* <button className="text-gray-600 hover:text-gray-900 relative transition-colors">
               <MoreHorizontal size={20} />
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
+            </button> */}
 
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
-              className="lg:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className=" p-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
               {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
