@@ -73,13 +73,13 @@ const AmenitySelector: React.FC<AmenitySelectorProps> = ({
   ];
 
   return (
-    <div className={cn('space-y-8', className)}>
+    <div className={cn('space-y-4 sm:space-y-4', className)}>
       {/* Guest Favorites */}
       <div>
-        <h5>
+        <h5 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
           What about these guest favorites?
         </h5>
-        <div className="grid grid-cols-4 gap-2 pt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 pt-2 ">
           {guestFavorites.map((amenity) => (
             <SelectionCard
               key={amenity.id}
@@ -89,7 +89,7 @@ const AmenitySelector: React.FC<AmenitySelectorProps> = ({
               isSelected={selectedAmenities.includes(amenity.id)}
               onClick={onToggle}
               compact={true}
-              className="p-3"
+              className="p-2 sm:p-3"
             />
           ))}
         </div>
@@ -97,10 +97,10 @@ const AmenitySelector: React.FC<AmenitySelectorProps> = ({
 
       {/* Standout Amenities */}
       <div>
-        <h5>
+        <h5 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">
           Do you have any standout amenities?
         </h5>
-        <div className="grid grid-cols-4 gap-2 pt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 pt-2">
           {standoutAmenities.map((amenity) => (
             <SelectionCard
               key={amenity.id}
@@ -110,7 +110,7 @@ const AmenitySelector: React.FC<AmenitySelectorProps> = ({
               isSelected={selectedAmenities.includes(amenity.id)}
               onClick={onToggle}
               compact={true}
-              className="p-3"
+              className="p-2 sm:p-3"
             />
           ))}
         </div>

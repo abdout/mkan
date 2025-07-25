@@ -42,9 +42,9 @@ function HostLayoutContent({ children }: HostLayoutProps) {
   }
 
   return (
-    <div className="px-20 bg-background min-h-screen">
+    <div className="px-4 sm:px-6 md:px-12 lg:px-20 bg-background min-h-screen">
       {/* Main content with padding to account for fixed footer */}
-      <main className="h-screen pt-20">
+      <main className="h-screen pt-16 sm:pt-20">
         {children}
       </main>
 

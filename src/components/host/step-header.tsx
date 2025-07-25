@@ -16,22 +16,22 @@ const StepHeader: React.FC<StepHeaderProps> = ({
   illustration
 }) => {
   return (
-    <div className="w-full -mt-10">
-      <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
+    <div className="w-full -mt-6 sm:-mt-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-12">
         {/* Left Side - Content */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {stepNumber && (
-            <div className="text-sm font-medium text-gray-600">
+            <div className="text-sm sm:text-base font-medium text-muted-foreground">
               Step {stepNumber}
             </div>
           )}
           
-          <h1 className="text-4xl font-medium text-gray-900 leading-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-4xl font-medium text-foreground leading-tight">
             {title}
           </h1>
           
           {description && (
-            <p className="text-lg text-gray-600 leading-relaxed">
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed">
               {description}
             </p>
           )}
@@ -39,7 +39,7 @@ const StepHeader: React.FC<StepHeaderProps> = ({
 
         {/* Right Side - Illustration */}
         {illustration && (
-          <div className="hidden lg:block">
+          <div className="block lg:block order-first lg:order-last">
             <div className="relative">
               {illustration}
             </div>

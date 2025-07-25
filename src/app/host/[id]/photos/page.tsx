@@ -158,7 +158,7 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
       boxes.push(
         <div
           key={`photo-${i}`}
-          className="border border-solid border-foreground rounded-lg bg-muted h-[140px]"
+          className="border border-solid border-foreground rounded-lg bg-muted h-[100px] sm:h-[140px]"
         >
           <div className="relative w-full h-full group">
             <Image
@@ -183,7 +183,7 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
       boxes.push(
         <div
           key="add-button"
-          className="border border-dashed border-muted-foreground rounded-lg bg-muted h-[140px]"
+          className="border border-dashed border-muted-foreground rounded-lg bg-muted h-[100px] sm:h-[140px]"
         >
           <div className="w-full h-full flex flex-col items-center justify-center">
             <label
@@ -211,15 +211,15 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
   return (
     <div className="">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-20 items-start">
           {/* Left side - Text content */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <h3>
               Add some
               <br />
               photos of your house
             </h3>
-            <p>
+            <p className="text-sm sm:text-base text-muted-foreground">
               You'll need 5 photos to get started. You can add more or make changes later.
             </p>
           </div>
@@ -228,9 +228,9 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
           <div>
             {uploadedPhotos.length === 0 ? (
               // Initial large upload box
-              <div className="border border-dashed border-muted-foreground rounded-lg text-center bg-muted h-[300px] flex flex-col justify-center">
+              <div className="border border-dashed border-muted-foreground rounded-lg text-center bg-muted h-[200px] sm:h-[300px] flex flex-col justify-center">
                 <div className="">
-                  <div className="relative w-32 h-32 mx-auto">
+                  <div className="relative w-20 h-20 sm:w-32 sm:h-32 mx-auto">
                     <Image
                       src="/airbnb/camera.avif"
                       alt="Camera"
@@ -243,7 +243,7 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
                 <div>
                   <label
                     htmlFor="photo-upload"
-                    className="inline-block px-3 py-1.5 border border-foreground rounded-md bg-background hover:bg-accent cursor-pointer transition-colors"
+                    className="inline-block px-3 py-1.5 border border-foreground rounded-md bg-background hover:bg-accent cursor-pointer transition-colors text-sm sm:text-base"
                   >
                     {isUploading ? 'Uploading...' : 'Add photos'}
                   </label>
@@ -260,7 +260,7 @@ const PhotosPageContent = ({ params }: PhotosPageProps) => {
               </div>
             ) : (
               // Grid of photos
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {renderUploadBoxes()}
               </div>
             )}

@@ -148,9 +148,9 @@ const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
   return (
     <div className="">
       <div className="">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-20 items-start">
           {/* Left side - Text content */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <h3>
               {currentStep === 'highlights' ? (
                 <>
@@ -164,7 +164,7 @@ const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
                 </>
               )}
             </h3>
-            <p>
+            <p className="text-sm sm:text-base text-muted-foreground">
               {currentStep === 'highlights' 
                 ? "Choose up to 2 highlights. We'll use these to get your description started."
                 : "Share what makes your place special."}
@@ -174,20 +174,20 @@ const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
           {/* Right side - Content */}
           <div>
             {currentStep === 'highlights' ? (
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {highlights.map((highlight) => {
                   const Icon = highlight.icon;
                   return (
                     <button
                       key={highlight.id}
                       onClick={() => toggleHighlight(highlight.id)}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-full border transition-all whitespace-nowrap ${
+                      className={`flex items-center gap-2 px-3 py-2 rounded-full border transition-all whitespace-nowrap text-sm sm:text-base ${
                         selectedHighlights.includes(highlight.id)
                           ? 'border-foreground bg-accent'
                           : 'border-border hover:border-foreground/50'
                       }`}
                     >
-                      <Icon size={18} className="text-foreground" />
+                      <Icon size={16} className="text-foreground sm:w-4.5 sm:h-4.5" />
                       <span>{highlight.title}</span>
                     </button>
                   );
@@ -198,9 +198,9 @@ const DescriptionPageContent = ({ params }: DescriptionPageProps) => {
                 <textarea
                   value={description}
                   onChange={handleDescriptionChange}
-                  className="w-full h-[200px] p-6 border border-input rounded-lg resize-none focus:outline-none focus:border-ring transition-colors"
+                  className="w-full h-[150px] sm:h-[200px] p-4 sm:p-6 border border-input rounded-lg resize-none focus:outline-none focus:border-ring transition-colors text-sm sm:text-base"
                 />
-                <div className="flex justify-start mt-2 text-muted-foreground">
+                <div className="flex justify-start mt-2 text-muted-foreground text-xs sm:text-sm">
                   <span>{description.length}/{maxLength}</span>
                 </div>
               </div>

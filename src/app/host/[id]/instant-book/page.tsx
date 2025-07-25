@@ -41,28 +41,28 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
   return (
     <div className="">
       <div className="">
-        <div className="grid grid-cols-3 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-16 items-start">
           {/* Left column - Title and description */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <h3>
               Pick your<br />
               booking settings
             </h3>
-            <p>
+            <p className="text-sm sm:text-base text-muted-foreground">
               You can change this at any time.{' '}
-              <button className="underline hover:no-underline">
+              <button className="underline hover:no-underline text-foreground">
                 Learn more
               </button>
             </p>
           </div>
 
           {/* Right column - Booking options */}
-          <div className="col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-3 sm:space-y-4">
             {bookingOptions.map((option) => (
               <button
                 key={option.id}
                 onClick={() => setSelectedOption(option.id)}
-                className={`w-full py-5 px-8 rounded-xl border transition-all duration-200 text-left ${
+                className={`w-full py-4 sm:py-5 px-4 sm:px-8 rounded-xl border transition-all duration-200 text-left ${
                   selectedOption === option.id
                     ? 'border-foreground bg-accent'
                     : 'border-border hover:border-foreground/50'
@@ -70,23 +70,22 @@ const InstantBookPage = ({ params }: InstantBookPageProps) => {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-3 ">
-                      <h5>
+                    <div className="flex items-center space-x-3">
+                      <h5 className="text-sm sm:text-base font-medium">
                         {option.title}
                       </h5>
-                      
                     </div>
                     {option.recommended && (
-                        <span className="text-green-500">
+                        <span className="text-green-500 text-xs sm:text-sm">
                           {option.subtitle}
                         </span>
                       )}
-                    <p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                       {option.description}
                     </p>
                   </div>
-                  <div className=" ">
-                    <option.icon size={24} />
+                  <div className="flex-shrink-0 ml-3">
+                    <option.icon size={20} className="sm:w-6 sm:h-6" />
                   </div>
                 </div>
               </button>

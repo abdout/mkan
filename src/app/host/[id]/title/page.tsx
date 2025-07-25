@@ -73,15 +73,15 @@ const TitlePageContent = ({ params }: TitlePageProps) => {
   return (
     <div className="">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-20 items-start">
           {/* Left side - Text content */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <h3>
               Now, let's give your
               <br />
               house a title
             </h3>
-            <p>
+            <p className="text-sm sm:text-base text-muted-foreground">
               Short titles work best. Have fun with it—you can always change it later.
             </p>
           </div>
@@ -91,10 +91,10 @@ const TitlePageContent = ({ params }: TitlePageProps) => {
             <textarea
               value={title}
               onChange={handleTitleChange}
-              className="w-full h-[100px] p-6 border border-input rounded-lg resize-none focus:outline-none focus:border-ring transition-colors"
+              className="w-full h-[80px] sm:h-[100px] p-4 sm:p-6 border border-input rounded-lg resize-none focus:outline-none focus:border-ring transition-colors text-sm sm:text-base"
               maxLength={maxLength}
             />
-            <div className="mt-2 text-muted-foreground">
+            <div className="mt-2 text-muted-foreground text-xs sm:text-sm">
               <span>{title.length}/{maxLength}</span>
             </div>
           </div>

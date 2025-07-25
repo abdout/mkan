@@ -170,22 +170,22 @@ const HostFooter: React.FC<HostFooterProps> = ({
   const actualNextLabel = currentStepSlug === 'legal' ? 'Create listing' : nextLabel;
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white">
       {/* Three separate progress bars */}
       <div className="">
-        <div className="grid grid-cols-3 gap-2 px-20">
+        <div className="grid grid-cols-3 gap-1 sm:gap-2 px-4 sm:px-6 md:px-12 lg:px-20">
           {stepLabels.map((label, index) => (
             <Progress 
               key={index}
               value={getStepProgress(index + 1)} 
-              className="h-1 w-full "
+              className="h-1 w-full"
             />
           ))}
         </div>
       </div>
 
       {/* All controls in one row */}
-      <div className="flex items-center justify-between px-20 py-4">
+      <div className="flex items-center justify-between px-4 sm:px-6 md:px-12 lg:px-20 py-3 sm:py-4">
         {/* Left side - Logo, Help, Save */}
         <div className="flex items-center">
           <div className="relative w-5 h-5">
@@ -200,28 +200,28 @@ const HostFooter: React.FC<HostFooterProps> = ({
             variant="ghost"
             size="icon"
             onClick={onHelp}
-            className="rounded-full ml-2"
+            className="rounded-full ml-2 w-10 h-10 sm:w-8 sm:h-8"
           >
-            <HelpCircle className="h-6 w-6" />
+            <HelpCircle className="h-5 w-5 sm:h-6 sm:w-6" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={onSave}
-            className="rounded-full"
+            className="rounded-full w-10 h-10 sm:w-8 sm:h-8"
           >
-            <Bookmark className="h-6 w-6" />
+            <Bookmark className="h-5 w-5 sm:h-6 sm:w-6" />
           </Button>
         </div>
 
         {/* Right side - Back and Next buttons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Button
             variant="ghost"
             onClick={handleBack}
             disabled={!canGoBackActual}
             size='sm'
-            className=""
+            className="h-8 sm:h-9 px-3 sm:px-4"
           >
             {backLabel}
           </Button>
@@ -231,7 +231,7 @@ const HostFooter: React.FC<HostFooterProps> = ({
             disabled={!canGoNextActual}
             size='sm'
             variant="black"
-            
+            className="h-8 sm:h-9 px-4 sm:px-6"
           >
             {actualNextLabel}
           </Button>

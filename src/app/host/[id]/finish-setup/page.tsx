@@ -41,7 +41,7 @@ const FinishSetupPageContent = ({ params }: FinishSetupPageProps) => {
   }, []);
 
   const illustration = (
-    <div className="w-3/4 max-w-xl mx-auto bg-gradient-to-br from-orange-50 to-pink-50 rounded-2xl flex items-center justify-center overflow-hidden">
+    <div className="w-full sm:w-3/4 max-w-xl mx-auto bg-gradient-to-br from-orange-50 to-pink-50 rounded-xl sm:rounded-2xl flex items-center justify-center overflow-hidden h-[300px] sm:aspect-video">
       <video
         ref={videoRef}
         className="w-full h-full object-cover"

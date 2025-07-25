@@ -84,30 +84,30 @@ const FloorPlanPageContent = ({ params }: FloorPlanPageProps) => {
     onDecrease: () => void; 
     onIncrease: () => void; 
   }) => (
-    <div className="flex items-center justify-between py-6 border-b border-border last:border-b-0">
-      <div className="text-foreground">
+    <div className="flex items-center justify-between py-4 sm:py-6 border-b border-border last:border-b-0">
+      <div className="text-foreground text-sm sm:text-base font-medium">
         {label}
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <button
           onClick={onDecrease}
           disabled={value <= 1}
-          className={`w-7 h-7 rounded-full border flex items-center justify-center transition-colors ${
+          className={`w-10 h-10 sm:w-7 sm:h-7 rounded-full border flex items-center justify-center transition-colors min-h-[40px] sm:min-h-[28px] ${
             value <= 1
               ? 'border-muted text-muted-foreground cursor-not-allowed'
-              : 'border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground'
+              : 'border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground active:scale-95'
           }`}
         >
-          <Minus size={14} strokeWidth={2} />
+          <Minus size={16} strokeWidth={2} className="sm:w-3.5 sm:h-3.5" />
         </button>
-        <span className="w-2.5 text-center">
+        <span className="w-8 sm:w-2.5 text-center text-lg sm:text-base font-medium">
           {value}
         </span>
         <button
           onClick={onIncrease}
-          className="w-7 h-7 rounded-full border border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center transition-colors"
+          className="w-10 h-10 sm:w-7 sm:h-7 rounded-full border border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground flex items-center justify-center transition-colors min-h-[40px] sm:min-h-[28px] active:scale-95"
         >
-          <Plus size={14} strokeWidth={2} />
+          <Plus size={16} strokeWidth={2} className="sm:w-3.5 sm:h-3.5" />
         </button>
       </div>
     </div>
@@ -116,14 +116,14 @@ const FloorPlanPageContent = ({ params }: FloorPlanPageProps) => {
   return (
     <div className="">
       <div className="items-center justify-center">
-        <div className="flex flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12">
           {/* Left div - Title */}
           <div className="flex-1 flex flex-col">
             <h3 className="">
               Share some basics <br />
               about your place
             </h3>
-            <p className="mt-4">
+            <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">
               You'll add more details later, like bed types.
             </p>
           </div>
