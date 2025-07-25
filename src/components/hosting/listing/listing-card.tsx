@@ -99,7 +99,7 @@ const ListingCard: React.FC<ListingCardProps> = ({ listing, viewType }) => {
       className={`cursor-pointer ${viewType === 'list' ? 'flex' : ''}`}
       onClick={handleCardClick}
     >
-      <div className="relative p-2">
+      <div className="relative p-2 sm:p-2">
         <div className={`${viewType === 'list' ? 'w-48 h-28' : 'aspect-[4/3]'} bg-gray-200 overflow-hidden rounded-lg`}>
           <Image 
             src={image} 
@@ -113,25 +113,25 @@ const ListingCard: React.FC<ListingCardProps> = ({ listing, viewType }) => {
             }}
           />
         </div>
-        <div className="absolute top-5 left-5">
-          <Badge className="flex items-center gap-1 bg-muted text-foreground">
-            <div className={`w-2 h-2 rounded-full ${status.circleColor}`}></div>
+        <div className="absolute top-3 left-3 sm:top-5 sm:left-5">
+          <Badge className="flex items-center gap-1 bg-muted text-foreground text-xs sm:text-sm">
+            <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${status.circleColor}`}></div>
             {status.label}
           </Badge>
         </div>
       </div>
       
-      <div className="p-3 flex-1">
-        <h3 className="text-base font-semibold text-gray-900 mb-1 truncate">
+      <div className="p-2 sm:p-3 flex-1">
+        <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 truncate">
           {title}
         </h3>
         
-        <p className="text-sm text-gray-600 mb-2 overflow-hidden text-ellipsis" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+        <p className="text-xs sm:text-sm text-gray-600 mb-2 overflow-hidden text-ellipsis" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
           {description}
         </p>
         
         {listing.pricePerNight && (
-          <p className="text-sm font-medium text-gray-900">
+          <p className="text-xs sm:text-sm font-medium text-gray-900">
             ${listing.pricePerNight}/night
           </p>
         )}

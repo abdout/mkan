@@ -1,13 +1,14 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Menu, X } from 'lucide-react';
 
 const HostingHeader = () => {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigationItems = [
     { name: 'Today', href: '/hosting' },
@@ -20,8 +21,12 @@ const HostingHeader = () => {
     return pathname === href;
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <header className="bg-white ">
+    <header className="bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           {/* Left side - Logo */}
@@ -34,9 +39,9 @@ const HostingHeader = () => {
                   alt="Mkan Logo"
                   width={20}
                   height={20}
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                 />
-                <div className="text-xl font-bold text-gray-900">
+                <div className="text-lg sm:text-xl font-bold text-gray-900">
                   Mk
                   <span className="font-light hover:text-gray-700 text-gray-600">
                     an
@@ -46,8 +51,8 @@ const HostingHeader = () => {
             </Link>
           </div>
 
-          {/* Center - Navigation (Absolutely Centered) */}
-          <nav className="absolute left-1/2 transform -translate-x-1/2 flex space-x-8">
+          {/* Center - Navigation (Hidden on mobile, shown on desktop) */}
+          <nav className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 space-x-8">
             {navigationItems.map((item) => (
               <Link
                 key={item.name}
@@ -67,10 +72,10 @@ const HostingHeader = () => {
           </nav>
 
           {/* Right side - User Controls */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Link
               href="/search"
-              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+              className="hidden sm:block text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
               Switch to traveling
             </Link>
@@ -83,8 +88,50 @@ const HostingHeader = () => {
               <MoreHorizontal size={20} />
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="lg:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-gray-200 bg-white">
+            <nav className="flex flex-col space-y-1 py-2">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`relative px-4 py-3 text-sm font-medium transition-colors ${
+                    isActiveRoute(item.href)
+                      ? 'text-gray-900 bg-gray-50'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>{item.name}</span>
+                    {item.hasNotification && (
+                      <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                    )}
+                  </div>
+                </Link>
+              ))}
+              <Link
+                href="/search"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-4 py-3 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+              >
+                Switch to traveling
+              </Link>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
