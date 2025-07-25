@@ -2,10 +2,16 @@
 
 import React, { useState, useRef, TouchEvent } from 'react';
 import Image from 'next/image';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MapPin, Bed, Bath, Users, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ShareIcon, HeartIcon } from '@/components/atom/icons';
+import { Badge } from '@/components/ui/badge';
+import { ShareIcon, HeartIcon, Superhost } from '@/components/atom/icons';
 import { useRouter } from 'next/navigation';
+import MobileMap from './mobile-map';
+import MobileInfo from './mobile-info';
+import MobileAmenities from './mobile-amenities';
+// import MobileReviewsDetail from './mobile-reviews-detail';
+import MobileMeetHost from './mobile-meet-host';
 
 interface MobileListingDetailsProps {
   listing: any;
@@ -83,6 +89,24 @@ const MobileListingDetails: React.FC<MobileListingDetailsProps> = ({
     return `${listing.location.city || ''}, ${listing.location.state || ''}`.trim() || 'Location';
   };
 
+  // Handle share functionality
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: listing.title || "Property Listing",
+        url: window.location.href,
+      });
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+    }
+  };
+
+  // Handle save functionality
+  const handleSave = () => {
+    console.log("Save listing:", listing.id);
+  };
+
   return (
     <div className="md:hidden">
              {/* Full Screen Image Gallery */}
@@ -128,7 +152,7 @@ const MobileListingDetails: React.FC<MobileListingDetailsProps> = ({
                <Button
                  variant="ghost"
                  size="icon"
-                 onClick={onShare}
+                 onClick={handleShare}
                  className="h-10 w-10 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white"
                >
                  <ShareIcon className="w-5 h-5 text-gray-700" />
@@ -137,7 +161,7 @@ const MobileListingDetails: React.FC<MobileListingDetailsProps> = ({
                <Button
                  variant="ghost"
                  size="icon"
-                 onClick={onSave}
+                 onClick={handleSave}
                  className="h-10 w-10 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white"
                >
                  <HeartIcon className={`w-5 h-5 ${isSaved ? 'fill-red-500 text-red-500' : 'text-gray-700'}`} />
@@ -157,25 +181,136 @@ const MobileListingDetails: React.FC<MobileListingDetailsProps> = ({
       </div>
 
       {/* Property Info */}
-      <div className="px-4 py-6">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-          {listing?.title || 'Beautiful Property'}
-        </h1>
-        
-        <div className="flex items-center space-x-2 text-gray-600 mb-4">
-          <span className="text-sm">★ 4.8</span>
-          <span className="text-sm">·</span>
-          <span className="text-sm underline">128 reviews</span>
-          <span className="text-sm">·</span>
-          <span className="text-sm underline">
-            {getLocationString()}
-          </span>
+      <div className="px-4 py-6 space-y-6">
+        {/* Title and Rating */}
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+            {listing?.title || 'Beautiful Property'}
+          </h1>
+          
+          <div className="flex items-center space-x-2 text-gray-600 mb-4">
+            <span className="text-sm">★ 4.8</span>
+            <span className="text-sm">·</span>
+            <span className="text-sm underline">128 reviews</span>
+            <span className="text-sm">·</span>
+            <span className="text-sm underline">
+              {getLocationString()}
+            </span>
+          </div>
         </div>
 
-        {/* Property details can be added here */}
+        {/* Property Details */}
+        <div className="border-b border-gray-200 pb-6">
+          {/* <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">
+              {listing?.title || "Beautiful Property"}
+            </h2>
+            <div className="flex items-center space-x-2">
+              <Badge variant="outline" className="text-sm">
+                {listing?.propertyType || "Property"}
+              </Badge>
+              {listing?.isPetsAllowed && (
+                <Badge variant="secondary" className="text-sm">
+                  Pet Friendly
+                </Badge>
+              )}
+            </div>
+          </div> */}
+
+          {/* Property Stats */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            {listing?.bedrooms && (
+              <div className="flex items-center space-x-2">
+                <Bed className="w-5 h-5 text-gray-600" />
+                <span className="text-sm text-gray-700">
+                  {listing.bedrooms} bedroom{listing.bedrooms !== 1 ? 's' : ''}
+                </span>
+              </div>
+            )}
+            {listing?.bathrooms && (
+              <div className="flex items-center space-x-2">
+                <Bath className="w-5 h-5 text-gray-600" />
+                <span className="text-sm text-gray-700">
+                  {listing.bathrooms} bathroom{listing.bathrooms !== 1 ? 's' : ''}
+                </span>
+              </div>
+            )}
+            {listing?.guestCount && (
+              <div className="flex items-center space-x-2">
+                <Users className="w-5 h-5 text-gray-600" />
+                <span className="text-sm text-gray-700">
+                  Up to {listing.guestCount} guests
+                </span>
+              </div>
+            )}
+            {listing?.squareFeet && (
+              <div className="flex items-center space-x-2">
+                <Square className="w-5 h-5 text-gray-600" />
+                <span className="text-sm text-gray-700">
+                  {listing.squareFeet} sq ft
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Location */}
+          {listing?.location && (
+            <div className="flex items-center space-x-2 mb-4">
+              <MapPin className="w-4 h-4 text-gray-600" />
+              <span className="text-sm text-gray-700">
+                {listing.location.address}, {listing.location.city}, {listing.location.state}
+              </span>
+            </div>
+          )}
+
+          {/* Description */}
+          {listing?.description && (
+            <div className="prose prose-sm max-w-none">
+              <p className="text-gray-700 leading-relaxed">
+                {listing.description}
+              </p>
+            </div>
+          )}
+        </div>
+
+                 {/* Hosted By */}
+         <div className="flex items-center gap-4 py-6">
+           <div className="relative">
+             <div className="w-11 h-11 rounded-full overflow-hidden">
+               <img
+                 src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=48&h=48&fit=crop"
+                 alt="Host Faisal"
+                 className="w-full h-full object-cover"
+               />
+             </div>
+             {/* Superhost badge overlay positioned more inward */}
+             <div className="absolute -bottom-0.5 -right-[5px]">
+               <Superhost className="w-4 h-4" />
+             </div>
+           </div>
+           <div className="flex flex-col">
+             <h5 className="text-lg font-semibold">Hosted by Faisal</h5>
+             <p className="">Superhost · 9 months hosting</p>
+           </div>
+         </div>
+
+                   {/* Mobile Map */}
+          <MobileMap />
+
+          {/* Mobile Info */}
+          <MobileInfo />
+
+          {/* Mobile Amenities */}
+          <MobileAmenities />
+
+          {/* Mobile Reviews Detail */}
+          {/* <MobileReviewsDetail /> */}
+
+          {/* Mobile Meet Host */}
+          <MobileMeetHost />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default MobileListingDetails; 
