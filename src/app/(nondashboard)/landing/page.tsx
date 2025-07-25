@@ -8,7 +8,7 @@ import { PropertyContent } from "@/components/site/property/content";
 import AirbnbFilter from "@/components/atom/airbnb-filter";
 import AirbnbPropertyHeader from "@/components/atom/airbnb-property-header";
 import AirbnbSelect from "@/components/atom/airbnb-select";
-import AirbnbIconsRow from "@/components/atom/airbnb-icons-row";
+import AirbnbIconsRow from "@/components/site/property-filter";
 import AirbnbImages from "@/components/atom/airbnb-images";
 import AirbnbReserve from "@/components/atom/airbnb-reserve";
 import AirbnbInspiration from "@/components/atom/airbnb-inspiration";

@@ -444,7 +444,7 @@ export const LightningBoltIcon: React.FC<IconProps> = ({
 );
 
 export const ListView: React.FC<IconProps> = ({
-  size = 16,
+  size = 12,
   className = '',
   fill = 'currentColor'
 }) => (
@@ -454,7 +454,7 @@ export const ListView: React.FC<IconProps> = ({
     aria-label="Change to List view"
     role="img"
     focusable="false"
-    style={{ display: 'block', fill: 'none', height: `${size}px`, width: `${size}px`, stroke: fill, strokeWidth: 3, overflow: 'visible' }}
+    style={{ display: 'block', fill: 'none', height: `${size}px`, width: `${size}px`, stroke: fill, strokeWidth: 2, overflow: 'visible' }}
     className={className}
   >
     <path d="m29 19v10h-26v-10zm0-16v10h-26v-10z" strokeLinejoin="round" fill="none" />
@@ -462,7 +462,7 @@ export const ListView: React.FC<IconProps> = ({
 );
 
 export const GridView: React.FC<IconProps> = ({
-  size = 16,
+  size = 12,
   className = '',
   fill = 'currentColor'
 }) => (
@@ -472,7 +472,7 @@ export const GridView: React.FC<IconProps> = ({
     aria-label="Change to grid view"
     role="img"
     focusable="false"
-    style={{ display: 'block', fill: 'none', height: `${size}px`, width: `${size}px`, stroke: fill, strokeWidth: 3, overflow: 'visible' }}
+    style={{ display: 'block', fill: 'none', height: `${size}px`, width: `${size}px`, stroke: fill, strokeWidth: 2, overflow: 'visible' }}
     className={className}
   >
     <path d="m13 19v10h-10v-10zm16 0v10h-10v-10zm-16-16v10h-10v-10zm16 0v10h-10v-10z" fill="none" strokeLinejoin="round" />

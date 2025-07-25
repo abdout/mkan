@@ -76,26 +76,26 @@ const HostingListingsPage = () => {
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-semibold text-gray-900">Your listings</h1>
           <div className="flex items-center space-x-3">
-            <button className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 12h18m-9-9l9 9-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <button className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
             <button 
               onClick={toggleViewType}
-              className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
+              className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors"
             >
               {viewType === 'grid' ? (
-                <ListView size={20} className="text-gray-600" />
+                <ListView size={16} />
               ) : (
-                <GridView size={20} className="text-gray-600" />
+                <GridView size={16} />
               )}
             </button>
             <button 
               onClick={() => router.push('/host/overview')}
-              className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
+              className="p-2 bg-muted rounded-full hover:bg-muted/80 transition-colors"
             >
-              <Plus size={20} className="text-gray-600" />
+              <Plus size={16} />
             </button>
           </div>
         </div>

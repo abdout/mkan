@@ -1,7 +1,7 @@
 import HeroSection from "@/components/site/HeroSection";
 import { PropertyContent } from "@/components/site/property/content";
 import { getListings } from "@/components/host/action";
-import AirbnbIconsRow from "@/components/atom/airbnb-icons-row";
+import PropertyFilter from "@/components/site/property-filter";
 import { Listing } from "@/types/listing";
 import AirbnbInspiration from "@/components/atom/airbnb-inspiration";
 import GiftCard from "@/components/atom/airbnb-gift-card";
@@ -27,7 +27,7 @@ export default async function Home() {
     <div className="bg-background">
       <HeroSection />
       <div className="layout-container space-y-10 pb-20">
-        <AirbnbIconsRow />
+        <PropertyFilter />
         <PropertyContent properties={listings} />
         <Link href='/listings' className="flex my-14">
         <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 h-12 px-10">

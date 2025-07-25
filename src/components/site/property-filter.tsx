@@ -1,7 +1,14 @@
 "use client";
 
 import React from 'react';
-import AirbnbIcon from './airbnb-icon';
+import AirbnbIcon from '../atom/airbnb-icon';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 interface IconItem {
   filename: string;
@@ -23,14 +30,14 @@ const AIRBNB_ICONS: IconItem[] = [
   { filename: 'Windmill', label: 'Windmills', description: 'Unique stays' },
 ];
 
-interface AirbnbIconsRowProps {
+interface PropertyFilterProps {
   onIconClick?: (iconFilename: string) => void;
   selectedIcon?: string;
   className?: string;
   showDescriptions?: boolean;
 }
 
-const AirbnbIconsRow: React.FC<AirbnbIconsRowProps> = ({
+const PropertyFilter: React.FC<PropertyFilterProps> = ({
   onIconClick,
   selectedIcon,
   className = "",
@@ -38,7 +45,8 @@ const AirbnbIconsRow: React.FC<AirbnbIconsRowProps> = ({
 }) => {
   return (
     <div className={`w-full ${className}`}>
-      <div className="flex items-start justify-between py-2 -mx-6">
+      {/* Desktop Layout */}
+      <div className="hidden md:flex items-start justify-between py-2 -mx-6">
         {AIRBNB_ICONS.map((icon) => (
           <div
             key={icon.filename}
@@ -90,8 +98,77 @@ const AirbnbIconsRow: React.FC<AirbnbIconsRowProps> = ({
           </div>
         ))}
       </div>
+
+      {/* Mobile Layout with Carousel */}
+      <div className="md:hidden relative">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: false,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2">
+            {AIRBNB_ICONS.map((icon) => (
+              <CarouselItem key={icon.filename} className="pl-2 basis-auto">
+                <div
+                  onClick={() => onIconClick?.(icon.filename)}
+                  className="flex flex-col items-center cursor-pointer group transition-all duration-200 px-3 py-2"
+                >
+                  {/* Icon Container */}
+                  <div className="flex items-center justify-center w-10 h-10 rounded-lg">
+                    <AirbnbIcon 
+                      name={icon.filename} 
+                      size={20}
+                      className={`transition-all duration-200 ${
+                        selectedIcon === icon.filename 
+                          ? 'brightness-0 saturate-0' 
+                          : 'group-hover:brightness-0 group-hover:saturate-0'
+                      }`}
+                    />
+                  </div>
+                  
+                  {/* Label */}
+                  <div className="-mt-1 text-center">
+                    <div 
+                      className={`text-xs font-normal transition-colors duration-200 inline-block ${
+                        selectedIcon === icon.filename
+                          ? 'text-black'
+                          : 'text-gray-700 group-hover:text-black'
+                      }`}
+                    >
+                      {icon.label}
+                    </div>
+                    
+                    {/* Optional Description */}
+                    {showDescriptions && icon.description && (
+                      <div className="text-[10px] text-gray-700">
+                        {icon.description}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Underline - Selected Only */}
+                  <div 
+                    className={`mt-1 h-0.5 bg-gray-900 transition-opacity duration-200 mx-auto ${
+                      selectedIcon === icon.filename
+                        ? 'opacity-100'
+                        : 'opacity-0'
+                    }`}
+                    style={{ width: 'fit-content', minWidth: '16px' }}
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          
+          {/* Navigation Arrows - Only show if needed */}
+          <CarouselPrevious className="left-2 h-8 w-8" />
+          <CarouselNext className="right-2 h-8 w-8" />
+        </Carousel>
+      </div>
     </div>
   );
 };
 
-export default AirbnbIconsRow; 
+export default PropertyFilter; 
