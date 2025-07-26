@@ -5,18 +5,57 @@ import { getListings } from "@/components/host/actions"
 import { Listing } from "@/types/listing"
 import { Button } from "@/components/ui/button"
 
-async function getPublishedListings() {
+async function getPublishedListings(searchParams?: {
+  location?: string
+  checkIn?: string
+  checkOut?: string
+  guests?: string
+}) {
   try {
     const listings = await getListings({ publishedOnly: true });
-    return listings as Listing[];
+    let filteredListings = listings as Listing[];
+    
+    // Apply filters based on search parameters
+    if (searchParams?.location) {
+      filteredListings = filteredListings.filter(listing => 
+        listing.location?.city?.toLowerCase().includes(searchParams.location!.toLowerCase()) ||
+        listing.location?.country?.toLowerCase().includes(searchParams.location!.toLowerCase()) ||
+        listing.title?.toLowerCase().includes(searchParams.location!.toLowerCase())
+      );
+    }
+    
+    if (searchParams?.guests) {
+      const guestCount = parseInt(searchParams.guests);
+      filteredListings = filteredListings.filter(listing => 
+        (listing.guestCount || 0) >= guestCount
+      );
+    }
+    
+    return filteredListings;
   } catch (error) {
     console.error("Error fetching published listings:", error);
     return [];
   }
 }
 
-export default async function SearchPage() {
-  const listings = await getPublishedListings();
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams?: {
+    location?: string
+    checkIn?: string
+    checkOut?: string
+    guests?: string
+  }
+}) {
+  const listings = await getPublishedListings(searchParams);
+
+  // Build search summary
+  const searchSummary = [];
+  if (searchParams?.location) searchSummary.push(searchParams.location);
+  if (searchParams?.checkIn) searchSummary.push(`Check-in: ${searchParams.checkIn}`);
+  if (searchParams?.checkOut) searchSummary.push(`Check-out: ${searchParams.checkOut}`);
+  if (searchParams?.guests) searchSummary.push(`${searchParams.guests} guests`);
 
   return (
     <div className="min-h-screen bg-white">
@@ -27,7 +66,13 @@ export default async function SearchPage() {
           {/* Header with search results count */}
           <div className="p-10 border-b border-gray-200">
             <h1 className="text-base font-normal text-gray-500 mb-6">
-              {listings.length}+ Airbnb Luxe stays in Bordeaux
+              {listings.length}+ Airbnb Luxe stays 
+              {searchParams?.location ? ` in ${searchParams.location}` : " in Bordeaux"}
+              {searchSummary.length > 0 && (
+                <span className="text-sm text-gray-400 ml-2">
+                  • {searchSummary.join(" • ")}
+                </span>
+              )}
             </h1>
             
             {/* Filters */}
