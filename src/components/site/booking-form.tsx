@@ -4,17 +4,17 @@ import { Label } from "@/components/ui/label"
 
 export default function BookingForm() {
   return (
-    <div className="absolute top-[53%] left-8 transform -translate-y-1/2 z-20">
-      <div className="bg-white rounded-xs px-6 py-4 shadow-md w-80">
+    <div className="absolute top-[53%] left-4 md:left-8 transform -translate-y-1/2 z-20 w-[calc(100%-2rem)] md:w-auto">
+      <div className="bg-white rounded-xs px-4 md:px-6 py-6 md:py-4 shadow-md w-full md:w-80">
         {/* Main heading */}
-        <h1 className="text-xl font-medium text-[#6b6b6b] mb-3 leading-tight">
+        <h1 className="text-lg md:text-xl font-medium text-[#6b6b6b] mb-4 md:mb-3 leading-tight">
           Book unique<br />
           accommodations and<br />
           activities.
         </h1>
 
         {/* Booking form */}
-        <div className="space-y-3">
+        <div className="space-y-4 md:space-y-3">
           {/* Location field */}
           <div>
             <Label htmlFor="location" className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
@@ -23,7 +23,7 @@ export default function BookingForm() {
             <Input
               id="location"
               placeholder="Anywhere"
-              className="h-10 text-sm border-gray-300 border rounded-xs px-3 placeholder:text-[#c0c0c0] focus:border-gray-400 focus:ring-0 w-full"
+              className="h-12 md:h-10 text-sm border-gray-300 border rounded-xs px-3 placeholder:text-[#c0c0c0] focus:border-gray-400 focus:ring-0 w-full"
             />
           </div>
 
@@ -36,7 +36,7 @@ export default function BookingForm() {
               <Input
                 id="arrival"
                 placeholder="mm/dd/yyyy"
-                className="h-10 text-sm border-gray-300 border rounded-l-xs rounded-r-none px-3 placeholder:text-[#c0c0c0] focus:border-gray-400 focus:ring-0 w-full focus:z-10 relative"
+                className="h-12 md:h-10 text-sm border-gray-300 border rounded-l-xs rounded-r-none px-3 placeholder:text-[#c0c0c0] focus:border-gray-400 focus:ring-0 w-full focus:z-10 relative"
               />
             </div>
             <div>
@@ -46,7 +46,7 @@ export default function BookingForm() {
               <Input
                 id="departure"
                 placeholder="mm/dd/yyyy"
-                className="h-10 text-sm border-gray-300 border-t border-r border-b border-l-0 rounded-r-xs rounded-l-none px-3 placeholder:text-[#c0c0c0] focus:border-gray-400 focus:ring-0 w-full focus:z-10 relative"
+                className="h-12 md:h-10 text-sm border-gray-300 border-t border-r border-b border-l-0 rounded-r-xs rounded-l-none px-3 placeholder:text-[#c0c0c0] focus:border-gray-400 focus:ring-0 w-full focus:z-10 relative"
               />
             </div>
           </div>
@@ -59,13 +59,13 @@ export default function BookingForm() {
             <Input
               id="travelers"
               placeholder="Guests"
-              className="h-10 text-sm border-gray-300 border rounded-xs px-3 placeholder:text-[#c0c0c0] focus:border-gray-400 focus:ring-0 w-full"
+              className="h-12 md:h-10 text-sm border-gray-300 border rounded-xs px-3 placeholder:text-[#c0c0c0] focus:border-gray-400 focus:ring-0 w-full"
             />
           </div>
 
           {/* Search button */}
-          <div className="pt-2 flex justify-end">
-            <Button className="px-8 py-1 h-10 text-sm font-medium bg-[#de3151] hover:bg-[#de3151]/90 text-white rounded-xs">
+          <div className="pt-3 md:pt-2 flex justify-end">
+            <Button className="px-8 py-2 md:py-1 h-12 md:h-10 text-sm font-medium bg-[#de3151] hover:bg-[#de3151]/90 text-white rounded-xs">
               Search
             </Button>
           </div>
