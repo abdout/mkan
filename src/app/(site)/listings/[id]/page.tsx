@@ -1,7 +1,7 @@
 import { getListing } from "@/components/host/action";
 import { notFound } from "next/navigation";
 import ListingDetailsClient from "@/components/listing-details-client";
-import Location from "@/components/atom/airbnb-map";
+import Location from "@/components/listings/airbnb-map";
 import DetailsHeader from "@/components/listings/detials-header";
 import MobileListingDetails from "@/components/listings/mobile-listing-details";
 import MobileReserve from "@/components/listings/mobile-reserve";

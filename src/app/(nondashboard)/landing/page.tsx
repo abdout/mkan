@@ -11,7 +11,7 @@ import AirbnbSelect from "@/components/atom/airbnb-select";
 import AirbnbIconsRow from "@/components/site/property-filter";
 import AirbnbImages from "@/components/atom/airbnb-images";
 import AirbnbReserve from "@/components/atom/airbnb-reserve";
-import AirbnbInspiration from "@/components/atom/airbnb-inspiration";
+import AirbnbInspiration from "@/components/site/airbnb-inspiration";
 import AirbnbReviews from "@/components/atom/airbnb-reviews";
 
 import PropertyContentComponent from "@/components/property/content";
