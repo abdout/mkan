@@ -5,6 +5,7 @@ Mkan is a rental marketplace that connects tenants with property managers, offer
 
 Credit: [Airbnb](https://airbnb.com)
 
+![hero](public/thumb.png)
 ![hero](public/stack.png)
 
 <br>
