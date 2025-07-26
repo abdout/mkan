@@ -18,29 +18,29 @@ interface AirbnbInspirationProps {
 const defaultDestinations: Destination[] = [
   {
     id: '1',
-    title: 'Nashville',
-    distance: '53 miles away',
+    title: 'Khartoum',
+    distance: 'Capital city',
     image: '/airbnb/Rectangle 1.svg',
     backgroundColor: '#CC2D4A'
   },
   {
     id: '2',
-    title: 'South Haven',
-    distance: '168 miles away',
+    title: 'Port Sudan',
+    distance: 'Red Sea coast',
     image: '/airbnb/Rectangle 1 (2).svg',
     backgroundColor: '#BC1A6E'
   },
   {
     id: '3',
-    title: 'Stanton',
-    distance: '192 miles away',
+    title: 'Omdurman',
+    distance: 'Historic city',
     image: '/airbnb/Rectangle 1 (3).svg',
     backgroundColor: '#DE3151'
   },
   {
     id: '4',
-    title: 'New Buffalo',
-    distance: '130 miles away',
+    title: 'Juba',
+    distance: 'Southern region',
     image: '/airbnb/Rectangle 1.svg',
     backgroundColor: '#D93B30'
   }
@@ -54,7 +54,7 @@ const AirbnbInspiration: React.FC<AirbnbInspirationProps> = ({
     <div className={`w-full ${className}`}>
       {/* Section Title */}
       <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-6">
-        Inspiration for your next trip
+        Inspiration for your next trip in Sudan
       </h2>
 
       {/* Destination Cards Grid */}
