@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Listing } from '@/types/listing';
 import { Badge } from '@/components/ui/badge';
+import { getNextStep } from '@/components/hosting/listing/listing-progress';
 
 interface ListingCardProps {
   listing: Listing;
@@ -80,12 +81,20 @@ const ListingCard: React.FC<ListingCardProps> = ({ listing, viewType }) => {
   const handleCardClick = () => {
     const status = getListingStatus(listing);
     
-    if (status.label === 'Action required') {
+    if (status.label === 'Published') {
+      // Navigate to photo-tour for published listings
+      router.push(`/hosting/listings/editor/${listing.id}/details/photo-tour`);
+    } else if (status.label === 'Action required') {
       // Navigate to photo-tour for action required
       router.push(`/hosting/listings/editor/${listing.id}/details/photo-tour`);
     } else {
-      // Navigate to onboarding for in progress
-      router.push(`/host/${listing.id}/about-place`);
+      // Navigate to the next step for in progress listings
+      const nextStep = getNextStep(listing);
+      if (nextStep === 'photo-tour') {
+        router.push(`/hosting/listings/editor/${listing.id}/details/photo-tour`);
+      } else {
+        router.push(`/host/${listing.id}/${nextStep}`);
+      }
     }
   };
 
@@ -135,6 +144,8 @@ const ListingCard: React.FC<ListingCardProps> = ({ listing, viewType }) => {
             ${listing.pricePerNight}/night
           </p>
         )}
+        
+
       </div>
     </div>
   );
