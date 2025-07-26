@@ -4,7 +4,7 @@ import { useFloorPlan } from './use-floor-plan'
 import { StepWrapper } from '../step-wrapper'
 import { StepNavigation } from '../step-navigation'
 import { FormField } from '../form-field'
-import { Counter } from '../counter'
+import { Counter } from '../../atom/counter'
 
 export function FloorPlanForm() {
   const { 

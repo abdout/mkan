@@ -1,4 +1,4 @@
-import { getListing } from '@/components/host/action'
+import { getListing } from '@/components/host/actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'

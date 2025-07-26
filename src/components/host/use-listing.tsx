@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { ListingFormData, createListing, updateListing, getListing } from './action'
+import { ListingFormData, createListing, updateListing, getListing } from './actions'
 
 // Types
 export interface Listing extends ListingFormData {

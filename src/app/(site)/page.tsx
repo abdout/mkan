@@ -1,6 +1,6 @@
 import HeroSection from "@/components/site/HeroSection";
 import { PropertyContent } from "@/components/site/property/content";
-import { getListings } from "@/components/host/action";
+import { getListings } from "@/components/host/actions";
 import PropertyFilter from "@/components/site/property-filter";
 import { Listing } from "@/types/listing";
 import AirbnbInspiration from "@/components/site/airbnb-inspiration";

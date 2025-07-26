@@ -90,10 +90,7 @@ const StepsOverview: React.FC<StepsOverviewProps> = ({ onGetStarted }) => {
           <div className="">
             <Separator className="w-full" />
             <div className="flex justify-end py-4">
-              <Button
-                onClick={onGetStarted}
-                
-              >
+              <Button onClick={onGetStarted}>
                 Get started
               </Button>
             </div>

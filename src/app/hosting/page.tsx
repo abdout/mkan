@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import NotificationCard from '@/components/hosting/notification-card';
 import { useAuthRedirect } from '@/hooks/use-auth-redirect';
+import Loading from '@/components/atom/loading';
 
 const HostingPage = () => {
   const router = useRouter();
@@ -13,14 +14,7 @@ const HostingPage = () => {
 
   // Show loading while checking session
   if (status === 'loading') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
+    return <Loading variant="fullscreen" text="Loading..." />;
   }
 
   // Don't render if not authenticated

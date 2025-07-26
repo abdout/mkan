@@ -40,21 +40,21 @@ const HostDashboard: React.FC<HostDashboardProps> = ({
   onCreateFromExisting
 }) => {
   return (
-    <div className="w-full max-w-xl mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
+    <div className="w-full max-w-xl mx-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
       {/* Welcome Header */}
       <div>
-        <h3 className="mb-4 sm:mb-6 text-xl sm:text-2xl lg:text-3xl">
+        <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl lg:text-2xl">
           Welcome back, {hostName}
         </h3>
       </div>
 
       {/* Finish your listing section */}
-      <div className="space-y-3 sm:space-y-4">
-        <h5 className="text-lg sm:text-xl font-semibold">
+      <div className="space-y-2 sm:space-y-3">
+        <h5 className="text-base sm:text-lg font-semibold">
           Finish your listing
         </h5>
         
-        <div className="space-y-3">
+        <div className="space-y-2">
           {listings.map((listing) => (
             <ListingCard
               key={listing.id}

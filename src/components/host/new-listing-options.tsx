@@ -25,40 +25,40 @@ const NewListingOptions: React.FC<NewListingOptionsProps> = ({
   };
 
   return (
-    <div className="space-y-3 sm:space-y-4">
-      <h5 className="text-lg sm:text-xl font-semibold">
+    <div className="space-y-2 sm:space-y-3">
+      <h5 className="text-base sm:text-lg font-semibold">
         Start a new listing
       </h5>
       
-      <div className="space-y-2 sm:space-y-3">
+      <div className="space-y-2">
         {/* Create a new listing */}
-        <Link href="/host/overview" onClick={handleCreateNew} className="w-full flex items-center justify-between h-auto py-3 sm:py-4 border-b border-border transition-all group min-h-[60px] sm:min-h-[72px]">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
-              <Home className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
+        <Link href="/host/overview" onClick={handleCreateNew} className="w-full flex items-center justify-between h-auto py-2 sm:py-3 border-b border-border transition-all group min-h-[50px] sm:min-h-[60px]">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+              <Home className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
             </div>
             <div className="text-left min-w-0 flex-1">
-              <h5 className="text-sm sm:text-base font-medium">
+              <h5 className="text-xs sm:text-sm font-medium">
                 Create a new listing
               </h5>
             </div>
           </div>
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
+          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
         </Link>
 
         {/* Create from existing listing */}
-        <Link href="/host/overview" onClick={handleCreateFromExisting} className="w-full flex items-center justify-between h-auto py-3 sm:py-4 border-b border-border transition-all group min-h-[60px] sm:min-h-[72px]">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
-              <Copy className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
+        <Link href="/host/overview" onClick={handleCreateFromExisting} className="w-full flex items-center justify-between h-auto py-2 sm:py-3 border-b border-border transition-all group min-h-[50px] sm:min-h-[60px]">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+              <Copy className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
             </div>
             <div className="text-left min-w-0 flex-1">
-              <h5 className="text-sm sm:text-base font-medium">
+              <h5 className="text-xs sm:text-sm font-medium">
                 Create from an existing listing
               </h5>
             </div>
           </div>
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
+          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
         </Link>
       </div>
     </div>

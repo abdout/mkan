@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import {
   getListing,
-} from "@/components/host/action";
+} from "@/components/host/actions";
 import { ArrowDownToLine, ArrowLeft, Check, Download } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

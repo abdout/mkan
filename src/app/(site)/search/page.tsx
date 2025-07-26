@@ -1,7 +1,7 @@
 import DetailCard from "@/components/listings/detial-card"
 import SearchHeader from "@/components/listings/search-header"
 import SearchMap from "@/components/listings/search-map"
-import { getListings } from "@/components/host/action"
+import { getListings } from "@/components/host/actions"
 import { Listing } from "@/types/listing"
 import { Button } from "@/components/ui/button"
 

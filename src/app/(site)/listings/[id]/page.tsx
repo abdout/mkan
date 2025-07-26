@@ -1,4 +1,4 @@
-import { getListing } from "@/components/host/action";
+import { getListing } from "@/components/host/actions";
 import { notFound } from "next/navigation";
 import ListingDetailsClient from "@/components/listing-details-client";
 import Location from "@/components/listings/airbnb-map";

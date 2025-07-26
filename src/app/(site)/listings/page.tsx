@@ -1,4 +1,4 @@
-import { getListings } from "@/components/host/action";
+import { getListings } from "@/components/host/actions";
 import ListingsHeader from "@/components/listings/listings-header";
 import MobileListingsHeader from "@/components/listings/mobile-listings-header";
 import { PropertyContent } from "@/components/listings/property/content";

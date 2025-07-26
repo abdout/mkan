@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
 import { ListView, GridView } from '@/components/atom/airbnb-icons';
-import { getHostListings } from '@/components/host/action';
+import { getHostListings } from '@/components/host/actions';
 import { useSession } from 'next-auth/react';
 import ListingCard from '@/components/hosting/listing/listing-card';
 import { Listing } from '@/types/listing';

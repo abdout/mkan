@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useListing, useHostNavigation } from '../use-listing'
-import { publishListing } from '../action'
+import { publishListing } from '../actions'
 
 export function useFinishSetup() {
   const { listing, isLoading: contextLoading, error: contextError } = useListing()

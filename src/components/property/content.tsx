@@ -1,7 +1,7 @@
 import FiltersBar from "./filters-bar";
 import FiltersFull from "./filters-full";
 import Listings from "./listings";
-import { getListings } from "@/components/host/action";
+import { getListings } from "@/components/host/actions";
 
 interface SearchPageProps {
   searchParams: Promise<{

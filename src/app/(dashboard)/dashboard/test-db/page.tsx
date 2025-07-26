@@ -1,5 +1,5 @@
 "use server";
-import { getListings } from "@/components/host/action";
+import { getListings } from "@/components/host/actions";
 import { db } from "@/lib/db";
 
 export default async function TestDbPage() {

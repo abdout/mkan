@@ -4,7 +4,7 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
 import { getAuthUser } from "@/lib/actions/user-actions";
-import { getHostListings } from "@/components/host/action";
+import { getHostListings } from "@/components/host/actions";
 import type { Property } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 
