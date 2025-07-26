@@ -21,7 +21,11 @@ export default function BookingForm() {
     location: "",
     checkIn: "",
     checkOut: "",
-    guests: ""
+    guests: {
+      adults: 0,
+      children: 0,
+      infants: 0
+    }
   })
 
   const [dateRange, setDateRange] = useState<{
@@ -272,6 +276,43 @@ export default function BookingForm() {
     setActiveField("checkin")
   }
 
+  // Add guest counter handlers
+  const handleGuestChange = (type: 'adults' | 'children' | 'infants', operation: 'increment' | 'decrement') => {
+    setFormData(prev => ({
+      ...prev,
+      guests: {
+        ...prev.guests,
+        [type]: operation === 'increment' 
+          ? prev.guests[type] + 1 
+          : Math.max(0, prev.guests[type] - 1)
+      }
+    }))
+  }
+
+  // Helper function to get total guests
+  const getTotalGuests = () => {
+    return formData.guests.adults + formData.guests.children + formData.guests.infants
+  }
+
+  // Helper function to get guest display text
+  const getGuestDisplayText = () => {
+    const total = getTotalGuests()
+    if (total === 0) return "Add guests"
+    
+    const parts = []
+    if (formData.guests.adults > 0) {
+      parts.push(`${formData.guests.adults} adult${formData.guests.adults > 1 ? 's' : ''}`)
+    }
+    if (formData.guests.children > 0) {
+      parts.push(`${formData.guests.children} child${formData.guests.children > 1 ? 'ren' : ''}`)
+    }
+    if (formData.guests.infants > 0) {
+      parts.push(`${formData.guests.infants} infant${formData.guests.infants > 1 ? 's' : ''}`)
+    }
+    
+    return parts.join(', ')
+  }
+
   // Click outside to reset
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -298,8 +339,11 @@ export default function BookingForm() {
     if (formData.checkOut) {
       searchParams.set("checkOut", formData.checkOut)
     }
-    if (formData.guests) {
-      searchParams.set("guests", formData.guests)
+    if (getTotalGuests() > 0) {
+      searchParams.set("guests", getTotalGuests().toString())
+      searchParams.set("adults", formData.guests.adults.toString())
+      searchParams.set("children", formData.guests.children.toString())
+      searchParams.set("infants", formData.guests.infants.toString())
     }
 
     const searchUrl = `/search${searchParams.toString() ? `?${searchParams.toString()}` : ""}`
@@ -397,7 +441,7 @@ export default function BookingForm() {
                       type="number"
                       min="1"
                       placeholder="Guests"
-                      value={formData.guests}
+                      value={getGuestDisplayText()}
                       onChange={(e) => handleInputChange("guests", e.target.value)}
                       className="h-12 text-sm border-0 border-none rounded-xs px-3 placeholder:text-[#c0c0c0] focus:ring-0 focus:outline-none focus:border-0 shadow-none w-full text-black caret-black"
                       onFocus={() => setActiveField("guests")}
@@ -526,8 +570,8 @@ export default function BookingForm() {
                  className={`w-full h-12 text-left px-3 border border-gray-300 rounded-xs ${getFieldStyling("guests")}`}
                  onClick={() => handleFieldClick("guests")}
                >
-                <span className={`text-sm ${formData.guests ? 'text-black' : 'text-[#c0c0c0]'}`}>
-                  {formData.guests ? `${formData.guests} guests` : "Add guests"}
+                <span className={`text-sm ${getTotalGuests() > 0 ? 'text-black' : 'text-[#c0c0c0]'}`}>
+                  {getGuestDisplayText()}
                 </span>
               </button>
           </div>
@@ -629,20 +673,58 @@ export default function BookingForm() {
                 <div className="flex items-center space-x-3">
                   <button 
                     className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
-                    onClick={() => {
-                      const current = parseInt(formData.guests) || 0
-                      if (current > 0) handleInputChange("guests", (current - 1).toString())
-                    }}
+                    onClick={() => handleGuestChange('adults', 'decrement')}
                   >
                     -
                   </button>
-                  <span className="w-8 text-center">{formData.guests || "0"}</span>
+                  <span className="w-8 text-center">{formData.guests.adults}</span>
                   <button 
                     className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
-                    onClick={() => {
-                      const current = parseInt(formData.guests) || 0
-                      handleInputChange("guests", (current + 1).toString())
-                    }}
+                    onClick={() => handleGuestChange('adults', 'increment')}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-medium">Children</div>
+                  <div className="text-sm text-gray-500">Ages 2-12</div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <button 
+                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
+                    onClick={() => handleGuestChange('children', 'decrement')}
+                  >
+                    -
+                  </button>
+                  <span className="w-8 text-center">{formData.guests.children}</span>
+                  <button 
+                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
+                    onClick={() => handleGuestChange('children', 'increment')}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-medium">Infants</div>
+                  <div className="text-sm text-gray-500">Under 2</div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <button 
+                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
+                    onClick={() => handleGuestChange('infants', 'decrement')}
+                  >
+                    -
+                  </button>
+                  <span className="w-8 text-center">{formData.guests.infants}</span>
+                  <button 
+                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
+                    onClick={() => handleGuestChange('infants', 'increment')}
                   >
                     +
                   </button>
