@@ -5,7 +5,7 @@ import PropertyFilter from "@/components/site/property-filter";
 import { Listing } from "@/types/listing";
 import AirbnbInspiration from "@/components/site/airbnb-inspiration";
 import GiftCard from "@/components/site/airbnb-gift-card";
-import Ask from "@/components/atom/airbnb-ask";
+import Ask from "@/components/site/airbnb-ask";
 import SiteFooter from "@/components/template/footer-airbnb/site-footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

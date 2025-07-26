@@ -147,7 +147,7 @@ export default function SiteFooter() {
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             {/* Left side - Copyright and legal links */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <p>© 2022 Airbnb, Inc.</p>
+              <p>© 2022 Mkan, Inc.</p>
               <span>·</span>
               <Link href="#" className="hover:underline">
                 Privacy
