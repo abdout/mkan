@@ -33,7 +33,7 @@ export default function DateRangePicker({
         selected={date}
         onSelect={setDate}
         numberOfMonths={2}
-        className="rounded-md border-0 scale-75 origin-top-left"
+        className="rounded-full border-0 scale-75 origin-top-left"
       />
     </div>
   )
