@@ -1,36 +1,20 @@
 "use client"
 
-import { SearchButton, Counter } from "@/components/atom"
+import { Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 
 type ActiveButton = "location" | "checkin" | "checkout" | "guests" | null
 
-export default function BigSearch() {
+export default function Component() {
   const router = useRouter()
   const [activeButton, setActiveButton] = useState<ActiveButton>(null)
   const [hoveredButton, setHoveredButton] = useState<ActiveButton>(null)
   const searchBarRef = useRef<HTMLDivElement>(null)
-  
-  // Guest counter state
-  const [guests, setGuests] = useState({
-    adults: 0,
-    children: 0,
-    infants: 0
-  })
 
   const handleButtonClick = (button: ActiveButton) => {
     setActiveButton(activeButton === button ? null : button)
-  }
-
-  // Guest counter handlers
-  const handleGuestChange = (type: 'adults' | 'children' | 'infants', operation: 'increment' | 'decrement') => {
-    setGuests(prev => ({
-      ...prev,
-      [type]: operation === 'increment' 
-        ? prev[type] + 1 
-        : Math.max(0, prev[type] - 1)
-    }))
   }
 
   // Click outside to reset
@@ -233,11 +217,17 @@ export default function BigSearch() {
 
           {/* Search Button */}
           <div className="pr-2">
-            <SearchButton
-              size={activeButton ? "big" : "small"}
+            <Button
               onClick={() => router.push('/search')}
-              showText={!!activeButton}
-            />
+              size="icon"
+              className={`rounded-full bg-[#de3151] hover:bg-[#de3151]/90 text-white transition-all duration-300 ${
+                activeButton ? "w-28 h-14 px-4" : "w-12 h-12"
+              }`}
+            >
+              <Search className="w-4 h-4" />
+              {activeButton && <span className="ml-2 text-sm font-medium">Search</span>}
+              <span className="sr-only">Search</span>
+            </Button>
           </div>
         </div>
       </div>
@@ -312,39 +302,45 @@ export default function BigSearch() {
                 <div className="font-medium">Adults</div>
                 <div className="text-sm text-gray-500">Ages 13 or above</div>
               </div>
-              <Counter
-                value={guests.adults}
-                onIncrement={() => handleGuestChange('adults', 'increment')}
-                onDecrement={() => handleGuestChange('adults', 'decrement')}
-                min={0}
-                max={16}
-              />
+              <div className="flex items-center space-x-3">
+                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
+                  -
+                </button>
+                <span className="w-8 text-center">0</span>
+                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
+                  +
+                </button>
+              </div>
             </div>
             <div className="flex items-center justify-between">
               <div>
                 <div className="font-medium">Children</div>
                 <div className="text-sm text-gray-500">Ages 2-12</div>
               </div>
-              <Counter
-                value={guests.children}
-                onIncrement={() => handleGuestChange('children', 'increment')}
-                onDecrement={() => handleGuestChange('children', 'decrement')}
-                min={0}
-                max={10}
-              />
+              <div className="flex items-center space-x-3">
+                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
+                  -
+                </button>
+                <span className="w-8 text-center">0</span>
+                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
+                  +
+                </button>
+              </div>
             </div>
             <div className="flex items-center justify-between">
               <div>
                 <div className="font-medium">Infants</div>
                 <div className="text-sm text-gray-500">Under 2</div>
               </div>
-              <Counter
-                value={guests.infants}
-                onIncrement={() => handleGuestChange('infants', 'increment')}
-                onDecrement={() => handleGuestChange('infants', 'decrement')}
-                min={0}
-                max={5}
-              />
+              <div className="flex items-center space-x-3">
+                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
+                  -
+                </button>
+                <span className="w-8 text-center">0</span>
+                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
+                  +
+                </button>
+              </div>
             </div>
           </div>
         </div>

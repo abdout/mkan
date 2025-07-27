@@ -1,6 +1,7 @@
 "use client"
 
-import { SearchButton } from "@/components/atom"
+import { Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function Component() {
   return (
@@ -22,7 +23,14 @@ export default function Component() {
         </button>
 
         <div className="pr-2">
-          <SearchButton size="small" onClick={() => {}} />
+          <Button
+            size="icon"
+            className="rounded-full bg-[#de3151] hover:bg-[#de3151]/90 text-white w-10 h-10"
+            onClick={() => {}}
+          >
+            <Search className="w-4 h-4" />
+            <span className="sr-only">Search</span>
+          </Button>
         </div>
     </div>
   )
