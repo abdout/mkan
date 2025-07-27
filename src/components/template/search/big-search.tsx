@@ -4,6 +4,9 @@ import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
+import LocationDropdown from "./location"
+import BigSearchDatePicker from "./big-search-date-picker"
+import { LOCATIONS } from "./constant"
 
 type ActiveButton = "location" | "checkin" | "checkout" | "guests" | null
 
@@ -12,9 +15,72 @@ export default function Component() {
   const [activeButton, setActiveButton] = useState<ActiveButton>(null)
   const [hoveredButton, setHoveredButton] = useState<ActiveButton>(null)
   const searchBarRef = useRef<HTMLDivElement>(null)
+  
+  // Location search state
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filteredLocations, setFilteredLocations] = useState<string[]>([])
+  const [selectedLocation, setSelectedLocation] = useState("")
+
+  // Date range state
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined
+    to: Date | undefined
+  }>({
+    from: undefined,
+    to: undefined
+  })
 
   const handleButtonClick = (button: ActiveButton) => {
     setActiveButton(activeButton === button ? null : button)
+  }
+
+  // Filter locations based on search query
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredLocations([])
+      return
+    }
+
+    const filtered = LOCATIONS.filter(location =>
+      location.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    setFilteredLocations(filtered)
+  }, [searchQuery])
+
+  // Handle location selection
+  const handleLocationSelect = (location: string) => {
+    setSelectedLocation(location)
+    setSearchQuery(location)
+    setActiveButton(null)
+  }
+
+  // Handle date range change
+  const handleDateChange = (from: Date | undefined, to: Date | undefined) => {
+    setDateRange({ from, to })
+    // Close the dropdown when both dates are selected
+    if (from && to) {
+      setActiveButton(null)
+    }
+  }
+
+  // Format date for display
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return ""
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric' 
+    })
+  }
+
+  // Get date display text
+  const getDateDisplayText = () => {
+    if (dateRange.from && dateRange.to) {
+      return `${formatDate(dateRange.from)} - ${formatDate(dateRange.to)}`
+    } else if (dateRange.from) {
+      return `${formatDate(dateRange.from)} - Add checkout`
+    } else {
+      return "Add dates"
+    }
   }
 
   // Click outside to reset
@@ -152,7 +218,9 @@ export default function Component() {
         >
           <div className="text-left">
             <div className="text-sm font-semibold text-[#000000] mb-1">Location</div>
-            <div className="text-sm text-[#6b7280]">Where are you going?</div>
+            <div className="text-sm text-[#6b7280]">
+              {selectedLocation || "Where are you going?"}
+            </div>
           </div>
         </button>
 
@@ -172,7 +240,7 @@ export default function Component() {
         >
           <div className="text-left">
             <div className="text-sm font-semibold text-[#000000] mb-1">Check in</div>
-            <div className="text-sm text-[#6b7280]">Add dates</div>
+            <div className="text-sm text-[#6b7280]">{getDateDisplayText()}</div>
           </div>
         </button>
 
@@ -192,7 +260,7 @@ export default function Component() {
         >
           <div className="text-left">
             <div className="text-sm font-semibold text-[#000000] mb-1">Check out</div>
-            <div className="text-sm text-[#6b7280]">Add dates</div>
+            <div className="text-sm text-[#6b7280]">{getDateDisplayText()}</div>
           </div>
         </button>
 
@@ -235,61 +303,30 @@ export default function Component() {
       {/* Dropdown Menus */}
       {activeButton === "location" && (
         <div className="absolute top-full left-0 mt-2 w-96 bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10">
-          <h3 className="text-lg font-semibold mb-4">Where to?</h3>
-          <div className="space-y-3">
-            <div className="p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
-              <div className="font-medium">Paris, France</div>
-              <div className="text-sm text-gray-500">Popular destination</div>
-            </div>
-            <div className="p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
-              <div className="font-medium">Tokyo, Japan</div>
-              <div className="text-sm text-gray-500">Trending destination</div>
-            </div>
-            <div className="p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
-              <div className="font-medium">New York, USA</div>
-              <div className="text-sm text-gray-500">Popular destination</div>
-            </div>
-          </div>
+          <LocationDropdown
+            searchQuery={searchQuery}
+            filteredLocations={filteredLocations}
+            onSearchQueryChange={setSearchQuery}
+            onLocationSelect={handleLocationSelect}
+          />
         </div>
       )}
 
       {activeButton === "checkin" && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10">
-          <h3 className="text-lg font-semibold mb-4 text-center">Select dates</h3>
-          <div className="grid grid-cols-2 gap-8">
-            <div>
-              <h4 className="text-sm font-medium mb-3 text-center">Check-in</h4>
-              <div className="bg-gray-50 rounded-lg p-8 text-center text-gray-500">
-                Calendar 1<div className="text-xs mt-2">January 2024</div>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-sm font-medium mb-3 text-center">Check-out</h4>
-              <div className="bg-gray-50 rounded-lg p-8 text-center text-gray-500">
-                Calendar 2<div className="text-xs mt-2">February 2024</div>
-              </div>
-            </div>
-          </div>
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-4 z-10">
+          <BigSearchDatePicker
+            dateRange={dateRange}
+            onDateChange={handleDateChange}
+          />
         </div>
       )}
 
       {activeButton === "checkout" && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10">
-          <h3 className="text-lg font-semibold mb-4 text-center">Select dates</h3>
-          <div className="grid grid-cols-2 gap-8">
-            <div>
-              <h4 className="text-sm font-medium mb-3 text-center">Check-in</h4>
-              <div className="bg-gray-50 rounded-lg p-8 text-center text-gray-500">
-                Calendar 1<div className="text-xs mt-2">January 2024</div>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-sm font-medium mb-3 text-center">Check-out</h4>
-              <div className="bg-gray-50 rounded-lg p-8 text-center text-gray-500">
-                Calendar 2<div className="text-xs mt-2">February 2024</div>
-              </div>
-            </div>
-          </div>
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-4 z-10">
+          <BigSearchDatePicker
+            dateRange={dateRange}
+            onDateChange={handleDateChange}
+          />
         </div>
       )}
 
