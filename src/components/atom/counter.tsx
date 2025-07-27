@@ -10,6 +10,7 @@ interface CounterProps {
   min?: number
   max?: number
   step?: number
+  sm?: boolean
 }
 
 export function Counter({
@@ -19,28 +20,32 @@ export function Counter({
   min = 0,
   max = 100,
   step = 1,
+  sm = false,
 }: CounterProps) {
   const isDecrementDisabled = value <= min
   const isIncrementDisabled = value >= max
 
   return (
-    <div className="flex items-center gap-3 sm:gap-4">
+    <div className={`flex items-center ${sm ? 'gap-2' : 'gap-3 sm:gap-4'}`}>
       <button
         type="button"
         onClick={onDecrement}
         disabled={isDecrementDisabled}
         className={`
-          w-12 h-12 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-colors min-h-[48px] sm:min-h-[40px]
+          ${sm 
+            ? 'w-8 h-8 min-h-[32px]' 
+            : 'w-12 h-12 sm:w-10 sm:h-10 min-h-[48px] sm:min-h-[40px]'
+          } rounded-full border flex items-center justify-center transition-colors
           ${isDecrementDisabled
             ? 'border-muted text-muted-foreground cursor-not-allowed'
             : 'border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground active:scale-95'
           }
         `}
       >
-        <Minus size={18} strokeWidth={2} className="sm:w-4 sm:h-4" />
+        <Minus size={sm ? 14 : 18} strokeWidth={2} className={sm ? 'w-3.5 h-3.5' : 'sm:w-4 sm:h-4'} />
       </button>
 
-      <span className="w-12 sm:w-16 text-center text-lg sm:text-xl font-medium">
+      <span className={`${sm ? 'w-8 text-sm' : 'w-12 sm:w-16 text-lg sm:text-xl'} text-center font-medium`}>
         {value}
       </span>
 
@@ -49,14 +54,17 @@ export function Counter({
         onClick={onIncrement}
         disabled={isIncrementDisabled}
         className={`
-          w-12 h-12 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-colors min-h-[48px] sm:min-h-[40px]
+          ${sm 
+            ? 'w-8 h-8 min-h-[32px]' 
+            : 'w-12 h-12 sm:w-10 sm:h-10 min-h-[48px] sm:min-h-[40px]'
+          } rounded-full border flex items-center justify-center transition-colors
           ${isIncrementDisabled
             ? 'border-muted text-muted-foreground cursor-not-allowed'
             : 'border-muted-foreground text-muted-foreground hover:border-foreground hover:text-foreground active:scale-95'
           }
         `}
       >
-        <Plus size={18} strokeWidth={2} className="sm:w-4 sm:h-4" />
+        <Plus size={sm ? 14 : 18} strokeWidth={2} className={sm ? 'w-3.5 h-3.5' : 'sm:w-4 sm:h-4'} />
       </button>
     </div>
   )

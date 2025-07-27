@@ -31,6 +31,7 @@ export default function GuestSelectorDropdown({
             onDecrement={() => onGuestChange('adults', 'decrement')}
             min={GUEST_LIMITS.adults.min}
             max={GUEST_LIMITS.adults.max}
+            sm={true}
           />
         </div>
         
@@ -45,6 +46,7 @@ export default function GuestSelectorDropdown({
             onDecrement={() => onGuestChange('children', 'decrement')}
             min={GUEST_LIMITS.children.min}
             max={GUEST_LIMITS.children.max}
+            sm={true}
           />
         </div>
         
@@ -59,6 +61,7 @@ export default function GuestSelectorDropdown({
             onDecrement={() => onGuestChange('infants', 'decrement')}
             min={GUEST_LIMITS.infants.min}
             max={GUEST_LIMITS.infants.max}
+            sm={true}
           />
         </div>
       </div>

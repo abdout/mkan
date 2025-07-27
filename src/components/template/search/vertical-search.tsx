@@ -17,7 +17,7 @@ import GuestSelectorDropdown from "./guest-selector"
 
 type ActiveField = "location" | "checkin" | "checkout" | "guests" | null
 
-export default function BookingForm() {
+export default function VerticalSearch() {
   const router = useRouter()
   const [activeField, setActiveField] = useState<ActiveField>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -174,132 +174,153 @@ export default function BookingForm() {
     return `${bgClass} transition-all duration-200`
   }
 
-  // Mobile field order
-  const mobileFields: ActiveField[] = ["location", "checkin", "guests"]
-
   if (isMobile) {
   return (
-      <div className="absolute top-[53%] left-4 md:left-8 transform -translate-y-1/2 z-20 w-[calc(100%-2rem)] md:w-auto" ref={formRef}>
-        <div className="bg-white rounded-xs px-4 md:px-6 py-6 md:py-4 shadow-md w-full md:w-80">
-        {/* Main heading */}
-          <h1 className="text-lg md:text-xl font-medium text-[#6b6b6b] mb-4 md:mb-3 leading-tight">
-          Book unique<br />
-          accommodations and<br />
-          activities.
-        </h1>
+      <div className="absolute top-[53%] left-4 md:left-8 transform -translate-y-1/2 z-20 w-[calc(100%-2rem)] md:w-auto max-h-[80vh] overflow-auto" ref={formRef}>
+                <div className="bg-white rounded-xs px-4 md:px-6 py-6 md:py-4 shadow-md w-full md:w-80">
+          {/* Header - Show heading or back arrow */}
+          {!activeField ? (
+            /* Show main heading when no field is active */
+            <h1 className="text-lg md:text-xl font-medium text-[#6b6b6b] mb-4 md:mb-3 leading-tight">
+              Book unique<br />
+              accommodations and<br />
+              activities.
+            </h1>
+          ) : (
+            /* Show back arrow when dropdown is active */
+            <div className="flex items-center mb-4 md:mb-3">
+              <button
+                onClick={() => setActiveField(null)}
+                className="flex items-center text-[#6b6b6b] hover:text-black transition-colors"
+              >
+                <svg 
+                  width="24" 
+                  height="24" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                >
+                  <path d="m15 18-6-6 6-6"/>
+                </svg>
+                <span className="ml-2 text-sm font-medium">Back</span>
+              </button>
+            </div>
+          )}
 
-          {/* Mobile: Single field at a time */}
-          <div className="space-y-4">
-            {mobileFields.map((field, index) => (
-              <div key={field} className={`${activeField === field ? 'block' : 'hidden'}`}>
-                                 {field === "location" && (
+          {/* Mobile: Show form or dropdown content */}
+          {!activeField ? (
+            /* Show complete form when no field is active */
+            <div className="space-y-4 md:space-y-3">
+              {/* Location field */}
           <div>
                      <Label className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
               WHERE
             </Label>
-                                                <Input
-                         placeholder="Anywhere"
-                         value={searchQuery}
-                         onChange={(e) => handleLocationSearch(e.target.value)}
-                         className="h-12 text-sm border-0 border-none rounded-xs px-3 placeholder:text-[#c0c0c0] focus:ring-0 focus:outline-none focus:border-0 shadow-none w-full text-black caret-black"
-                         onFocus={() => setActiveField("location")}
-                         autoFocus
-                       />
-                                           {/* Mobile autocomplete dropdown */}
-                      {filteredLocations.length > 0 && (
-                        <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-b-xs shadow-lg z-20 max-h-60 overflow-y-auto no-scrollbar">
-                          {filteredLocations.map((location, index) => (
-                            <div
-                              key={index}
-                              className="px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm"
-                              onClick={() => selectLocation(location)}
-                            >
-                              {location}
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                <button
+                  className={`w-full h-12 text-left px-3 border border-gray-300 rounded-xs ${getFieldStyling("location")}`}
+                  onClick={() => handleFieldClick("location")}
+                >
+                  <span className={`text-sm ${formData.location ? 'text-black' : 'text-[#c0c0c0]'}`}>
+                    {formData.location || "Anywhere"}
+                  </span>
+                </button>
           </div>
-                 )}
 
-                {(field === "checkin" || field === "checkout") && (
+              {/* Date fields */}
+              <div>
+                <div className="grid grid-cols-2">
             <div>
                     <Label className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
-                DATES
+                      CHECK-IN
               </Label>
-                                             <div className="w-full">
-                      <DateRangePicker 
-                        className="w-full"
-                        date={dateRange}
-                        onDateChange={(date) => {
-                          if (date) {
-                            handleDateRangeChange(date.from, date.to)
-                          }
-                        }}
-                      />
-                    </div>
             </div>
-                )}
-
-                {field === "guests" && (
                   <div>
                     <Label className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
-                      GUESTS
+                      CHECK-OUT
                     </Label>
-                                                           <Input
-                      type="number"
-                      min="1"
-                      placeholder="Guests"
-                      value={getGuestDisplayText()}
-                      onChange={(e) => handleInputChange("guests", e.target.value)}
-                      className="h-12 text-sm border-0 border-none rounded-xs px-3 placeholder:text-[#c0c0c0] focus:ring-0 focus:outline-none focus:border-0 shadow-none w-full text-black caret-black"
-                      onFocus={() => setActiveField("guests")}
-                      autoFocus
-                    />
                   </div>
-                )}
-
-                {/* Navigation buttons */}
-                <div className="flex justify-between mt-4">
-                  {index > 0 && (
-                    <Button
-                      variant="outline"
-                      onClick={() => setActiveField(mobileFields[index - 1])}
-                      className="px-4 py-2 text-sm"
-                    >
-                      Previous
-                    </Button>
-                  )}
-                  {index < mobileFields.length - 1 ? (
-                    <Button
-                      onClick={() => setActiveField(mobileFields[index + 1])}
-                      className="px-4 py-2 text-sm bg-[#de3151] hover:bg-[#de3151]/90 text-white"
-                    >
-                      Next
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleSearch}
-                      className="px-4 py-2 text-sm bg-[#de3151] hover:bg-[#de3151]/90 text-white"
-                    >
-                      Search
-                    </Button>
-                  )}
+                </div>
+                <div className="flex">
+                  <button
+                    className={`flex-1 h-12 text-left px-3 border border-gray-300 rounded-l-xs rounded-r-none ${getFieldStyling("checkin")}`}
+                    onClick={() => handleFieldClick("checkin")}
+                  >
+                    <span className={`text-sm ${dateRange.from ? 'text-black' : 'text-[#c0c0c0]'}`}>
+                      {dateRange.from ? format(dateRange.from, 'MMM dd') : "Add date"}
+                    </span>
+                  </button>
+                  <div className="w-px h-8 bg-[#e5e7eb] self-center"></div>
+                  <button
+                    className={`flex-1 h-12 text-left px-3 border border-gray-300 border-l-0 rounded-r-xs rounded-l-none ${getFieldStyling("checkout")}`}
+                    onClick={() => handleFieldClick("checkout")}
+                  >
+                    <span className={`text-sm ${dateRange.to ? 'text-black' : 'text-[#c0c0c0]'}`}>
+                      {dateRange.to ? format(dateRange.to, 'MMM dd') : "Add date"}
+                    </span>
+                  </button>
                 </div>
               </div>
-            ))}
 
-            {/* Show search button when no field is active */}
-            {!activeField && (
-              <div className="pt-3 flex justify-end">
-                <Button 
-                  onClick={() => setActiveField("location")}
-                  className="px-8 py-2 h-12 text-sm font-medium bg-[#de3151] hover:bg-[#de3151]/90 text-white rounded-xs"
+              {/* Guests field */}
+              <div>
+                <Label className="text-[11px] font-medium text-[#6b6b6b] mb-1 block">
+                  GUESTS
+                </Label>
+                <button
+                  className={`w-full h-12 text-left px-3 border border-gray-300 rounded-xs ${getFieldStyling("guests")}`}
+                  onClick={() => handleFieldClick("guests")}
                 >
-                  Start Search
-                </Button>
+                  <span className={`text-sm ${getTotalGuests() > 0 ? 'text-black' : 'text-[#c0c0c0]'}`}>
+                    {getGuestDisplayText()}
+                  </span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            /* Show dropdown content when a field is active */
+            <div className="min-h-[200px] max-h-[60vh] overflow-y-auto">
+              {activeField === "location" && (
+                <LocationDropdown
+                  searchQuery={searchQuery}
+                  filteredLocations={filteredLocations}
+                  onSearchQueryChange={handleLocationSearch}
+                  onLocationSelect={(location) => {
+                    if (location) {
+                      selectLocation(location)
+                    } else {
+                      setActiveField(null)
+                    }
+                  }}
+                />
+              )}
+
+              {(activeField === "checkin" || activeField === "checkout") && (
+                <DatePickerDropdown
+                  dateRange={dateRange}
+                  onDateChange={handleDateRangeChange}
+                />
+              )}
+
+              {activeField === "guests" && (
+                <GuestSelectorDropdown
+                  guests={formData.guests}
+                  onGuestChange={handleGuestChange}
+                />
+              )}
               </div>
             )}
+
+          {/* Fixed Search button - always visible */}
+          <div className="pt-3 md:pt-2 flex justify-end">
+            <Button 
+              onClick={handleSearch}
+              className="px-8 py-2 md:py-1 h-12 md:h-10 text-sm font-medium bg-[#de3151] hover:bg-[#de3151]/90 text-white rounded-xs"
+            >
+              Search
+            </Button>
           </div>
         </div>
       </div>
@@ -397,12 +418,12 @@ export default function BookingForm() {
           </div>
         </div>
 
-                {/* Desktop Dropdowns - Positioned to the right */}
-        {activeField === "location" && (
-          <div 
-            className="absolute top-0 left-full ml-4 w-80 h-full bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10"
-            onMouseLeave={() => setActiveField(null)}
-          >
+        {/* Desktop Dropdowns - Positioned to the right */}
+                          {activeField === "location" && (
+           <div 
+             className="absolute top-0 left-full ml-4 w-80 h-full bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10"
+             onMouseLeave={() => setActiveField(null)}
+           >
             <LocationDropdown
               searchQuery={searchQuery}
               filteredLocations={filteredLocations}
@@ -415,26 +436,26 @@ export default function BookingForm() {
                 }
               }}
             />
-          </div>
-        )}
+           </div>
+         )}
 
-                                   {(activeField === "checkin" || activeField === "checkout") && (
-            <div className="absolute top-0 left-full ml-4 w-[600px] h-full bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10">
+                 {(activeField === "checkin" || activeField === "checkout") && (
+           <div className="absolute top-0 left-full ml-4 w-[600px] h-full bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10">
               <DatePickerDropdown
                 dateRange={dateRange}
                 onDateChange={handleDateRangeChange}
               />
-            </div>
-          )}
+           </div>
+         )}
 
-                                   {activeField === "guests" && (
-            <div className="absolute top-0 left-full ml-4 w-80 h-full bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10">
+                 {activeField === "guests" && (
+           <div className="absolute top-0 left-full ml-4 w-80 h-full bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10">
               <GuestSelectorDropdown
                 guests={formData.guests}
                 onGuestChange={handleGuestChange}
               />
-            </div>
-          )}
+          </div>
+        )}
       </div>
     </div>
   )
