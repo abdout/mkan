@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import SiteHeader from "@/components/template/header-airbnb/header";
-import BookingForm from "@/components/site/booking-form";
+import BookingForm from "@/components/template/search/vertical-search";
 
 
 const HeroSection = () => {

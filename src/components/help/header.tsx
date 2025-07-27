@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu } from 'lucide-react';
-import SearchBar from './search';
+import SearchBar from '../template/search/help-search';
 
 export default function HelpHeader() {
   return (

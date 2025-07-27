@@ -1,4 +1,4 @@
-import SearchBar from "./search";
+import SearchBar from "../template/search/help-search";
 
 export default function HelpHeading() {
   return (

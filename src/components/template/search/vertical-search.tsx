@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import DateRangePicker from "@/components/atom/date-range-picker"
+import { Counter } from "@/components/atom"
 import { format } from "date-fns"
 
 type ActiveField = "location" | "checkin" | "checkout" | "guests" | null
@@ -670,21 +671,13 @@ export default function BookingForm() {
                   <div className="font-medium">Adults</div>
                   <div className="text-sm text-gray-500">Ages 13 or above</div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <button 
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
-                    onClick={() => handleGuestChange('adults', 'decrement')}
-                  >
-                    -
-                  </button>
-                  <span className="w-8 text-center">{formData.guests.adults}</span>
-                  <button 
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
-                    onClick={() => handleGuestChange('adults', 'increment')}
-                  >
-                    +
-                  </button>
-                </div>
+                <Counter
+                  value={formData.guests.adults}
+                  onIncrement={() => handleGuestChange('adults', 'increment')}
+                  onDecrement={() => handleGuestChange('adults', 'decrement')}
+                  min={0}
+                  max={16}
+                />
               </div>
               
               <div className="flex items-center justify-between">
@@ -692,21 +685,13 @@ export default function BookingForm() {
                   <div className="font-medium">Children</div>
                   <div className="text-sm text-gray-500">Ages 2-12</div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <button 
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
-                    onClick={() => handleGuestChange('children', 'decrement')}
-                  >
-                    -
-                  </button>
-                  <span className="w-8 text-center">{formData.guests.children}</span>
-                  <button 
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
-                    onClick={() => handleGuestChange('children', 'increment')}
-                  >
-                    +
-                  </button>
-                </div>
+                <Counter
+                  value={formData.guests.children}
+                  onIncrement={() => handleGuestChange('children', 'increment')}
+                  onDecrement={() => handleGuestChange('children', 'decrement')}
+                  min={0}
+                  max={10}
+                />
               </div>
               
               <div className="flex items-center justify-between">
@@ -714,21 +699,13 @@ export default function BookingForm() {
                   <div className="font-medium">Infants</div>
                   <div className="text-sm text-gray-500">Under 2</div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <button 
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
-                    onClick={() => handleGuestChange('infants', 'decrement')}
-                  >
-                    -
-                  </button>
-                  <span className="w-8 text-center">{formData.guests.infants}</span>
-                  <button 
-                    className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400"
-                    onClick={() => handleGuestChange('infants', 'increment')}
-                  >
-                    +
-                  </button>
-                </div>
+                <Counter
+                  value={formData.guests.infants}
+                  onIncrement={() => handleGuestChange('infants', 'increment')}
+                  onDecrement={() => handleGuestChange('infants', 'decrement')}
+                  min={0}
+                  max={5}
+                />
               </div>
             </div>
           </div>
