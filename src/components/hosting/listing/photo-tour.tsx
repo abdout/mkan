@@ -57,7 +57,7 @@ const PhotoTour = ({ listingId }: PhotoTourProps) => {
       <div className="flex items-center justify-between mb-8">
         <h3>Photo tour</h3>
         <div className="flex items-center space-x-4">
-          <Button variant="default" className="gap-2 rounded-full bg-gray-100 text-primary">
+          <Button variant="default" className="gap-2 rounded-full bg-muted text-primary">
             <PhotoOverlayIcon />
             <span>All photos</span>
           </Button>
