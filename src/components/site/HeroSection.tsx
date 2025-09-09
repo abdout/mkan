@@ -5,8 +5,11 @@ import React from "react";
 import SiteHeader from "@/components/template/header-airbnb/header";
 import BookingForm from "@/components/template/search/vertical-search";
 
+interface HeroSectionProps {
+  onSearch?: () => void;
+}
 
-const HeroSection = () => {
+const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
@@ -25,7 +28,7 @@ const HeroSection = () => {
           priority
           sizes="100vw"
         />
-        <BookingForm />
+        <BookingForm onSearch={onSearch} />
       </div>
     </div>
   );

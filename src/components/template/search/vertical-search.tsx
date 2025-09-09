@@ -17,7 +17,11 @@ import GuestSelectorDropdown from "./guest-selector"
 
 type ActiveField = "location" | "checkin" | "checkout" | "guests" | null
 
-export default function VerticalSearch() {
+interface VerticalSearchProps {
+  onSearch?: () => void;
+}
+
+export default function VerticalSearch({ onSearch }: VerticalSearchProps) {
   const router = useRouter()
   const [activeField, setActiveField] = useState<ActiveField>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -155,8 +159,20 @@ export default function VerticalSearch() {
       searchParams.set("infants", formData.guests.infants.toString())
     }
 
-    const searchUrl = `/search${searchParams.toString() ? `?${searchParams.toString()}` : ""}`
-    router.push(searchUrl)
+    // Check if we're on the homepage
+    const isHomepage = window.location.pathname === '/'
+    
+    if (isHomepage && onSearch) {
+      // Update URL parameters without navigation
+      const newUrl = `${window.location.pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`
+      window.history.pushState({}, '', newUrl)
+      // Trigger the search callback to scroll to results
+      onSearch()
+    } else {
+      // Navigate to search page if not on homepage
+      const searchUrl = `/search${searchParams.toString() ? `?${searchParams.toString()}` : ""}`
+      router.push(searchUrl)
+    }
   }
 
   // Helper function to get field styling
