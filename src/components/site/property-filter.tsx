@@ -46,7 +46,7 @@ const PropertyFilter: React.FC<PropertyFilterProps> = ({
   return (
     <div className={`w-full ${className}`}>
       {/* Desktop Layout */}
-      <div className="hidden md:flex items-start justify-between py-2 -mx-6">
+      <div className="hidden md:flex items-start justify-between py-1 -mx-6">
         {AIRBNB_ICONS.map((icon) => (
           <div
             key={icon.filename}
@@ -67,7 +67,7 @@ const PropertyFilter: React.FC<PropertyFilterProps> = ({
             </div>
             
             {/* Label */}
-            <div className="-mt-2 text-center">
+            <div className="-mt-1 text-center">
               <div 
                 className={`text-xs font-normal transition-colors duration-200 inline-block ${
                   selectedIcon === icon.filename
@@ -113,7 +113,7 @@ const PropertyFilter: React.FC<PropertyFilterProps> = ({
               <CarouselItem key={icon.filename} className="pl-2 basis-auto">
                 <div
                   onClick={() => onIconClick?.(icon.filename)}
-                  className="flex flex-col items-center cursor-pointer group transition-all duration-200 px-3 py-2"
+                  className="flex flex-col items-center cursor-pointer group transition-all duration-200 px-2 py-1"
                 >
                   {/* Icon Container */}
                   <div className="flex items-center justify-center w-10 h-10 rounded-lg">

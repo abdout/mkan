@@ -39,6 +39,10 @@ export default function Home() {
 	const resultsRef = useRef<HTMLDivElement>(null);
 	const [searchTerm, setSearchTerm] = useState("");
 	const debouncedSearchTerm = useDebounce(searchTerm, 300);
+	const [isFilterSticky, setIsFilterSticky] = useState(false);
+	const filterRef = useRef<HTMLDivElement>(null);
+	const propertyContentRef = useRef<HTMLDivElement>(null);
+	const propertyEndRef = useRef<HTMLDivElement>(null);
 
 	// Fetch listings on mount with better error handling
 	useEffect(() => {
@@ -188,6 +192,34 @@ export default function Home() {
 		setFilteredListings(listings);
 	}, [router, listings]);
 
+	// Filter sticky behavior based on scroll position
+	useEffect(() => {
+		const handleScroll = () => {
+			if (!filterRef.current || !propertyEndRef.current) return;
+			
+			const filterRect = filterRef.current.getBoundingClientRect();
+			const propertyEndRect = propertyEndRef.current.getBoundingClientRect();
+			
+			// Filter should stick when it reaches top of screen
+			const shouldStick = filterRect.top <= 0;
+			
+			// Filter should unstick when property area ends (property end element reaches top)
+			const shouldUnstick = propertyEndRect.top <= 0;
+			
+			if (shouldUnstick) {
+				setIsFilterSticky(false);
+			} else if (shouldStick) {
+				setIsFilterSticky(true);
+			} else {
+				setIsFilterSticky(false);
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		handleScroll(); // Check initial state
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
+
 	// Smooth scroll to results
 	const scrollToResults = useCallback(() => {
 		if (resultsRef.current) {
@@ -205,14 +237,17 @@ export default function Home() {
 	return (
 		<div className='bg-background'>
 			<HeroSection onSearch={scrollToResults} />
-			<div className='layout-container space-y-10 pb-20'>
-				<div className="sticky top-0 bg-background z-40 pt-4 pb-2">
+			<div className='layout-container space-y-10 pb-20 pt-10'>
+				<div 
+					ref={filterRef}
+					className={`${isFilterSticky ? 'sticky top-0' : 'relative'} bg-background z-40 py-1`}
+				>
 					<PropertyFilter 
 						onIconClick={handleCategoryClick}
 						selectedIcon={selectedCategory}
 					/>
 					{hasActiveFilters && (
-						<div className="flex items-center justify-between mt-4 px-2">
+						<div className="flex items-center justify-between mt-2 px-2">
 							<p className="text-sm text-muted-foreground">
 								{filteredCount} {filteredCount === 1 ? 'property' : 'properties'} found
 							</p>
@@ -227,10 +262,12 @@ export default function Home() {
 				</div>
 				
 				<div ref={resultsRef}>
-					<PropertyContent 
-						properties={filteredListings} 
-						isLoading={isLoading}
-					/>
+					<div ref={propertyContentRef}>
+						<PropertyContent 
+							properties={filteredListings} 
+							isLoading={isLoading}
+						/>
+					</div>
 					{error && (
 						<div className="text-center py-10">
 							<p className="text-red-500 mb-4">{error}</p>
@@ -242,6 +279,8 @@ export default function Home() {
 							</Button>
 						</div>
 					)}
+					{/* Property end marker for filter sticky behavior */}
+					<div ref={propertyEndRef} className="h-1"></div>
 				</div>
 				
 				{filteredCount > 0 && !isLoading && (

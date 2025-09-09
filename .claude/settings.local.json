@@ -1,8 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm dev:*)",
-      "Bash(ls:*)"
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []
