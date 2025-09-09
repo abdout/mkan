@@ -38,8 +38,6 @@ export const PropertyContent = ({ properties: initialProperties }: PropertyConte
     searchFilters.infants > 0
   );
 
-  console.log('Search filters:', searchFilters);
-  console.log('Has active filters:', hasActiveFilters);
 
   // Clear all filters function
   const clearAllFilters = () => {
@@ -100,21 +98,20 @@ export const PropertyContent = ({ properties: initialProperties }: PropertyConte
 
   return (
     <div className="w-full">
-      {/* Clear All Filters Button - Always visible for testing */}
-      <div className="mb-6 px-4 bg-yellow-100 p-4 rounded-lg">
-        <Button
-          onClick={clearAllFilters}
-          variant="destructive"
-          size="lg"
-          className="flex items-center gap-2"
-        >
-          <X size={16} />
-          Clear all filters {hasActiveFilters ? '(Active)' : '(Test - No filters)'}
-        </Button>
-        <div className="mt-2 text-xs">
-          Debug: location="{searchFilters.location}", checkIn="{searchFilters.checkIn}", guests={searchFilters.guests}
+      {/* Clear All Filters Button */}
+      {hasActiveFilters && (
+        <div className="mb-4 px-4">
+          <Button
+            onClick={clearAllFilters}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2 hover:bg-gray-50"
+          >
+            <X size={16} />
+            Clear all filters
+          </Button>
         </div>
-      </div>
+      )}
       
       <div className="flex relative">
         <div className="flex-1">
