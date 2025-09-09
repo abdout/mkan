@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Listing } from "@/types/listing";
 import { PropertyListings } from "./listings";
 import { useDebounce } from "@/hooks/useDebounce";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 interface PropertyContentProps {
   properties: Listing[];
@@ -11,6 +13,7 @@ interface PropertyContentProps {
 
 export const PropertyContent = ({ properties: initialProperties }: PropertyContentProps) => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [properties, setProperties] = useState(initialProperties);
   const [searchFilters, setSearchFilters] = useState({
     location: searchParams.get("location") || "",
@@ -23,6 +26,25 @@ export const PropertyContent = ({ properties: initialProperties }: PropertyConte
   });
 
   const debouncedFilters = useDebounce(searchFilters, 300);
+
+  // Check if any filters are active
+  const hasActiveFilters = Boolean(
+    searchFilters.location || 
+    searchFilters.checkIn || 
+    searchFilters.checkOut || 
+    searchFilters.guests > 0 || 
+    searchFilters.adults > 0 || 
+    searchFilters.children > 0 || 
+    searchFilters.infants > 0
+  );
+
+  console.log('Search filters:', searchFilters);
+  console.log('Has active filters:', hasActiveFilters);
+
+  // Clear all filters function
+  const clearAllFilters = () => {
+    router.push('/listings');
+  };
 
   useEffect(() => {
     // Update filters when URL params change
@@ -78,6 +100,22 @@ export const PropertyContent = ({ properties: initialProperties }: PropertyConte
 
   return (
     <div className="w-full">
+      {/* Clear All Filters Button - Always visible for testing */}
+      <div className="mb-6 px-4 bg-yellow-100 p-4 rounded-lg">
+        <Button
+          onClick={clearAllFilters}
+          variant="destructive"
+          size="lg"
+          className="flex items-center gap-2"
+        >
+          <X size={16} />
+          Clear all filters {hasActiveFilters ? '(Active)' : '(Test - No filters)'}
+        </Button>
+        <div className="mt-2 text-xs">
+          Debug: location="{searchFilters.location}", checkIn="{searchFilters.checkIn}", guests={searchFilters.guests}
+        </div>
+      </div>
+      
       <div className="flex relative">
         <div className="flex-1">
           <PropertyListings properties={properties} />
