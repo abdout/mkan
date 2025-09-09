@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import LocationDropdown from "./location"
 import BigSearchDatePicker from "./big-search-date-picker"
+import GuestSelectorDropdown from "./guest-selector"
 import { LOCATIONS } from "./constant"
 
 type ActiveButton = "location" | "checkin" | "checkout" | "guests" | null
@@ -28,6 +29,13 @@ export default function Component() {
   }>({
     from: undefined,
     to: undefined
+  })
+
+  // Guest state
+  const [guests, setGuests] = useState({
+    adults: 0,
+    children: 0,
+    infants: 0
   })
 
   const handleButtonClick = (button: ActiveButton) => {
@@ -81,6 +89,35 @@ export default function Component() {
     } else {
       return "Add dates"
     }
+  }
+
+  // Handle guest change
+  const handleGuestChange = (type: 'adults' | 'children' | 'infants', operation: 'increment' | 'decrement') => {
+    setGuests(prev => ({
+      ...prev,
+      [type]: operation === 'increment' 
+        ? prev[type] + 1 
+        : Math.max(0, prev[type] - 1)
+    }))
+  }
+
+  // Get guest display text
+  const getGuestDisplayText = () => {
+    const total = guests.adults + guests.children + guests.infants
+    if (total === 0) return "Add guests"
+    
+    const parts = []
+    if (guests.adults > 0) {
+      parts.push(`${guests.adults} adult${guests.adults > 1 ? 's' : ''}`)
+    }
+    if (guests.children > 0) {
+      parts.push(`${guests.children} child${guests.children > 1 ? 'ren' : ''}`)
+    }
+    if (guests.infants > 0) {
+      parts.push(`${guests.infants} infant${guests.infants > 1 ? 's' : ''}`)
+    }
+    
+    return parts.join(', ')
   }
 
   // Click outside to reset
@@ -280,13 +317,36 @@ export default function Component() {
           {/* Guests Button */}
           <div className="flex-1 px-6 py-3 text-left" onClick={() => handleButtonClick("guests")}>
             <div className="text-sm font-semibold text-[#000000] mb-1">Guests</div>
-            <div className="text-sm text-[#6b7280]">Add guests</div>
+            <div className="text-sm text-[#6b7280]">{getGuestDisplayText()}</div>
           </div>
 
           {/* Search Button */}
           <div className="pr-2">
             <Button
-              onClick={() => router.push('/search')}
+              onClick={() => {
+                const searchParams = new URLSearchParams()
+                
+                if (selectedLocation) {
+                  searchParams.set("location", selectedLocation)
+                }
+                if (dateRange.from) {
+                  searchParams.set("checkIn", dateRange.from.toISOString().split('T')[0])
+                }
+                if (dateRange.to) {
+                  searchParams.set("checkOut", dateRange.to.toISOString().split('T')[0])
+                }
+                
+                const totalGuests = guests.adults + guests.children + guests.infants
+                if (totalGuests > 0) {
+                  searchParams.set("guests", totalGuests.toString())
+                  searchParams.set("adults", guests.adults.toString())
+                  searchParams.set("children", guests.children.toString())
+                  searchParams.set("infants", guests.infants.toString())
+                }
+                
+                const searchUrl = `/listings${searchParams.toString() ? `?${searchParams.toString()}` : ""}`
+                router.push(searchUrl)
+              }}
               size="icon"
               className={`rounded-full bg-[#de3151] hover:bg-[#de3151]/90 text-white transition-all duration-300 ${
                 activeButton ? "w-28 h-14 px-4" : "w-12 h-12"
@@ -332,54 +392,10 @@ export default function Component() {
 
       {activeButton === "guests" && (
         <div className="absolute top-full right-0 mt-2 w-96 bg-white rounded-2xl shadow-lg border border-[#e5e7eb] p-6 z-10">
-          <h3 className="text-lg font-semibold mb-4">Who's coming?</h3>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium">Adults</div>
-                <div className="text-sm text-gray-500">Ages 13 or above</div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
-                  -
-                </button>
-                <span className="w-8 text-center">0</span>
-                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
-                  +
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium">Children</div>
-                <div className="text-sm text-gray-500">Ages 2-12</div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
-                  -
-                </button>
-                <span className="w-8 text-center">0</span>
-                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
-                  +
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-medium">Infants</div>
-                <div className="text-sm text-gray-500">Under 2</div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
-                  -
-                </button>
-                <span className="w-8 text-center">0</span>
-                <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-400">
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
+          <GuestSelectorDropdown
+            guests={guests}
+            onGuestChange={handleGuestChange}
+          />
         </div>
       )}
     </div>
