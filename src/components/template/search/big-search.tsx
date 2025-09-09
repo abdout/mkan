@@ -248,7 +248,7 @@ export default function Component() {
       >
         {/* Location Button */}
         <button
-          className={`flex-[2] px-6 py-3 ${getButtonStyling("location")}`}
+          className={`flex-[1.8] px-6 py-3 ${getButtonStyling("location")}`}
           onMouseEnter={() => setHoveredButton("location")}
           onMouseLeave={() => setHoveredButton(null)}
           onClick={() => handleButtonClick("location")}
@@ -310,7 +310,7 @@ export default function Component() {
 
         {/* Guests Button + Search Button Container */}
         <div
-          className={`flex-[2] flex items-center ${getButtonStyling("guests")}`}
+          className={`flex-[2.2] flex items-center ${getButtonStyling("guests")}`}
           onMouseEnter={() => setHoveredButton("guests")}
           onMouseLeave={() => setHoveredButton(null)}
         >
