@@ -171,14 +171,9 @@ class InMemoryRateLimiter {
   }
 }
 
-// Create in-memory rate limiters as fallback
-export const inMemoryLimiters = {
-  api: new InMemoryRateLimiter(10, 10000), // 10 requests per 10 seconds
-  auth: new InMemoryRateLimiter(5, 600000), // 5 attempts per 10 minutes
-  upload: new InMemoryRateLimiter(5, 60000), // 5 uploads per minute
-  search: new InMemoryRateLimiter(30, 10000), // 30 searches per 10 seconds
-  payment: new InMemoryRateLimiter(3, 3600000), // 3 payment attempts per hour
-};
+// Note: In-memory rate limiters removed due to Edge Runtime incompatibility
+// In serverless/edge environments, in-memory state doesn't persist across requests
+// Use Redis (Upstash) for production rate limiting instead
 
 // Enhanced rate limit function that uses in-memory fallback
 export async function rateLimitWithFallback(
@@ -197,7 +192,13 @@ export async function rateLimitWithFallback(
     };
   }
 
-  // Fallback to in-memory rate limiter
-  const identifier = await getClientId(request);
-  return await inMemoryLimiters[limiterType].limit(identifier);
+  // In Edge Runtime or when Redis is not available, skip rate limiting
+  // In-memory rate limiting doesn't work well in serverless/edge environments
+  // since each request may hit a different instance
+  return {
+    success: true,
+    limit: 100,
+    remaining: 99,
+    reset: Date.now() + 60000,
+  };
 }
