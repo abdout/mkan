@@ -66,14 +66,5 @@ if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = db;
 }
 
-// Graceful shutdown handling
-if (process.env.NODE_ENV === "production") {
-  const gracefulShutdown = async (signal: string) => {
-    console.log(`Received ${signal}, closing database connections...`);
-    await db.$disconnect();
-    process.exit(0);
-  };
-
-  process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
-  process.on("SIGINT", () => gracefulShutdown("SIGINT"));
-} 
+// Note: Graceful shutdown is handled by Vercel's serverless environment
+// Edge Runtime does not support process.on() for signal handling 
