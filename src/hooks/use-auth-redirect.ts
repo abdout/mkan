@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 export const useAuthRedirect = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -10,7 +12,9 @@ export const useAuthRedirect = () => {
     if (status === 'loading') return; // Still loading
     
     if (!session) {
-      console.log('🔒 No session found, redirecting to login');
+      if (isDevelopment) {
+        console.log('🔒 No session found, redirecting to login');
+      }
       // Capture current URL as callback
       const currentUrl = window.location.pathname + window.location.search;
       const encodedCallbackUrl = encodeURIComponent(currentUrl);
@@ -18,7 +22,9 @@ export const useAuthRedirect = () => {
       return;
     }
     
-    console.log('🔒 Session found:', session.user?.email);
+    if (isDevelopment) {
+      console.log('🔒 Session found');
+    }
   }, [session, status, router]);
 
   return { session, status };

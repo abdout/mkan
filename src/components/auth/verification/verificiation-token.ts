@@ -1,22 +1,32 @@
 import { db } from "@/lib/db";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 // Get verification token by token string
 export const getVerificationTokenByToken = async (token: string) => {
   try {
-    console.log("Searching for verification token by token:", token); // Log the token being searched
+    if (isDevelopment) {
+      console.log("Searching for verification token"); // Don't log the actual token
+    }
     const verificationToken = await db.verificationToken.findUnique({
       where: { token }
     });
 
     if (!verificationToken) {
-      console.error("Token not found in the database:", token); // Log if token is not found
+      if (isDevelopment) {
+        console.log("Verification token not found");
+      }
       return null;
     }
 
-    console.log("Verification token retrieved successfully:", verificationToken); // Log the retrieved token
+    if (isDevelopment) {
+      console.log("Verification token retrieved successfully");
+    }
     return verificationToken;
   } catch (error) {
-    console.error("Error retrieving token from the database:", error); // Log the error in detail
+    if (isDevelopment) {
+      console.error("Error retrieving verification token");
+    }
     return null;
   }
 };
@@ -24,20 +34,28 @@ export const getVerificationTokenByToken = async (token: string) => {
 // Get verification token by email
 export const getVerificationTokenByEmail = async (email: string) => {
   try {
-    console.log("Searching for verification token by email:", email); // Log the email being searched
+    if (isDevelopment) {
+      console.log("Searching for verification token by email");
+    }
     const verificationToken = await db.verificationToken.findFirst({
       where: { email }
     });
 
     if (!verificationToken) {
-      console.error("Token not found for the email in the database:", email); // Log if token is not found for the email
+      if (isDevelopment) {
+        console.log("Verification token not found for email");
+      }
       return null;
     }
 
-    console.log("Verification token retrieved successfully for email:", verificationToken); // Log the retrieved token
+    if (isDevelopment) {
+      console.log("Verification token retrieved successfully");
+    }
     return verificationToken;
   } catch (error) {
-    console.error("Error retrieving token by email from the database:", error); // Log the error in detail
+    if (isDevelopment) {
+      console.error("Error retrieving token by email");
+    }
     return null;
   }
 }

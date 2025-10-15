@@ -80,6 +80,7 @@ model User {
   password              String?
   role                  UserRole               @default(USER)
   isTwoFactorEnabled    Boolean                @default(false)
+  lastLogin             DateTime?
   twoFactorConfirmation TwoFactorConfirmation?
   accounts              Account[]
   sessions              Session[]

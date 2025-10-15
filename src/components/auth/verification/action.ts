@@ -4,40 +4,56 @@ import { db } from "@/lib/db";
 import { getVerificationTokenByToken } from "./verificiation-token";
 import { getUserByEmail } from "../user";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 
 export const newVerification = async (token: string) => {
-  console.log("New verification initiated. Token received:", token);
+  if (isDevelopment) {
+    console.log("New verification initiated");
+  }
 
   const existingToken = await getVerificationTokenByToken(token);
-  console.log("Token from database:", existingToken);
+  if (isDevelopment) {
+    console.log("Token lookup completed");
+  }
 
   if (!existingToken) {
     const existingUser = await getUserByEmail(token);
     if (existingUser && existingUser.emailVerified) {
       return { success: "Email already verified!" };
     } else {
-      console.error("Token does not exist in the database.");
+      if (isDevelopment) {
+        console.log("Token does not exist");
+      }
       return { error: "Token does not exist!" };
     }
   }
 
-  console.log("Token exists in the database. Token ID:", existingToken.id);
-  console.log("Token exists in the database. Token email:", existingToken.email);
-  console.log("Token exists in the database. Token expiration:", existingToken.expires);
+  if (isDevelopment) {
+    console.log("Valid token found in database");
+  }
 
   const hasExpired = new Date(existingToken.expires) < new Date();
-  console.log("Token expiration status:", hasExpired);
+  if (isDevelopment) {
+    console.log("Token expiration checked:", hasExpired ? "expired" : "valid");
+  }
 
   if (hasExpired) {
-    console.error("Token has expired.");
+    if (isDevelopment) {
+      console.log("Token has expired");
+    }
     return { error: "Token has expired!" };
   }
 
   const existingUser = await getUserByEmail(existingToken.email);
-  console.log("User associated with the token:", existingUser);
+  if (isDevelopment) {
+    console.log("User lookup completed");
+  }
 
   if (!existingUser) {
-    console.error("Email associated with the token does not exist.");
+    if (isDevelopment) {
+      console.log("Email associated with token does not exist");
+    }
     return { error: "Email does not exist!" };
   }
 
@@ -52,15 +68,18 @@ export const newVerification = async (token: string) => {
       email: existingToken.email,
     }
   });
-  console.log("User email verified and updated successfully.");
+  if (isDevelopment) {
+    console.log("User email verified successfully");
+  }
 
   setTimeout(async () => {
     await db.verificationToken.delete({
       where: { id: existingToken.id }
     });
-    console.log("Verification token deleted successfully.");
+    if (isDevelopment) {
+      console.log("Verification token scheduled for deletion");
+    }
   }, 9000);
-  console.log("Verification token deleted successfully.");
 
   return { success: "Email verified!" };
 };

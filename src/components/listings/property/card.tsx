@@ -54,8 +54,10 @@ export function PropertyCard({
     setCurrentImageIndex(index)
   }
 
-  // Fallback image if no images provided
-  const displayImages = images.length > 0 ? images : ['/api/placeholder/303/287']
+  // Use provided images or fallback to default
+  const displayImages = images && images.length > 0
+    ? images
+    : ['/images/default-property.svg']
 
   return (
     <div
@@ -70,11 +72,12 @@ export function PropertyCard({
         {/* Main Image */}
         <div className="relative w-full h-52 bg-gray-200 rounded-md overflow-hidden">
           <Image
-            src={displayImages[currentImageIndex]}
+            src={displayImages[currentImageIndex] || '/images/default-property.svg'}
             alt={title}
-            width={303}
-            height={287}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            priority={false}
           />
 
           {/* Favorite Button */}
