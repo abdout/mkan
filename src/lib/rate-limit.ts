@@ -124,6 +124,7 @@ export function rateLimitResponse(
 }
 
 // In-memory rate limiter fallback for when Redis is not available
+// Edge Runtime compatible - no setInterval for cleanup
 class InMemoryRateLimiter {
   private requests: Map<string, { count: number; resetTime: number }> = new Map();
   private readonly limit: number;
@@ -133,19 +134,23 @@ class InMemoryRateLimiter {
     this.limit = limit;
     this.windowMs = windowMs;
 
-    // Clean up old entries every minute
-    setInterval(() => {
-      const now = Date.now();
+    // Note: No setInterval cleanup in Edge Runtime
+    // Cleanup happens inline during limit() calls to avoid memory leaks
+  }
+
+  async limit(identifier: string): Promise<{ success: boolean; limit: number; remaining: number; reset: number }> {
+    const now = Date.now();
+
+    // Inline cleanup: remove expired entries during normal operation
+    // This avoids using setInterval which is not supported in Edge Runtime
+    if (this.requests.size > 1000) { // Only cleanup if map gets large
       for (const [key, value] of this.requests.entries()) {
         if (value.resetTime < now) {
           this.requests.delete(key);
         }
       }
-    }, 60000);
-  }
+    }
 
-  async limit(identifier: string): Promise<{ success: boolean; limit: number; remaining: number; reset: number }> {
-    const now = Date.now();
     const record = this.requests.get(identifier);
 
     if (!record || record.resetTime < now) {
