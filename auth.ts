@@ -12,6 +12,9 @@ import { validateEnv } from "./src/lib/env-check"
 // Validate environment variables
 validateEnv();
 
+const isDevelopment = process.env.NODE_ENV === "development";
+const isProduction = process.env.NODE_ENV === "production";
+
 // Extend the built-in session types
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -36,12 +39,31 @@ export const {
   },
   cookies: {
     sessionToken: {
-      name: `next-auth.session-token`,
+      name: isProduction ? `__Secure-next-auth.session-token` : `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: isProduction ? "strict" : "lax",
+        path: "/",
+        secure: isProduction,
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+      },
+    },
+    callbackUrl: {
+      name: isProduction ? `__Secure-next-auth.callback-url` : `next-auth.callback-url`,
       options: {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production",
+        secure: isProduction,
+      },
+    },
+    csrfToken: {
+      name: isProduction ? `__Host-next-auth.csrf-token` : `next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: isProduction,
       },
     },
   },
@@ -49,7 +71,9 @@ export const {
   trustHost: true,
   events: {
     async linkAccount({ user }) {
-      console.log("OAuth account linked:", user.email);
+      if (isDevelopment) {
+        console.log("OAuth account linked:", user.email);
+      }
       if (user.id) {
         await db.user.update({
           where: { id: user.id },
@@ -58,25 +82,35 @@ export const {
       }
     },
     async signIn({ user, account, isNewUser }) {
-      console.log("Sign-in event:", { 
-        userId: user.id, 
-        email: user.email,
-        provider: account?.provider,
-        isNewUser
-      });
+      if (isDevelopment) {
+        console.log("Sign-in event:", {
+          userId: user.id,
+          provider: account?.provider,
+          isNewUser
+        });
+      }
+      // Track sign-in for security auditing
+      if (user.id) {
+        await db.user.update({
+          where: { id: user.id },
+          data: { lastLogin: new Date() }
+        }).catch(() => {});
+      }
     },
     async error(error) {
-      console.error("Auth error event:", error);
+      if (isDevelopment) {
+        console.error("Auth error event:", error);
+      }
     }
   },
   callbacks: {
     async signIn({ user, account }) {
-      // Log sign-in attempt for debugging
-      console.log("Sign-in attempt:", { 
-        userId: user.id, 
-        provider: account?.provider,
-        email: user.email
-      });
+      if (isDevelopment) {
+        console.log("Sign-in attempt:", {
+          userId: user.id,
+          provider: account?.provider
+        });
+      }
       
       if (!user.id) return false
       
@@ -135,8 +169,16 @@ export const {
     }
   },
   adapter: PrismaAdapter(db),
-  session: { strategy: "jwt" },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
+  },
   // Enable debug mode only in development
-  debug: process.env.NODE_ENV === "development",
+  debug: isDevelopment,
+  // Production security settings
+  useSecureCookies: isProduction,
+  // Protect against open redirects
+  skipCSRFCheck: false,
   ...authConfig,
 })

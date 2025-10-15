@@ -1,22 +1,32 @@
 import { db } from "@/lib/db";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 // Get password reset token by token string
 export const getPasswordResetTokenByToken = async (token: string) => {
   try {
-    console.log("Searching for password reset token by token:", token);
+    if (isDevelopment) {
+      console.log("Searching for password reset token");
+    }
     const passwordResetToken = await db.passwordResetToken.findUnique({
       where: { token }
     });
 
     if (!passwordResetToken) {
-      console.error("Password reset token not found in the database:", token);
+      if (isDevelopment) {
+        console.log("Password reset token not found");
+      }
       return null;
     }
 
-    console.log("Password reset token retrieved successfully:", passwordResetToken);
+    if (isDevelopment) {
+      console.log("Password reset token retrieved successfully");
+    }
     return passwordResetToken;
   } catch (error) {
-    console.error("Error retrieving password reset token from the database:", error);
+    if (isDevelopment) {
+      console.error("Error retrieving password reset token");
+    }
     return null;
   }
 };
@@ -24,20 +34,28 @@ export const getPasswordResetTokenByToken = async (token: string) => {
 // Get password reset token by email
 export const getPasswordResetTokenByEmail = async (email: string) => {
   try {
-    console.log("Searching for password reset token by email:", email);
+    if (isDevelopment) {
+      console.log("Searching for password reset token by email");
+    }
     const passwordResetToken = await db.passwordResetToken.findFirst({
       where: { email }
     });
 
     if (!passwordResetToken) {
-      console.error("Password reset token not found for the email in the database:", email);
+      if (isDevelopment) {
+        console.log("Password reset token not found for email");
+      }
       return null;
     }
 
-    console.log("Password reset token retrieved successfully for email:", passwordResetToken);
+    if (isDevelopment) {
+      console.log("Password reset token retrieved successfully");
+    }
     return passwordResetToken;
   } catch (error) {
-    console.error("Error retrieving password reset token by email from the database:", error);
+    if (isDevelopment) {
+      console.error("Error retrieving password reset token by email");
+    }
     return null;
   }
 }; 

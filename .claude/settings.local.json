@@ -1,8 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git pull:*)",
-      "Bash(git branch:*)"
+      "Bash(cat:*)",
+      "Bash(pnpm dev:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(git push:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(tree:*)",
+      "mcp__Ref__ref_search_documentation",
+      "mcp__Ref__ref_read_url",
+      "WebFetch(domain:ui.shadcn.com)"
     ],
     "deny": [],
     "ask": []
